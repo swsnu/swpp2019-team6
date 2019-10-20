@@ -8,8 +8,8 @@ class User(AbstractBaseUser):
     nickname = models.CharField(max_length=50, null=False)
     register_date = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    status_message = models.TextField()
-    profile_photo_id = models.CharField()
+    status_message = models.TextField(blank=True)
+    #profile_photo_id = models.CharField()
 
     USERNAME_FIELD = 'email'
 
