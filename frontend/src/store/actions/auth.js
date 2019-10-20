@@ -3,8 +3,8 @@ import axios from 'axios';
 
 import { push } from 'connected-react-router';
 
-export const login_success = (temp) => {
-    return { type: actionTypes.LOGIN_SUCCESS, temp: temp};
+export const login_success = (auth) => {
+    return { type: actionTypes.LOGIN_SUCCESS, auth: auth};
 };
 
 export const login_failure = (temp) => {
@@ -12,10 +12,11 @@ export const login_failure = (temp) => {
 };
 
 // login({ username: username, password: password })
-export const login = (temp) => {
+export const login = (info) => {
     return dispatch => {
-        return axios.get('/api/user')
-            .then(res => dispatch(login_success(res.data)));
+        // return axios.get('/api/user')
+        //     .then(res => dispatch(login_success(res.data)));
+        dispatch(login_success(info.username));
     }
 }
 
@@ -39,7 +40,7 @@ export const signUp_failure = (temp) => {
 };
 
 // signUp({ username: username, password: password, nickname: nickname }
-export const signUp = (temp) => {
+export const signUp = (info) => {
     return dispatch => {
         return axios.get('/api/user')
             .then(res => dispatch(signUp_success(res.data)));

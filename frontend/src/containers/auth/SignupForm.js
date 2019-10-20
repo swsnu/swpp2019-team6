@@ -29,10 +29,6 @@ class SignupForm extends Component {
         this.props.onSignup(this.state.username, this.state.password, this.state.nickname);
     }
 
-    loginButtonHandler = () => {
-
-    } 
-
     render() {
         return (
             <AuthForm
@@ -55,4 +51,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default SignupForm;
+export default connect(null, mapDispatchToProps)(SignupForm);
