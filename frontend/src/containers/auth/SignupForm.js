@@ -9,7 +9,7 @@ import AuthForm from '../../components/auth/AuthForm';
 class SignupForm extends Component {
 
     state = {
-       username: '',
+       email: '',
        password: '',
        password_confirm: '',
        nickname: ''
@@ -26,7 +26,7 @@ class SignupForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onSignup(this.state.username, this.state.password, this.state.nickname);
+        this.props.onSignup(this.state.email, this.state.password, this.state.nickname);
     }
 
     render() {
@@ -44,9 +44,9 @@ class SignupForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return{
-        onSignup: (username, password, nickname) => {
+        onSignup: (email, password, nickname) => {
             dispatch(
-              actionCreators.signUp({ username: username, password: password, nickname: nickname })
+              actionCreators.signUp({ email: email, password: password, nickname: nickname })
             );
           },
     }

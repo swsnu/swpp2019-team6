@@ -11,12 +11,12 @@ export const login_failure = (temp) => {
     return { type: actionTypes.LOGIN_FAILURE, temp: temp};
 };
 
-// login({ username: username, password: password })
+// login({ email: email, password: password })
 export const login = (info) => {
     return dispatch => {
         // return axios.get('/api/user')
         //     .then(res => dispatch(login_success(res.data)));
-        dispatch(login_success(info.username));
+        dispatch(login_success(info.email));
     }
 }
 
@@ -39,7 +39,7 @@ export const signUp_failure = (temp) => {
     return { type: actionTypes.SIGNUP_FAILURE, temp: temp};
 };
 
-// signUp({ username: username, password: password, nickname: nickname }
+// signUp({ email: email, password: password, nickname: nickname }
 export const signUp = (info) => {
     return dispatch => {
         return axios.get('/api/user')

@@ -7,7 +7,7 @@ import AuthForm from "../../components/auth/AuthForm";
 
 class LoginForm extends Component {
   state = {
-    username: "",
+    email: "",
     password: ""
   };
 
@@ -20,7 +20,7 @@ class LoginForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.onLogin(this.state.username, this.state.password);
+    this.props.onLogin(this.state.email, this.state.password);
   };
   
   render() {
@@ -38,9 +38,9 @@ class LoginForm extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogin: (username, password) => {
+    onLogin: (email, password) => {
       dispatch(
-        actionCreators.login({ username: username, password: password })
+        actionCreators.login({ email: email, password: password })
       );
     },
 
