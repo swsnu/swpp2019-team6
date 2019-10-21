@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework import status, generics
-from rest_framework.parsers import JSONParser, MultiPartParser, BaseParser
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework_jwt.settings import api_settings
@@ -13,12 +13,6 @@ jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 
 User = get_user_model()
-
-
-class PlainTextParser(BaseParser):
-    media_type='text/plain'
-    def parse(self, stream, media_type=None, parser_context=None):
-        return json.loads(stream.read().decode('utf-8'))
 
 
 class SignUp(generics.CreateAPIView):
@@ -56,7 +50,7 @@ class Login(APIView):
 class UserList(APIView):
 
     serializer_class = UserSerializer
-    parser_classes = (PlainTextParser, )
+    parser_classes = (JSONParser, )
 
     def get(self, request, id=-1, *args, **kwargs):
         user = User.objects.get(pk=id)
@@ -64,8 +58,6 @@ class UserList(APIView):
         return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
-        print(request.data)
-        #data = json.load(request.data)
         user = User.objects.get(pk=request.user.id)
         user.password = request.data.get("password", user.password)
         user.status_message = request.data.get("status_message", user.status_message)
