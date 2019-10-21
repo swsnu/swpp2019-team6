@@ -36,6 +36,7 @@ class SignupForm extends Component {
             form={this.state}
             onChange={this.onChange}
             onSubmit={this.onSubmit}
+            error={null}
             />
         );
     }
