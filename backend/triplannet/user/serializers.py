@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ("id", "email", "password", "status_message")
+        fields = ("id", "email", "password", "nickname", "status_message")
 
     password = serializers.CharField(write_only=True)
 
@@ -54,7 +54,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         username_field = self.get_username_field(UserModel)
-        info = {username_field: validated_data['email']}
+        info = {username_field: validated_data['email'],
+                "nickname": validated_data['nickname']}
         user = UserModel.objects.create(**info)
         user.set_password(validated_data['password'])
         user.save()
@@ -63,6 +64,7 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.password = validated_data.get('password', instance.password)
         instance.status_message = validated_data.get('status_message', instance.status_message)
+        instance.nickname = validated_data.get('nickname', instance.nickname)
         instance.save()
         return instance
 

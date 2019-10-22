@@ -7,10 +7,11 @@ from .models import User
 
 class UserTestCase(TestCase):
 
-    def register(self, client, username, password):
+    def register(self, client, username, nickname, password):
         response = client.post('/api/user/signup/', data = {
             "email": username,
-            "password": password
+            "password": password,
+            "nickname": nickname
         })
         assert response.status_code == status.HTTP_201_CREATED, response.content
 
@@ -36,6 +37,7 @@ class UserTestCase(TestCase):
                          status.HTTP_400_BAD_REQUEST)
         data = {
             "email": "test@test.coms",
+            "nickname": "tester",
             "password": "password"
         }
         response = client.post('/api/user/signup/', data)
@@ -47,7 +49,7 @@ class UserTestCase(TestCase):
 
     def test_login(self):
         client = Client()
-        self.register(client, "test@test.co.kr", "test")
+        self.register(client, "test@test.co.kr", "tester", "test")
         data = {
             "email": "test@test.co.kr",
             "password": "test"
@@ -62,15 +64,15 @@ class UserTestCase(TestCase):
 
     def test_get_user_info(self):
         client = Client()
-        self.register(client, "test@test.aa", "test")
-        self.register(client, "test@test.bb", "test")
+        self.register(client, "test@test.aa", "tester1", "test")
+        self.register(client, "test@test.bb", "tester2", "test")
         token = self.login(client, "test@test.bb", "test")
         response = client.get('/api/user/1/', HTTP_AUTHORIZATION="JWT {}".format(token))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_put_user_info(self):
         client = Client()
-        self.register(client, "test@test.aa", "test")
+        self.register(client, "test@test.aa", "tester", "test")
         token = self.login(client, "test@test.aa", "test")
         data = {
             "status_message": "hi there?"
@@ -84,11 +86,11 @@ class UserTestCase(TestCase):
 
     def test_search_user(self):
         client = Client()
-        self.register(client, "test@test.aa", "test")
-        self.register(client, "test@test.bb", "test")
-        self.register(client, "test@test.cc", "test")
-        self.register(client, "test@test.dd", "test")
-        self.register(client, "tast@test.ee", "test")
+        self.register(client, "test@test.aa", "tester1", "test")
+        self.register(client, "test@test.bb", "tester2", "test")
+        self.register(client, "test@test.cc", "tester3", "test")
+        self.register(client, "test@test.dd", "tester4", "test")
+        self.register(client, "tast@test.ee", "tester5", "test")
         token = self.login(client, "test@test.aa", "test")
         response = client.get('/api/user/search/t/',
                               HTTP_AUTHORIZATION="JWT {}".format(token))
@@ -99,3 +101,28 @@ class UserTestCase(TestCase):
                               HTTP_AUTHORIZATION="JWT {}".format(token))
         result = json.loads(response.content)
         self.assertEqual(len(result), 4)
+
+    def test_check_user_email(self):
+        client = Client()
+        self.register(client, "test@test.com", "tester", "test")
+        response = client.get('/api/user/check/email/test@test.com/')
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictContainsSubset({"check":True}, data)
+        response = client.get('/api/user/check/email/error@test.com/')
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictContainsSubset({"check":False}, data)
+
+    def test_check_user_nickname(self):
+        client = Client()
+        self.register(client, "test@test.com", "tester", "test")
+        response = client.get('/api/user/check/nickname/tester/')
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictContainsSubset({"check":True}, data)
+        response = client.get('/api/user/check/nickname/error/')
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictContainsSubset({"check":False}, data)
+

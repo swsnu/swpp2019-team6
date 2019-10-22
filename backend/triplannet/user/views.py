@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 import json
 
 from .serializers import JWTSerializer, UserSerializer
@@ -46,6 +47,35 @@ class Login(APIView):
             return Response(response_data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CheckUserExist(APIView):
+
+    permission_classes = (AllowAny, )
+    authentication_classes = ()
+
+    def get(self, request, *args, **kwargs):
+        email = kwargs.get("email", None)
+        nickname = kwargs.get("nickname", None)
+
+        if email:
+            try:
+                user = User.objects.get(email=email)
+                return Response({"check": True},
+                                status=status.HTTP_200_OK)
+            except ObjectDoesNotExist:
+                return Response({"check": False},
+                                status=status.HTTP_200_OK)
+        elif nickname:
+            try:
+                user = User.objects.get(nickname=nickname)
+                return Response({"check": True},
+                                status=status.HTTP_200_OK)
+            except ObjectDoesNotExist:
+                return Response({"check": False},
+                                status=status.HTTP_200_OK)
+        else:
+            return Response({"check":False},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 class UserList(APIView):
 
