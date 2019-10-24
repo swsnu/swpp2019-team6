@@ -45,5 +45,8 @@
       "!src/index.js",
       "!src/serviceWorker.js"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1"
   }
 }
