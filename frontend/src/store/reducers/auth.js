@@ -18,22 +18,19 @@ const reducer = (state = initialState, action) => {
                 authError: null,
             };
         case actionTypes.LOGIN_FAILURE:
+            alert("Email or password is wrong")
             return {
-                ...state,
-                authError: action.error,
+                state,
             };
         case actionTypes.LOGOUT:
             return state;
         case actionTypes.SIGNUP_SUCCESS:
             return {
-                ...state,
-                auth: action.auth,
-                authError: null,
+                state
             };
         case actionTypes.SIGNUP_FAILURE:
             return {
-                ...state,
-                authError: action.error,
+                state
             };
         default:
             break;
