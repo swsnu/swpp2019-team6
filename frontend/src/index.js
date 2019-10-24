@@ -7,6 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store, { history } from "./store/store";
 
+// render
 ReactDOM.render(
   <Provider store={store}>
     <App history={history} />
