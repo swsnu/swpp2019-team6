@@ -44,6 +44,7 @@ class Login(APIView):
             user = serializer.object.get('user')
             token = serializer.object.get('token')
             response_data = jwt_response_payload_handler(token, user, request)
+            print(response_data)
             return Response(response_data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
