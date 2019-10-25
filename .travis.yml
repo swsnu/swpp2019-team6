@@ -8,9 +8,18 @@ matrix:
     - cd frontend
     install: # Script to install required packages
     - yarn install
+    - yarn add eslint-config-airbnb
     script: # Script to test your build
     - ./node_modules/.bin/eslint src
     - yarn test --coverage --watchAll=false
-# - language: python
-# python: 3.6
-# ...
+  - language: python
+    python: 3.6
+    before_install:
+    - cd backend
+    install:
+    - pip install -r requirements.txt
+# before_script
+# mysql -e 'create database test;' -u root
+    script:
+    - cd triplannet
+    - python manage.py test
