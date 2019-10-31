@@ -35,5 +35,6 @@ matrix:
 # mysql -e 'create database test;' -u root
     script:
     - cd triplannet
-    - python manage.py test
+    - coverage run --source='.' manage.py test
+    - coverage report
     - sonar-scanner
