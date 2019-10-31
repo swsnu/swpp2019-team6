@@ -69,7 +69,9 @@ const ErrorMessage = styled.div`
   margin-top: 1rem;
 `;
 
-const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
+const AuthForm = ({
+  type, form, onChange, onSubmit, error,
+}) => {
   const text = textMap[type];
   return (
     <AuthFormBlock>

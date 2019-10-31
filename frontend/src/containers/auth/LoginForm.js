@@ -1,28 +1,28 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { connect } from "react-redux";
-import * as actionCreators from "../../store/actions/index";
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
 
-import AuthForm from "../../components/auth/AuthForm";
+import AuthForm from '../../components/auth/AuthForm';
 
 class LoginForm extends Component {
   state = {
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   };
 
   componentDidMount() {}
 
-  onChange = e => {
+  onChange = (e) => {
     const { value, name } = e.target;
     this.setState({ [name]: value });
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.onLogin(this.state.email, this.state.password);
   };
-  
+
   render() {
     return (
       <AuthForm
@@ -36,15 +36,13 @@ class LoginForm extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onLogin: (email, password) => {
-      dispatch(
-        actionCreators.login({ email: email, password: password })
-      );
-    },
+const mapDispatchToProps = (dispatch) => ({
+  onLogin: (email, password) => {
+    dispatch(actionCreators.login({ email: email, password: password }));
+  },
+});
 
-  };
-};
-
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(LoginForm);

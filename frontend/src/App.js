@@ -2,14 +2,14 @@ import React from 'react';
 import './App.css';
 
 import { ConnectedRouter } from 'connected-react-router';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import SignupPage from './pages/SignupPage';
 
 function App(props) {
-  console.log(props.history.location);
+  // console.log(props.history.location);
   return (
     <ConnectedRouter history={props.history}>
       <div className="App">

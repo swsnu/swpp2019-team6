@@ -6,6 +6,9 @@
   "dependencies": {
     "axios": "^0.19.0",
     "connected-react-router": "^6.5.2",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
     "history": "^4.10.1",
     "immer": "^4.0.1",
     "react": "^16.10.2",

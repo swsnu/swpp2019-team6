@@ -1,9 +1,9 @@
 export {
-    getUser,
+  getUser,
 } from './user';
 
 export {
-    login,
-    logout,
-    signUp
+  login,
+  logout,
+  signUp,
 } from './auth';
