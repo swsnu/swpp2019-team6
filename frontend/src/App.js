@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router-dom';
+
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
+import SignupPage from './pages/SignupPage';
+
+function App(props) {
+  // console.log(props.history.location);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ConnectedRouter history={props.history}>
+      <div className="App">
+        <Switch>
+          <Route path={['/', '/login']} exact render={() => <LoginPage />} />
+          <Route path="/sign_up" exact render={() => <SignupPage />} />
+          <Route path="/main" exact render={() => <MainPage />} />
+          <Route render={() => <h1>Not Found</h1>} />
+        </Switch>
+      </div>
+    </ConnectedRouter>
   );
 }
 
