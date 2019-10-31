@@ -56,7 +56,7 @@ const ButtonWithMarginTop = styled(Button)`
 
 const textMap = {
   login: 'Log In',
-  signup: 'Sign up'
+  signup: 'Sign up',
 };
 
 /**
