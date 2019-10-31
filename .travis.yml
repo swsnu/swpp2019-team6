@@ -18,7 +18,7 @@ matrix:
     script: # Script to test your build
     - ./node_modules/.bin/eslint src
     - yarn test --coverage --watchAll=false
-    - sonar-scanner
+#    - sonar-scanner
   - language: python
     python: 3.6
     dist : trusty
@@ -37,4 +37,12 @@ matrix:
     - cd triplannet
     - coverage run --source='.' manage.py test
     - coverage report
+#    - sonar-scanner
+  - dist : trusty
+    addons:
+        sonarcloud:
+            organization: "swsnu"
+            token:
+                secure: "ewgGd6fjRP3TPMo/J1YtRAqp1EURwMFL6BZVQlYQiF+QoBew3QCsk+cpKKhM1xhop5V+R51nZvVRBwgD9RIq79powigTtwBkUYSnSpK7t1I/XHGy8w2Kfgo1yCAencEcvJWGHBoNA/LnmvCstzkKiu+pYUOnaPbkVyB4dV6aYQc/iKfBfzhKtvIq53MbSAGsFAP5fr7lf4KHD6H4sbE+SO4UYCwIhvX5sr0pH4Zyr/mE4vQNzhxsxxSS6BxzkvkSKM908TFm7yx5L4fjk6IrCJsfBQg7Dgow2dDza1fDKWVRgcctbhIFQpJQqjjuO6E1UzXs+/VMYsjQLjhDrSBv6XcyQN7XIm59ybUBGxhySQ2HU1cWh7txuMSrrNSpyOYo6LM9qBZUMQKahOBMPYAkZU7mRr2v/XUicd4czzpfVl6nEYZIWG32L+yGidHGjDaWIbvelo1wgkv2PInYj+fTGpO165js3mXCaZkZ6R8KSLTpzo49rAubwUmAnYYGr1PflLWpfBfOwbtzZ5BNKjMfsPHcWmT/LHlz5DAg2sHDxpaN9wVqhjN2Z7C1+C6x0T3OPQzd52mgQYo3p3JlmBGvFI/4LmNrg08pMnMQdE5JG7Ejj3rrlHqBIN5AmX/fjZQ/tzhSqGhoL2BAYhXo6uRfNDm/xC/h/MX6prMBn/JineA="
+    script:
     - sonar-scanner
