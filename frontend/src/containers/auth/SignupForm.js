@@ -94,7 +94,10 @@ class SignupForm extends Component {
   
 
   clickCheckPassword = ()=>{
-
+    const password_checked = !!this.state.password && this.state.password_confirm === this.state.password
+    this.setState({password_checked: password_checked})
+    const alertMesaage=password_checked? 'Vaild Password' : 'Must match password'    
+    alert(alertMesaage)
   }
 
   onSubmit = (e) => {
