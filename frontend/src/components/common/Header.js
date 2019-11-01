@@ -1,69 +1,145 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Responsive from './Responsive';
-import Button from './Button';
+import { makeStyles } from '@material-ui/core/styles';
 
-const HeaderBlock = styled.div`
-  position: fixed;
-  width: 100%;
-  background: white;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
-`;
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import ExploreIcon from '@material-ui/icons/Explore';
+import SearchIcon from '@material-ui/icons/Search';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-/**
- * Responsive 컴포넌트의 속성에 스타일을 추가해서 새로운 컴포넌트 생성
- */
-const Wrapper = styled(Responsive)`
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* 자식 엘리먼트 사이에 여백을 최대로 설정 */
-  .logo {
-    font-size: 1.125rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-  }
-  .right {
-    display: flex;
-    align-items: center;
-  }
-`;
+// Set styles of different classes here,
+// and use them by setting className={classes....}
 
-/**
- * 헤더가 fixed로 되어 있기 때문에 페이지의 컨텐츠가 4rem 아래 나타나도록 해주는 컴포넌트
- */
-const Spacer = styled.div`
-  height: 4rem;
-`;
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  toolbarTitle: {
+    marginRight: theme.spacing(2),
+  },
+  toolbarSecondary: {
+    justifyContent: 'space-between',
+    overflowX: 'auto',
+  },
+  toolbarLink: {
+    padding: theme.spacing(1),
+    flexShrink: 0,
+  },
+  mainFeaturedPost: {
+    position: 'relative',
+    backgroundColor: theme.palette.grey[800],
+    color: theme.palette.common.white,
+    marginBottom: theme.spacing(4),
+    backgroundImage: 'url(https://source.unsplash.com/user/erondu)',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    backgroundColor: 'rgba(0,0,0,.3)',
+  },
+  mainFeaturedPostContent: {
+    position: 'relative',
+    padding: theme.spacing(3),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(6),
+      paddingRight: 0,
+    },
+  },
+  mainGrid: {
+    marginTop: theme.spacing(3),
+  },
+  card: {
+    display: 'flex',
+  },
+  cardDetails: {
+    flex: 1,
+  },
+  cardMedia: {
+    width: 160,
+  },
+  markdown: {
+    ...theme.typography.body2,
+    padding: theme.spacing(3, 0),
+  },
+  sidebarAboutBox: {
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.grey[200],
+  },
+  sidebarSection: {
+    marginTop: theme.spacing(3),
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    marginTop: theme.spacing(8),
+    padding: theme.spacing(6, 0),
+  },
+  searchField: {
+    padding: theme.spacing(1),
+    flex: 2,
+  },
+  userMenu: {
+    marginRight: theme.spacing(2),
+  },
+  searchButton: {
+    marginRight: theme.spacing(3),
+  },
+}));
 
-const UserInfo = styled.div`
-  font-weight: 800;
-  margin-right: 1rem;
-`;
 
 const Header = ({ user, onLogout }) => {
+  const classes = useStyles();
+
   return (
-    <>
-      <HeaderBlock>
-        <Wrapper>
-          <Link to="/" className="logo">
-            Triplannet
-          </Link>
-          {user ? (
-            <div className="right">
-              <UserInfo>{user.nickname}</UserInfo>
-              <Button onClick={onLogout}>Login</Button>
-            </div>
-          ) : (
-            <div className="right">
-              <Button to="/login">Login</Button>
-            </div>
-          )}
-        </Wrapper>
-      </HeaderBlock>
-      <Spacer />
-    </>
+    <Toolbar className={classes.toolbar}>
+      <Link to="/main">
+        <IconButton>
+          <ExploreIcon />
+        </IconButton>
+      </Link>
+      <Typography
+        component="h3"
+        variant="h6"
+        color="inherit"
+        align="left"
+        className={classes.toolbarTitle}
+      >
+        Triplannet
+      </Typography>
+      <TextField
+        id="searchField"
+        align="center"
+        placeholder="Search..."
+        className={classes.searchField}
+      />
+      <span className={classes.userMenu}>
+        <IconButton className={classes.searchButton}>
+          <SearchIcon />
+        </IconButton>
+        {user ? (
+          <>
+            {user.nickname}
+            <Button variant="outlined" size="small" onClick={onLogout}>
+              Logout
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="outlined" size="small">
+              Login
+            </Button>
+          </>
+        )}
+      </span>
+    </Toolbar>
   );
 };
 
