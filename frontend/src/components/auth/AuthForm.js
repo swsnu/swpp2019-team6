@@ -56,7 +56,7 @@ const ButtonWithMarginTop = styled(Button)`
 
 const textMap = {
   login: 'Log In',
-  signup: 'Sign up',
+  signup: 'Sign Up',
 };
 
 /**
@@ -118,7 +118,7 @@ const AuthForm = ({
       </form>
       <Footer>
         {type === 'login' ? (
-          <Link to="/sign_up">Sign up</Link>
+          <Link to="/sign_up">Sign Up</Link>
         ) : (
           <Link to="/login">Log In</Link>
         )}

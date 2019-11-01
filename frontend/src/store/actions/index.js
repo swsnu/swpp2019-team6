@@ -5,5 +5,5 @@ export {
 export {
   login,
   logout,
-  signUp,
+  signup,
 } from './auth';
