@@ -24,11 +24,8 @@ const reducer = (state = initialState, action) => {
         state,
       };
     case actionTypes.LOGOUT:
-      console.log('logout');
-      console.log(localStorage.getItem('user'));
       localStorage.removeItem('user');
       localStorage.removeItem('token');
-      console.log(localStorage.getItem('user'));
       return {
         user: null,
         auth: null,

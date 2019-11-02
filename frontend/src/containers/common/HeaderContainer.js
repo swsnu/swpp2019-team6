@@ -30,7 +30,6 @@ class HeaderContainer extends Component {
 
 
   render() {
-    console.log(this.state.currentUser);
     return (
       <Header
         user={this.state.currentUser}

@@ -86,7 +86,6 @@ const Header = ({
   const handleClickAway = () => {
     setOpen(false);
   };
-  console.log(user);
 
   return (
     // left side: logo and our service name
