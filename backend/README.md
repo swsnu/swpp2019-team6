@@ -12,6 +12,9 @@ pip install -r requirements.txt
 cd triplannet
 python manage.py runserver
 
+# migrate
+python manage.py migrate
+
 # You can run test suite by typing:
 python manage.py test
 ```
