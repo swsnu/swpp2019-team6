@@ -9,21 +9,31 @@ matrix:
     install: # Script to install required packages
     - yarn install
     - yarn add eslint-config-airbnb
+    - yarn add coveralls
     script: # Script to test your build
     - ./node_modules/.bin/eslint src
     - yarn test --coverage --watchAll=false
+    after_success:
+    - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - language: python
-    python: 3.6
+    python: 
+    - '3.6'
     before_install:
     - cd backend
     install:
     - pip install -r requirements.txt
 # before_script
 # mysql -e 'create database test;' -u root
-    script:
+    before_script:
     - cd triplannet
+    - python3 manage.py migrate
+    script:
     - coverage run --source='.' manage.py test
     - coverage report
+    after_success:
+    - coveralls
+    after_script:
+    - cd ..
   - dist : trusty
     addons:
         sonarcloud:
