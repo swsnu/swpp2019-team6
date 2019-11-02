@@ -7,4 +7,5 @@ export const SIGNUP_SUCCESS = 'auth/SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'auth/SIGNUP_FAILURE';
 
 // for user
+// export const CHECK_EMAIL = 'CHECK_EMAIL';
 export const GET_USER = 'GET_USER';

@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import palette from '../../lib/styles/palette';
 import Button from '../../components/common/Button';
 
+import axios from 'axios'
+
 const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
@@ -73,30 +75,62 @@ class SignupForm extends Component {
     password: '',
     password_confirm: '',
     nickname: '',
-    password_checked : false,
-    email_checked : false,
-    nickname_checked :false,
+    password_checked: false,
+    // email_checked: null,
+    // nickname_checked: false,
   };
 
-  componentDidMount() { }
+  componentDidMount() {
 
+  }
+
+  // shouldComponentUpdate(nextProps,nextState){
+  //   console.log(this.state.email_checked)
+  //   return true;
+  // }
   onChange = (e) => {
     const { value, name } = e.target;
     this.setState({ [name]: value });
   };
 
-  clickCheckEmail = ()=>{
+  alertCheck = (checked) => {
+    let alertMessage = checked ? 'Available' : 'Duplicate. Try another'
+    alert(alertMessage)
+  }
+
+  clickCheckEmail = () => {
+    if (!this.state.email) {
+      alert('Please enter your email')
+      return
+    }
+
+    let email_checked = null;
+    axios.get('/api/user/check/email/' + this.state.email)
+      .then(res => {
+        email_checked = !res.data.check
+        this.alertCheck(email_checked)
+      })
 
   }
   clickCheckNickname = () => {
+    if (!this.state.nickname) {
+      alert('Please enter your nickname')
+      return
+    }
 
+    let nickname_checked = null;
+    axios.get('/api/user/check/nickname/' + this.state.nickname)
+      .then(res => {
+        nickname_checked = !res.data.check
+        this.alertCheck(nickname_checked)
+      })
   }
-  
 
-  clickCheckPassword = ()=>{
+
+  clickCheckPassword = () => {
     const password_checked = !!this.state.password && this.state.password_confirm === this.state.password
-    this.setState({password_checked: password_checked})
-    const alertMesaage=password_checked? 'Vaild Password' : 'Must match password'    
+    this.setState({ password_checked: password_checked })
+    const alertMesaage = password_checked ? 'Vaild Password' : 'Must match password'
     alert(alertMesaage)
   }
 
@@ -163,20 +197,15 @@ class SignupForm extends Component {
         </Footer>
 
       </AuthFormBlock>
-
-      // return (
-
-      //   <AuthForm
-      //     type="signup"
-      //     form={this.state}
-      //     onChange={this.onChange}
-      //     onSubmit={this.onSubmit}
-      //     error={null}
-      //   />
-      // );
     )
   }
 }
+
+// const mapStateToProps = state => {
+//   return {
+//     email_checked : state.userReducer.email_checked,
+//   }
+// }
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -189,10 +218,19 @@ const mapDispatchToProps = (dispatch) => {
         }),
       );
     },
+    // onCheckEmail: (email) => {
+    //   dispatch(
+    //     actionCreators.checkEmail({
+    //       email: email,
+    //     })
+    //   )
+    // },
   };
 };
 
+
 export default connect(
+  // mapStateToProps,
   null,
   mapDispatchToProps,
 )(SignupForm);
