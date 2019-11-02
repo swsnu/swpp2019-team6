@@ -42,7 +42,7 @@ matrix:
     - python3 manage.py migrate
     script:
     - coverage run --source='.' manage.py test
-    - coverage -m report
+    - coverage report
     - sonar-scanner -Dsonar.verbose=true -X
     after_success:
     - coveralls
