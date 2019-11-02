@@ -23,8 +23,10 @@ matrix:
     - pip install -r requirements.txt
 # before_script
 # mysql -e 'create database test;' -u root
-    script:
+    before_script:
     - cd triplannet
+    - python3 manage.py migrate
+    script:
     - coverage run --source='.' manage.py test
     - coverage report
     after_success:
