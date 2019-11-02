@@ -2,8 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import TravelUnitBlockEdit from './TravelUnitBlockEdit';
 import '../../setupTests';
 
