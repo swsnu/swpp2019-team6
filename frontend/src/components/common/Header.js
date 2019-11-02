@@ -14,7 +14,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import DetailIcon from '@material-ui/icons/DetailsRounded';
-
+import 'typeface-roboto';
 // Set styles of different classes here,
 // and use them by setting className={classes....}
 
@@ -23,87 +23,36 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   toolbarTitle: {
+    '@media (max-width:520px)': {
+      visibility: 'hidden',
+      width: 0,
+    }
   },
-  toolbarSecondary: {
-    justifyContent: 'space-between',
-    overflowX: 'auto',
-  },
-  toolbarLink: {
-    padding: theme.spacing(1),
-    flexShrink: 0,
-  },
-  mainFeaturedPost: {
-    position: 'relative',
-    backgroundColor: theme.palette.grey[800],
-    color: theme.palette.common.white,
-    marginBottom: theme.spacing(4),
-    backgroundImage: 'url(https://source.unsplash.com/user/erondu)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    backgroundColor: 'rgba(0,0,0,.3)',
-  },
-  mainFeaturedPostContent: {
-    position: 'relative',
-    padding: theme.spacing(3),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(6),
-      paddingRight: 0,
-    },
-  },
-  mainGrid: {
-    marginTop: theme.spacing(3),
-  },
-  card: {
-    display: 'flex',
-  },
-  cardDetails: {
-    flex: 1,
-  },
-  cardMedia: {
-    width: 160,
-  },
-  markdown: {
-    ...theme.typography.body2,
-    padding: theme.spacing(3, 0),
-  },
-  sidebarAboutBox: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[200],
-  },
-  sidebarSection: {
-    marginTop: theme.spacing(3),
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(6, 0),
-  },
-  searchField: {
+  searchInput: {
     padding: theme.spacing(1),
   },
   userMenu: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   searchButton: {
   },
   avatar: {
+    width: 35,
+    height: 35,
+    '@media (max-width:520px)': {
+      width: 30,
+      height: 30,
+      margin: 0,
+    },
   },
   wrapper: {
     position: 'relative',
   },
   paper: {
     position: 'absolute',
-    top: 40,
+    top: 45,
     right: 0,
-    left: -40,
+    left: -45,
     width: 100,
     border: '1px solid',
     padding: theme.spacing(1),
@@ -112,9 +61,17 @@ const useStyles = makeStyles((theme) => ({
   root: {
     'flex-grow': 1,
   },
+  userNickname: {
+    '@media (max-width:520px)': {
+      visibility: 'hidden',
+      width: 0,
+    },
+  },
 }));
 
-
+// props
+// data: user(.nickname, .profile)
+// function: onLogout, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked
 const Header = ({ user, onLogout }) => {
   const classes = useStyles();
 
@@ -133,7 +90,7 @@ const Header = ({ user, onLogout }) => {
     // left side: logo and our service name
     <Toolbar className={[classes.toolbar, classes.root].join(' ')}>
       <Grid container spacing={1} wrap="nowrap">
-        <Grid item xs="true" container direction="row" justify="center" alignItems="center" wrap="nowrap">
+        <Grid item xs container direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
             <Link to="/main">
               <IconButton>
@@ -154,13 +111,14 @@ const Header = ({ user, onLogout }) => {
           </Grid>
         </Grid>
         {/* center: search field */}
-        <Grid item xs={8} container direction="row" justify="center" alignItems="center" wrap="nowrap">
+        <Grid item xs={10} container direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
             <TextField
-              id="searchField"
+              id="searchInput"
               align="center"
+              margin="normal"
               placeholder="Search..."
-              className={classes.searchField}
+              className={classes.searchInput}
             />
           </Grid>
           <Grid item>
@@ -170,12 +128,12 @@ const Header = ({ user, onLogout }) => {
           </Grid>
         </Grid>
         {/* right side: user profile, dropdown menu for mypage, logout */}
-        <Grid item xs="true" container spacing={1} direction="row" justify="center" alignItems="center" wrap="nowrap">
+        <Grid item xs container spacing={1} direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
-            <Avartar alt={user.nickname} src={user.profile} className={classes.avartar} />
+            <Avartar alt={user.nickname} src={user.profile} className={classes.avatar} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" className={classes.userNickname}>
               {user.nickname}
             </Typography>
           </Grid>
