@@ -62,6 +62,8 @@ export default function TravelUnitBlockEdit(props) {
     setSelectedDate(date);
   };
 
+  const containerId = [0, 1];
+
   return (
     <Card className={cardClasses.card}>
       <CardHeader
@@ -72,74 +74,44 @@ export default function TravelUnitBlockEdit(props) {
       <CardContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container direction="column" justify="space-around" alignItems="center">
-            <Grid container direction="row" justify="space-around" alignItems="center">
-              <TimePicker
-                margin="normal"
-                id="time-picker"
-                label="Start Time"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change time',
-                }}
-              />
-              <Paper className={mapClasses.root}>
-                <IconButton className={mapClasses.iconButton} aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
-                <InputBase
-                  className={mapClasses.input}
-                  placeholder="Search Google Maps"
-                  inputProps={{ 'aria-label': 'search google maps' }}
-                />
-                <IconButton
-                  className={mapClasses.iconButton}
-                  id="search"
-                  aria-label="search"
-                  onClick={() => props.searchHandler()}
-                >
-                  <SearchIcon />
-                </IconButton>
-                <Divider className={mapClasses.divider} orientation="vertical" />
-                <IconButton color="primary" className={mapClasses.iconButton} aria-label="directions">
-                  <DirectionsIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            <Grid container direction="row" justify="space-around" alignItems="center">
-              <TimePicker
-                margin="normal"
-                id="time-picker"
-                label="End Time"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change time',
-                }}
-              />
-              <Paper className={mapClasses.root}>
-                <IconButton className={mapClasses.iconButton} aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
-                <InputBase
-                  className={mapClasses.input}
-                  placeholder="Search Google Maps"
-                  inputProps={{ 'aria-label': 'search google maps' }}
-                />
-                <IconButton
-                  className={mapClasses.iconButton}
-                  id="search"
-                  aria-label="search"
-                  onClick={() => props.searchHandler()}
-                >
-                  <SearchIcon />
-                </IconButton>
-                <Divider className={mapClasses.divider} orientation="vertical" />
-                <IconButton color="primary" className={mapClasses.iconButton} aria-label="directions">
-                  <DirectionsIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
+            {containerId.map((i) => {
+              return (
+                <Grid container direction="row" justify="space-around" alignItems="center" key={i}>
+                  <TimePicker
+                    margin="normal"
+                    id="time-picker"
+                    label="Start Time"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change time',
+                    }}
+                  />
+                  <Paper className={mapClasses.root}>
+                    <IconButton className={mapClasses.iconButton} aria-label="menu">
+                      <MenuIcon />
+                    </IconButton>
+                    <InputBase
+                      className={mapClasses.input}
+                      placeholder="Search Google Maps"
+                      inputProps={{ 'aria-label': 'search google maps' }}
+                    />
+                    <IconButton
+                      className={mapClasses.iconButton}
+                      id="search"
+                      aria-label="search"
+                      onClick={() => props.searchHandler()}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                    <Divider className={mapClasses.divider} orientation="vertical" />
+                    <IconButton color="primary" className={mapClasses.iconButton} aria-label="directions">
+                      <DirectionsIcon />
+                    </IconButton>
+                  </Paper>
+                </Grid>
+              );
+            })}
           </Grid>
         </MuiPickersUtilsProvider>
       </CardContent>
