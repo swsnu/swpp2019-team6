@@ -56,11 +56,18 @@ export default function TravelUnitBlockEdit(props) {
   const cardClasses = useCardStyles();
   const mapClasses = useMapStyles();
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2020-01-01T09:00:00'));
+  const [selectedDate0, setSelectedDate0] = React.useState(new Date('2020-01-01T09:00:00'));
+  const [selectedDate1, setSelectedDate1] = React.useState(new Date('2020-01-01T09:00:00'));
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChange0 = (date) => {
+    setSelectedDate0(date);
   };
+  const handleDateChange1 = (date) => {
+    setSelectedDate1(date);
+  };
+
+  const handleDateChangeList = [handleDateChange0, handleDateChange1];
+  const selectedDateList = [selectedDate0, selectedDate1];
 
   const containerId = [0, 1];
 
@@ -81,8 +88,8 @@ export default function TravelUnitBlockEdit(props) {
                     margin="normal"
                     id="time-picker"
                     label="Start Time"
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    value={selectedDateList[i]}
+                    onChange={handleDateChangeList[i]}
                     KeyboardButtonProps={{
                       'aria-label': 'change time',
                     }}
