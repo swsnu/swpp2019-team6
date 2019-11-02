@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Avartar from '@material-ui/core/Avatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import DetailIcon from '@material-ui/icons/DetailsRounded';
 import 'typeface-roboto';
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     '@media (max-width:520px)': {
       visibility: 'hidden',
       width: 0,
-    }
+    },
   },
   searchInput: {
     padding: theme.spacing(1),
@@ -70,9 +69,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // props
-// data: user(.nickname, .profile)
-// function: onLogout, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked
-const Header = ({ user, onLogout }) => {
+// data: user(.nickname, .profile, .id), searchText
+// function: onLogoutClicked, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked
+const Header = ({
+  user, searchText, onLogoutClicked, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked,
+}) => {
   const classes = useStyles();
 
   // for dropdown menu
@@ -88,7 +89,7 @@ const Header = ({ user, onLogout }) => {
 
   return (
     // left side: logo and our service name
-    <Toolbar className={[classes.toolbar, classes.root].join(' ')}>
+    <Toolbar className={[classes.toolbar, classes.root, 'Header'].join(' ')}>
       <Grid container spacing={1} wrap="nowrap">
         <Grid item xs container direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
@@ -111,18 +112,19 @@ const Header = ({ user, onLogout }) => {
           </Grid>
         </Grid>
         {/* center: search field */}
-        <Grid item xs={10} container direction="row" justify="center" alignItems="center" wrap="nowrap">
+        <Grid item xs={8} container direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
             <TextField
               id="searchInput"
               align="center"
-              margin="normal"
               placeholder="Search..."
+              onChange={onSearchInputChanged}
+              value={searchText}
               className={classes.searchInput}
             />
           </Grid>
           <Grid item>
-            <IconButton className={classes.searchButton}>
+            <IconButton onClick={onSearchButtonClicked} className={classes.searchButton}>
               <SearchIcon />
             </IconButton>
           </Grid>
@@ -146,10 +148,10 @@ const Header = ({ user, onLogout }) => {
                 {open
                   ? (
                     <div className={classes.paper}>
-                      <Button size="small" onClick={onLogout}>
+                      <Button size="small" onClick={onMyPageClicked}>
                         My Page
                       </Button>
-                      <Button size="small" onClick={onLogout}>
+                      <Button size="small" onClick={onLogoutClicked}>
                         Logout
                       </Button>
                     </div>
