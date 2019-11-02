@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import Header from '../../components/common/Header';
+import * as actionCreators from '../../store/actions/index';
 
 const tempUser = {
   email: 'swpp@snu.ac.kr',
@@ -21,8 +22,9 @@ class HeaderContainer extends Component {
   }
 
   onLogoutClicked = (e) => {
+    this.props.onLogout();
   }
-
+  
   onMyPageClicked = (e) => {
   }
 
@@ -48,4 +50,15 @@ class HeaderContainer extends Component {
   }
 }
 
-export default HeaderContainer;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogout: () => {
+      dispatch(actionCreators.logout());
+    },
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(HeaderContainer);

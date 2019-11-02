@@ -87,31 +87,6 @@ const Header = ({
     setOpen(false);
   };
 
-<<<<<<< HEAD
-
-const Header = ({ user, onLogout }) => {
-  return (
-    <>
-      <HeaderBlock>
-        <Wrapper>
-          <Link to="/" className="logo">
-            Triplannet
-          </Link>
-          {user ? (
-            <div className="right">
-              <UserInfo>{user.nickname}</UserInfo>
-              <Button onClick={onLogout}>Logout</Button>
-            </div>
-          ) : (
-            <div className="right">
-              <Button to="/login">Login</Button>
-            </div>
-          )}
-        </Wrapper>
-      </HeaderBlock>
-      <Spacer />
-    </>
-=======
   return (
     // left side: logo and our service name
     <Toolbar className={[classes.toolbar, classes.root, 'Header'].join(' ')}>
@@ -188,7 +163,6 @@ const Header = ({ user, onLogout }) => {
         </Grid>
       </Grid>
     </Toolbar>
->>>>>>> origin/master
   );
 };
 
