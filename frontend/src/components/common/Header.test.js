@@ -35,4 +35,12 @@ describe('Header', () => {
     const component = shallow(header);
     expect(component.find('.Header').length).toBe(1);
   });
+
+  it('should handle click for dropdown menu', () => {
+    const component = shallow(header);
+    const wrapperDropdownButton = component.find('#dropdownButton');
+    wrapperDropdownButton.simulate('click');
+    const wrapperAnywhere = component.find('#searchButton');
+    wrapperAnywhere.simulate('click');
+  });
 });

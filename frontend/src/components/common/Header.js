@@ -124,7 +124,7 @@ const Header = ({
             />
           </Grid>
           <Grid item>
-            <IconButton onClick={onSearchButtonClicked} className={classes.searchButton}>
+            <IconButton onClick={onSearchButtonClicked} className={classes.searchButton} id="searchButton">
               <SearchIcon />
             </IconButton>
           </Grid>
@@ -142,7 +142,7 @@ const Header = ({
           <Grid item>
             <ClickAwayListener onClickAway={handleClickAway}>
               <div className={classes.wrapper}>
-                <IconButton onClick={handleClick}>
+                <IconButton onClick={handleClick} id="dropdownButton">
                   <DetailIcon />
                 </IconButton>
                 {open
