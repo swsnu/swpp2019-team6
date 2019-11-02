@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
         user: null,
         auth: null,
         authError: null,
-      }
+      };
     case actionTypes.SIGNUP_SUCCESS:
       return {
         state,
