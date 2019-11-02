@@ -6,7 +6,7 @@ import * as actionTypes from './actionTypes';
 const config = {
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
 };
 
 export const login_success = (auth) => {
@@ -25,7 +25,7 @@ export const login = (info) => {
         dispatch(login_success(res.data));
       })
       .then(() => dispatch(push('/main/')))
-      .catch((res) => dispatch(login_failure()))
+      .catch((res) => dispatch(login_failure()));
   };
 };
 
@@ -37,7 +37,7 @@ export const logout = () => {
   return (dispatch) => {
     dispatch(logout_());
     dispatch(push('/login'));
-  }
+  };
 };
 
 export const signUp_success = (temp) => {

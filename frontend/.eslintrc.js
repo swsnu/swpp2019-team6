@@ -37,5 +37,6 @@ module.exports = {
     "camelcase":0,
     "no-underscore-dangle":0,
     "no-unused-vars":0,
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
   },
 };

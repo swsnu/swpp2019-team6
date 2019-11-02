@@ -2,19 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/common/Header';
 import * as actionCreators from '../../store/actions/index';
-
-const tempUser = {
-  email: 'swpp@snu.ac.kr',
-  nickname: 'iluvswpp',
-  profile: null,
-};
-
 // function: onLogoutClicked, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked
 
 
 class HeaderContainer extends Component {
   state = {
-    currentUser: tempUser,
+    currentUser: JSON.parse(localStorage.getItem('user')),
     searchText: '',
   };
 
@@ -24,7 +17,7 @@ class HeaderContainer extends Component {
   onLogoutClicked = (e) => {
     this.props.onLogout();
   }
-  
+
   onMyPageClicked = (e) => {
   }
 
@@ -37,6 +30,7 @@ class HeaderContainer extends Component {
 
 
   render() {
+    console.log(this.state.currentUser);
     return (
       <Header
         user={this.state.currentUser}

@@ -1,10 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
-
 // 로그인, 회원가입, 현재 로그인한 유저의 정보를 담습니다.
 const initialState = {
   user: null,
   auth: null,
-  authError: null,  
+  authError: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,10 +11,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.INITIALIZE_FORM:
       return initialState;
     case actionTypes.LOGIN_SUCCESS:
-      console.log(action.auth)
-      localStorage.setItem('user',action.auth['user']);
-      localStorage.setItem('token',action.auth['token']);
-      console.log(localStorage.getItem('user'));
+      localStorage.setItem('user', JSON.stringify(action.auth.user));
+      localStorage.setItem('token', JSON.stringify(action.auth.token));
       return {
         user: action.auth.user,
         auth: action.auth.token,
@@ -31,6 +28,7 @@ const reducer = (state = initialState, action) => {
       console.log(localStorage.getItem('user'));
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      console.log(localStorage.getItem('user'));
       return {
         user: null,
         auth: null,
