@@ -19,7 +19,10 @@ const TravelOverviewList = ({ travelList }) => {
         <Grid container spacing={3}>
           {travelList.map((travelOverviewItem) => (
             <Grid key={travelOverviewItem.id} item xs={12} md={6}>
-              <TravelOverviewBlock travelOverviewItem={travelOverviewItem} />
+              <TravelOverviewBlock
+                key={travelOverviewItem.id}
+                travelOverviewItem={travelOverviewItem}
+              />
             </Grid>
           ))}
         </Grid>

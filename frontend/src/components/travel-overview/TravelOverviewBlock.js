@@ -33,7 +33,7 @@ const TravelOverviewBlock = ({ travelOverviewItem }) => {
 
   // Have to change onCardClicked to make a link to its detail page
   const onCardClicked = (e) => {
-    console.log('onCardClicked!');
+    // console.log('onCardClicked!');
   };
 
   return (
