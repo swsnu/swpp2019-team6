@@ -87,26 +87,14 @@ describe('SignupForm Test', () => {
 
   it('should call clickCheckPassword', () => {
     const component = mount(signupForm);
-    const wrapper = component.find('button#checkPassword');
-    expect(wrapper.length).toBe(1);
-    wrapper.simulate('click');
 
     const wrapper1 = component.find('input').find({ name: 'password' });
     expect(wrapper1.length).toBe(1);
     wrapper1.simulate('change', { target: { value: 'pw' } });
 
-
     const SignupFormInstance = component.find(SignupForm.WrappedComponent).instance();
     expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password');
 
-    SignupFormInstance.setState({ password: 'pw' });
-    SignupFormInstance.setState({ password_confirm: 'pw' });
-    wrapper.simulate('click');
-    expect(SignupFormInstance.state.password_checked).toBe(true);
-
-    SignupFormInstance.setState({ password_confirm: 'pw_' });
-    wrapper.simulate('click');
-    expect(SignupFormInstance.state.password_checked).toBe(false);
   });
 
   it('should call clickCheckNickname', (done) => {

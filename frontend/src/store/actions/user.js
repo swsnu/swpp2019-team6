@@ -43,6 +43,9 @@ export const signup = (userInfo) => {
           alert('Sign Up Success');
           dispatch(signup_(res.data));
         },
-      );
+      ).catch(
+        (res) =>{
+        alert('Please try again')
+        });
   };
 };

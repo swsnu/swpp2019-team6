@@ -23,23 +23,45 @@ class SignupForm extends Component {
       nickname_helperText: '',
     };
 
-    // alertMessage = (message) => {
-    //     return this.state.alertOn ? alert(message) : null
-    // }
     onChange = (e) => {
       const { value, name } = e.target;
       this.setState({ [name]: value });
       this.setState({ [`${name}_checked`]: null });
+      this.setState({ [`${name}_helperText`]: null })
     };
-    // alertCheck = (checked) => {
-    //     let alertMessage = checked ? 'Available' : 'Already in use. Try another'
-    //     this.alertMessage(alertMessage)
-    // }
 
+  
+    onChangePassword = (e) => {
+      const { value, name } = e.target;
+      this.setState({ [name]: value });
+
+      let password_checked;
+      if ( name==='password'){
+        
+        if ( !this.state.password_confirm ){
+          this.setState({password_checked:null})
+          this.setState({ password_helperText: 'Enter your password' });
+          return
+        }
+        const password = value;
+        password_checked = (password === this.state.password_confirm);
+      }else if(name==='password_confirm'){
+        if( !this.state.password){
+          this.setState({password_checked:null})
+          this.setState({ password_helperText: 'Enter your password' });
+          return
+        }
+
+        const password_confirm = value;
+        password_checked = (password_confirm === this.state.password);
+       
+      }
+      this.setState({ password_checked: password_checked });
+      this.setState({ password_helperText: (password_checked ? 'Vaild Password' : 'Must match password') });
+    }
 
     clickCheckEmail = () => {
       if (!this.state.email) {
-        // this.alertMessage('Please enter your email')
         this.setState({ email_checked: false });
         this.setState({ email_helperText: 'Enter your email' });
         return;
@@ -51,14 +73,11 @@ class SignupForm extends Component {
           email_checked = !res.data.check;
           this.setState({ email_checked: email_checked });
           this.setState({ email_helperText: (email_checked ? 'Available Email' : 'Email already in use. Try another') });
-
-          // this.alertCheck(email_checked)
         });
     }
 
     clickCheckNickname = () => {
       if (!this.state.nickname) {
-        // this.alertMessage('Please enter your nickname')
         this.setState({ nickname_checked: false });
         this.setState({ nickname_helperText: 'Enter your nickname' });
         return;
@@ -70,28 +89,12 @@ class SignupForm extends Component {
           nickname_checked = !res.data.check;
           this.setState({ nickname_checked: nickname_checked });
           this.setState({ nickname_helperText: (nickname_checked ? 'Available Nickname' : 'Nickname already in use. Try another') });
-          // this.alertCheck(nickname_checked)
         });
     }
 
 
-    clickCheckPassword = () => {
-      if (!this.state.password || !this.state.password_confirm) {
-        // this.alertMessage('Please enter your password')
-        this.setState({ password_checked: false });
-        this.setState({ password_helperText: 'Enter your password' });
-        return;
-      }
-
-      // eslint-disable-next-line max-len, react/no-access-state-in-setstate
-      const password_checked = (!!this.state.password && this.state.password_confirm === this.state.password);
-      this.setState({ password_checked: password_checked });
-      this.setState({ password_helperText: (password_checked ? 'Vaild Password' : 'Must match password') });
-      // this.alertMessage(alertMesaage)
-    }
-
     clickSubmit = () => {
-      if (this.state.email_checked && this.state.password_checked && this.state.password_checked) {
+      if (this.state.email_checked && this.state.password_checked && this.state.nickname_checked) {
         const newUserInfo = {
           email: this.state.email,
           password: this.state.password,
@@ -100,8 +103,11 @@ class SignupForm extends Component {
         this.props.onSignup(newUserInfo);
         // this.props.history.push('/login')
       } else {
+        if(!this.state.password || !this.state.password_confirm){
+          this.setState({password_checked:false})
+          this.setState({password_helperText:'Enter your password'})
+        }
         this.clickCheckEmail();
-        this.clickCheckPassword();
         this.clickCheckNickname();
       }
     }
@@ -122,13 +128,13 @@ class SignupForm extends Component {
             <Button id="checkEmail" onClick={this.clickCheckEmail}>Check Email</Button>
             <FormControl
               id="password"
-              validated={this.state.password_checked}
+              // validated={this.state.password_checked}
               label="Password"
               name="password"
               type="password"
               value={this.state.password}
-              helperText={this.state.password_helperText}
-              onChange={this.onChange}
+              // helperText={this.state.password_helperText}
+              onChange={this.onChangePassword}
             />
             <FormControl
               id="password_confirm"
@@ -137,10 +143,10 @@ class SignupForm extends Component {
               name="password_confirm"
               type="password"
               value={this.state.password_confirm}
-              onChange={this.onChange}
+              onChange={this.onChangePassword}
               helperText={this.state.password_helperText}
             />
-            <Button id="checkPassword" onClick={this.clickCheckPassword}>Check Password Confirmation</Button>
+            {/* <Button id="checkPassword" onClick={this.clickCheckPassword}>Check Password Confirmation</Button> */}
             <FormControl
               id="nickname"
               validated={this.state.nickname_checked}
