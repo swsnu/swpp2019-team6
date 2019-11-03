@@ -59,6 +59,7 @@ function UncontrolledTextField(props) {
                     name={props.name}
                     type={props.type}
                     value={props.value}
+                    helperText={props.helperText}
                     onChange={props.onChange}
                     className={classes.textField}
                     margin="normal"

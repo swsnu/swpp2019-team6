@@ -20,21 +20,31 @@ class SignupForm extends Component {
         password_checked: null,
         email_checked: null,
         nickname_checked: null,
+        email_helperText: '',
+        password_helperText: '',
+        nickname_helperText: '',
+        alertOn: true,
     };
 
+    // alertMessage = (message) => {
+    //     return this.state.alertOn ? alert(message) : null
+    // }
     onChange = (e) => {
         const { value, name } = e.target;
         this.setState({ [name]: value });
+        this.setState({[name+'_checked'] : null })
     };
-    alertCheck = (checked) => {
-        let alertMessage = checked ? 'Available' : 'Duplicate. Try another'
-        alert(alertMessage)
-    }
+    // alertCheck = (checked) => {
+    //     let alertMessage = checked ? 'Available' : 'Already in use. Try another'
+    //     this.alertMessage(alertMessage)
+    // }
+
 
     clickCheckEmail = () => {
         if (!this.state.email) {
-            alert('Please enter your email')
+            // this.alertMessage('Please enter your email')
             this.setState({ email_checked: false })
+            this.setState({ email_helperText: 'Enter your email' })
             return
         }
 
@@ -43,14 +53,17 @@ class SignupForm extends Component {
             .then(res => {
                 email_checked = !res.data.check
                 this.setState({ email_checked: email_checked })
-                this.alertCheck(email_checked)
+                this.setState({email_helperText: (email_checked ? 'Available Email' : 'Email already in use. Try another')})
+
+                // this.alertCheck(email_checked)
             })
 
     }
     clickCheckNickname = () => {
         if (!this.state.nickname) {
-            alert('Please enter your nickname')
+            // this.alertMessage('Please enter your nickname')
             this.setState({ nickname_checked: false })
+            this.setState({nickname_helperText:'Enter your nickname'})
             return
         }
 
@@ -59,21 +72,23 @@ class SignupForm extends Component {
             .then(res => {
                 nickname_checked = !res.data.check
                 this.setState({ nickname_checked: nickname_checked })
-                this.alertCheck(nickname_checked)
+                this.setState({nickname_helperText: (nickname_checked ? 'Available Nickname' : 'Nickname already in use. Try another')})
+                // this.alertCheck(nickname_checked)
             })
     }
 
 
     clickCheckPassword = () => {
         if (!this.state.password || !this.state.password_confirm) {
-            alert('Enter your password')
+            // this.alertMessage('Please enter your password')
             this.setState({ password_checked: false })
+            this.setState({password_helperText : 'Enter your password'})
             return
         }
         const password_checked = !!this.state.password && this.state.password_confirm === this.state.password
         this.setState({ password_checked: password_checked })
-        const alertMesaage = password_checked ? 'Vaild Password' : 'Must match password'
-        alert(alertMesaage)
+        this.setState({ password_helperText: (password_checked ? 'Vaild Password' : 'Must match password')})
+        // this.alertMessage(alertMesaage)
     }
 
     clickSubmit = () => {
@@ -103,7 +118,7 @@ class SignupForm extends Component {
                         label='Email'
                         name='email'
                         value={this.state.email}
-                        helperText='Invalid Email'
+                        helperText={this.state.email_helperText}
                         onChange={this.onChange}
                     />
                     <Button onClick={this.clickCheckEmail}>Check Email</Button>
@@ -113,7 +128,7 @@ class SignupForm extends Component {
                         name='password'
                         type='password'
                         value={this.state.password}
-                        helperText='Invalid Password'
+                        helperText={this.state.password_helperText}
                         onChange={this.onChange}
                     />
                     <FormControl
@@ -123,7 +138,7 @@ class SignupForm extends Component {
                         type='password'
                         value={this.state.password_confirm}
                         onChange={this.onChange}
-                        helperText='Invalid Password'
+                        helperText={this.state.password_helperText}
 
                     />
                     <Button onClick={this.clickCheckPassword}>Check Password Confirmation</Button>
@@ -132,14 +147,18 @@ class SignupForm extends Component {
                         label='Nickname'
                         name='nickname'
                         value={this.state.nickname}
-                        helperText='Invalid Nickname'
+                        helperText={this.state.nickname_helperText}
                         onChange={this.onChange}
                     />
                     <Button onClick={this.clickCheckNickname}>Check Nickname</Button>
                 </div>
                 <div>
                     <br></br>
-                    <Button onClick={this.clickSubmit}>Sign in</Button>
+                    <Button
+                        onClick={this.clickSubmit}
+                        // disabled={!(this.state.email_checked && this.state.password_checked && this.state.password_checked)}
+                    >Sign in
+                    </Button>
                     <br></br>
 
                 </div>
