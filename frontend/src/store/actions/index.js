@@ -1,5 +1,4 @@
 export {
-  // checkEmail,
   getUser,
 } from './user';
 
