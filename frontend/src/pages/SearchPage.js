@@ -3,10 +3,10 @@ import queryString from 'query-string';
 import HeaderContainer from '../containers/common/HeaderContainer';
 import SearchTravelOverviewList from '../containers/travel-overview/SearchTravelOverviewList';
 
-class MainPage extends Component {
+class SearchPage extends Component {
   render() {
     return (
-      <div>
+      <div className="searchPage">
         <HeaderContainer />
         <SearchTravelOverviewList tag={queryString.parse(this.props.location.search).tag} />
       </div>
@@ -14,4 +14,4 @@ class MainPage extends Component {
   }
 }
 
-export default MainPage;
+export default SearchPage;
