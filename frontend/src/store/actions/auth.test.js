@@ -74,7 +74,7 @@ describe('ActionCreators : login', () => {
     });
   });
   it('\'logoutRequest\' should change login status and user status correctly', (done) => {
-    store.dispatch(actionCreators.logout())
+    store.dispatch(actionCreators.logout());
     const newState = store.getState();
     expect(newState.auth.user).toBeFalsy();
     expect(newState.auth.auth).toBeFalsy();
