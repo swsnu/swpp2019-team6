@@ -12,7 +12,7 @@ const reducer = (state = initialState, action) => {
       return initialState;
     case actionTypes.LOGIN_SUCCESS:
       localStorage.setItem('user', JSON.stringify(action.auth.user));
-      localStorage.setItem('token', JSON.stringify(action.auth.token));
+      localStorage.setItem('token', action.auth.token);
       return {
         user: action.auth.user,
         auth: action.auth.token,
