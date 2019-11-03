@@ -3,20 +3,67 @@ import Typography from '@material-ui/core/Typography';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
 class RecentTravelOverviewList extends Component {
-    state = {
-      travelList: ['Recent 1', 'Recent 2', 'Recent 3', 'Recent 4', 'Recent 5', 'Recent 6'],
-    }
+  state = {
+    travelList: [{
+      title: 'A',
+      author: 'Alice',
+      summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
+      period: '2019.10.01 ~ 2019.10.04',
+      likes: 57,
+      photo: null,
+    },
+    {
+      title: 'B',
+      author: 'Bob',
+      summary: 'IT\'S NEW YORK.',
+      period: '2019.01.03 ~ 2019.10.15',
+      likes: 30,
+      photo: null,
+    },
+    {
+      title: 'C',
+      author: 'Catherine',
+      summary: 'Welcome!',
+      period: '2019.07.29 ~ 2019.08.01',
+      likes: 19,
+      photo: null,
+    },
+    {
+      title: 'D',
+      author: 'Alice',
+      summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
+      period: '2019.10.01 ~ 2019.10.04',
+      likes: 57,
+      photo: null,
+    },
+    {
+      title: 'E',
+      author: 'Bob',
+      summary: 'IT\'S NEW YORK.',
+      period: '2019.01.03 ~ 2019.10.15',
+      likes: 30,
+      photo: null,
+    },
+    {
+      title: 'F',
+      author: 'Catherine',
+      summary: 'Welcome!',
+      period: '2019.07.29 ~ 2019.08.01',
+      likes: 19,
+      photo: null,
+    }],
+  }
 
-    render() {
-      return (
-        <div className="recentTravelOverview">
-          <Typography variant="h4">
+  render() {
+    return (
+      <div className="recentTravelOverview">
+        <Typography variant="h4">
             Recent
-          </Typography>
-          <TravelOverviewList travelList={this.state.travelList} />
-        </div>
-      );
-    }
+        </Typography>
+        <TravelOverviewList travelList={this.state.travelList} />
+      </div>
+    );
+  }
 }
 
 export default RecentTravelOverviewList;

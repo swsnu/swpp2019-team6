@@ -16,9 +16,9 @@ const TravelOverviewList = ({ travelList }) => {
   return (
     <div>
       {travelList ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           {travelList.map((travelOverviewItem) => (
-            <Grid key={travelOverviewItem.id} item xs={12} sm={6} lg={4}>
+            <Grid key={travelOverviewItem.id} item xs={12} md={6}>
               <TravelOverviewBlock travelOverviewItem={travelOverviewItem} />
             </Grid>
           ))}
