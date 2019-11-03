@@ -5,7 +5,6 @@ import SearchTravelOverviewList from '../containers/travel-overview/SearchTravel
 
 class MainPage extends Component {
   render() {
-    console.log(this.props)
     return (
       <div>
         <HeaderContainer />
