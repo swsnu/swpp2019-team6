@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   toolbarTitle: {
-    '@media (max-width:520px)': {
+    '@media (max-width:600px)': {
       visibility: 'hidden',
       width: 0,
     },
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: 35,
     height: 35,
-    '@media (max-width:520px)': {
+    '@media (max-width:600px)': {
       width: 30,
       height: 30,
       margin: 0,
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     'flex-grow': 1,
   },
   userNickname: {
-    '@media (max-width:520px)': {
+    '@media (max-width:600px)': {
       visibility: 'hidden',
       width: 0,
     },
