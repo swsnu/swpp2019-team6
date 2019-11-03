@@ -29,7 +29,7 @@ function ValidationTextFields(props) {
 
     return (
         <form className={classes.container} noValidate autoComplete="off">
-            <div>
+            <div className='ValidationTextFields'>
                 <TextField
                     error
                     label={props.label}
@@ -52,7 +52,7 @@ function UncontrolledTextField(props) {
 
     return (
         <form className={classes.container} noValidate autoComplete="off">
-            <div>
+            <div className='UncontrolledTextField'>
                 <TextField
                     required
                     label={props.label}
