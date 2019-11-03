@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
-
 
 class PopularTravelOverviewList extends Component {
     state = {
@@ -34,10 +34,11 @@ class PopularTravelOverviewList extends Component {
     render() {
       return (
         <div className="popularTravelOverview">
-          <Typography variant="h4">
+          <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
             Popular
           </Typography>
           <TravelOverviewList travelList={this.state.travelList} />
+          <Divider style={{ margin: 8 }} />
         </div>
       );
     }

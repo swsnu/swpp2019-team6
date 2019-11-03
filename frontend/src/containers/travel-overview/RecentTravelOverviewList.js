@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
 class RecentTravelOverviewList extends Component {
@@ -57,10 +58,11 @@ class RecentTravelOverviewList extends Component {
   render() {
     return (
       <div className="recentTravelOverview">
-        <Typography variant="h4">
+        <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
             Recent
         </Typography>
         <TravelOverviewList travelList={this.state.travelList} />
+        <Divider style={{ margin: 8 }} />
       </div>
     );
   }

@@ -12,6 +12,7 @@ import Hidden from '@material-ui/core/Hidden';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
+    height: 240,
   },
   cardDetails: {
     flex: 1,
@@ -27,10 +28,15 @@ const useStyles = makeStyles((theme) => ({
 const TravelOverviewBlock = ({ travelOverviewItem }) => {
   const classes = useStyles();
 
+  // Have to change onCardClicked to make a link to its detail page
+  const onCardClicked = (e) => {
+    console.log('onCardClicked!');
+  };
+
   return (
     <div>
       {travelOverviewItem ? (
-        <CardActionArea component="a" href="#">
+        <CardActionArea component="button" onClick={onCardClicked}>
           <Card className={classes.card}>
             {/* For image */}
             {travelOverviewItem.photo ? (
@@ -54,7 +60,7 @@ const TravelOverviewBlock = ({ travelOverviewItem }) => {
                 <Typography variant="subtitle2" color="primary" display="inline">
                   by {travelOverviewItem.author}
                 </Typography>
-                <Typography variant="subtitle" display="inline">
+                <Typography display="inline">
                   {' '}| {travelOverviewItem.likes} likes
                 </Typography>
                 <Typography paragraph variant="body1">
