@@ -24,14 +24,14 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.LOGOUT:
       return state;
-    case actionTypes.SIGNUP_SUCCESS:
-      return {
-        state,
-      };
-    case actionTypes.SIGNUP_FAILURE:
-      return {
-        state,
-      };
+    // case actionTypes.SIGNUP_SUCCESS:
+    //   return {
+    //     state,
+    //   };
+    // case actionTypes.SIGNUP_FAILURE:
+    //   return {
+    //     state,
+    //   };
     default:
       break;
   }

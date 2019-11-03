@@ -14,13 +14,13 @@ export const getUser = (temp) => {
   };
 };
 
-export const signup_success = (temp) => {
-  return { type: actionTypes.SIGNUP_SUCCESS, temp: temp };
-};
+// export const signup_success = (temp) => {
+//   return { type: actionTypes.SIGNUP_SUCCESS, temp: temp };
+// };
 
-export const signup_failure = () => {
-  return { type: actionTypes.SIGNUP_FAILURE };
-};
+// export const signup_failure = () => {
+//   return { type: actionTypes.SIGNUP_FAILURE };
+// };
 
 export const signup_ = (userInfo) => {
   return {

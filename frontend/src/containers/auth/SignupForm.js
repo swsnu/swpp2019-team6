@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios'
-import { Redirect } from 'react-router-dom';
 
 
 import * as actionCreators from '../../store/actions/index';
@@ -111,9 +110,10 @@ class SignupForm extends Component {
 
     render() {
         return (
-            <div>
+            <div className='SignupForm'>
                 <div>
                     <FormControl
+                        id='email'
                         validated={this.state.email_checked}
                         label='Email'
                         name='email'
@@ -121,8 +121,9 @@ class SignupForm extends Component {
                         helperText={this.state.email_helperText}
                         onChange={this.onChange}
                     />
-                    <Button onClick={this.clickCheckEmail}>Check Email</Button>
+                    <Button id='checkEmail' onClick={this.clickCheckEmail}>Check Email</Button>
                     <FormControl
+                        id='password'
                         validated={this.state.password_checked}
                         label='Password'
                         name='password'
@@ -132,6 +133,7 @@ class SignupForm extends Component {
                         onChange={this.onChange}
                     />
                     <FormControl
+                        id='password_confirm'
                         validated={this.state.password_checked}
                         label='Password Confirmation'
                         name='password_confirm'
@@ -141,8 +143,9 @@ class SignupForm extends Component {
                         helperText={this.state.password_helperText}
 
                     />
-                    <Button onClick={this.clickCheckPassword}>Check Password Confirmation</Button>
+                    <Button id='checkPassword' onClick={this.clickCheckPassword}>Check Password Confirmation</Button>
                     <FormControl
+                        id='nickname'
                         validated={this.state.nickname_checked}
                         label='Nickname'
                         name='nickname'
@@ -150,11 +153,12 @@ class SignupForm extends Component {
                         helperText={this.state.nickname_helperText}
                         onChange={this.onChange}
                     />
-                    <Button onClick={this.clickCheckNickname}>Check Nickname</Button>
+                    <Button id='checkNickname'onClick={this.clickCheckNickname}>Check Nickname</Button>
                 </div>
                 <div>
                     <br></br>
                     <Button
+                        id='submit'
                         onClick={this.clickSubmit}
                         // disabled={!(this.state.email_checked && this.state.password_checked && this.state.password_checked)}
                     >Sign in
