@@ -18,7 +18,7 @@ function App(props) {
           <Route path={['/', '/login']} exact render={() => <LoginPage />} />
           <Route path="/sign_up" exact render={() => <SignupPage />} />
           <Route path="/main" exact render={() => <MainPage />} />
-          <Route path="/search" exact render={() => <SearchPage />} />
+          <Route path="/search" component={SearchPage} />
           <Route render={() => <h1>Not Found</h1>} />
         </Switch>
       </div>

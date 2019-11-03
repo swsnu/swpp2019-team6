@@ -4,8 +4,6 @@ import Divider from '@material-ui/core/Divider';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
 class SearchTravelOverviewList extends Component {
-  // this.props.searchInput
-
   state = {
     travelList: [{
       title: 'A',
@@ -13,7 +11,7 @@ class SearchTravelOverviewList extends Component {
       summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
       period: '2019.10.01 ~ 2019.10.04',
       likes: 57,
-      photo: null,
+      photo: '/images/1.jpeg',
     },
     {
       title: 'B',
@@ -21,7 +19,7 @@ class SearchTravelOverviewList extends Component {
       summary: 'IT\'S NEW YORK.',
       period: '2019.01.03 ~ 2019.10.15',
       likes: 30,
-      photo: null,
+      photo: '/images/2.jpeg',
     },
     {
       title: 'C',
@@ -29,7 +27,7 @@ class SearchTravelOverviewList extends Component {
       summary: 'Welcome!',
       period: '2019.07.29 ~ 2019.08.01',
       likes: 19,
-      photo: null,
+      photo: '/images/3.jpeg',
     },
     {
       title: 'D',
@@ -37,7 +35,7 @@ class SearchTravelOverviewList extends Component {
       summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
       period: '2019.10.01 ~ 2019.10.04',
       likes: 57,
-      photo: null,
+      photo: '/images/1.jpeg',
     },
     {
       title: 'E',
@@ -45,7 +43,7 @@ class SearchTravelOverviewList extends Component {
       summary: 'IT\'S NEW YORK.',
       period: '2019.01.03 ~ 2019.10.15',
       likes: 30,
-      photo: null,
+      photo: '/images/2.jpeg',
     },
     {
       title: 'F',
@@ -53,18 +51,29 @@ class SearchTravelOverviewList extends Component {
       summary: 'Welcome!',
       period: '2019.07.29 ~ 2019.08.01',
       likes: 19,
-      photo: null,
+      photo: '/images/3.jpeg',
     }],
   }
+  // query keyword will be served in this.props.tag
+  // need to make function that gets query result form DB,
+  // and store resulting list in state.travelList
 
   render() {
     return (
-      <div className="SearchTravelOverview">
-        <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
-            Result for #Seoul
-        </Typography>
-        <TravelOverviewList travelList={this.state.travelList} />
-        <Divider style={{ margin: 8 }} />
+      <div>
+        {this.props.tag ? (
+          <div className="SearchTravelOverview">
+            <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
+              Result for #{this.props.tag}
+            </Typography>
+            <TravelOverviewList travelList={this.state.travelList} />
+            <Divider style={{ margin: 8 }} />
+          </div>
+        ) : (
+          <Typography variant="h4" style={{ marginTop: 8, padding: 16 }}>
+            No search tag
+          </Typography>
+        )}
       </div>
     );
   }

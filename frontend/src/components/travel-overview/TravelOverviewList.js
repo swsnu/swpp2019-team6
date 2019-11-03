@@ -27,7 +27,7 @@ const TravelOverviewList = ({ travelList }) => {
           ))}
         </Grid>
       ) : (
-        'No Contents found'
+        'No results were found'
       )}
     </div>
   );
