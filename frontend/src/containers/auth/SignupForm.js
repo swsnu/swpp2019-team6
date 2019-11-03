@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios'
+import { Redirect } from 'react-router-dom';
+
 
 import * as actionCreators from '../../store/actions/index';
 
@@ -77,11 +79,14 @@ class SignupForm extends Component {
     clickSubmit = () => {
 
         if (this.state.email_checked && this.state.password_checked && this.state.password_checked) {
-            this.props.onSignup(
-                this.state.email,
-                this.state.password,
-                this.state.nickname,
-            )
+            const newUserInfo = {
+                email: this.state.email,
+                password: this.state.password,
+                nickname: this.state.nickname
+            }
+            this.props.onSignup(newUserInfo)
+            // this.props.history.push('/login')
+
         } else {
             this.clickCheckEmail()
             this.clickCheckPassword()
@@ -148,13 +153,9 @@ class SignupForm extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSignup: (email, password, nickname) => {
+        onSignup: (userInfo) => {
             dispatch(
-                actionCreators.signup({
-                    email: email,
-                    password: password,
-                    nickname: nickname,
-                }),
+                actionCreators.signup(userInfo)
             );
         },
     };

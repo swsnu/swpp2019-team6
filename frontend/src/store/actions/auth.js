@@ -32,20 +32,4 @@ export const logout = () => {
   };
 };
 
-export const signup_success = (temp) => {
-  return { type: actionTypes.SIGNUP_SUCCESS, temp: temp };
-};
 
-export const signup_failure = () => {
-  return { type: actionTypes.SIGNUP_FAILURE };
-};
-
-// signUp({ email: email, password: password, nickname: nickname }
-export const signup = (info) => {
-  return (dispatch) => {
-    return axios.post('/api/user/signup/', info)
-      .then((res) => dispatch(signup_success(res.data)))
-      .catch((res) => dispatch(signup_failure()));
-    // dispatch(login_success(info.email));
-  };
-};

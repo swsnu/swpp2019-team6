@@ -1,14 +1,15 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    // 'email_checked': null,
 
+    user: null,
 };
 
 const userReducer = (state=initialState, action) =>{
     switch(action.type){
-        // case actionTypes.CHECK_EMAIL:
-        //     return {...state, email_checked:!action.checked}
+        case actionTypes.SIGN_UP:
+            return {...state, user:action.userInfo}
+        
         default: break
     }
     return state
