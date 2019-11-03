@@ -31,5 +31,3 @@ export const logout = () => {
       .then((res) => dispatch(logout_(res.data)));
   };
 };
-
-

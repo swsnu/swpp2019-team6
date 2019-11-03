@@ -25,23 +25,24 @@ export const getUser = (temp) => {
 export const signup_ = (userInfo) => {
   return {
     type: actionTypes.SIGN_UP,
-    userInfo: userInfo
-  }
-}
+    userInfo: userInfo,
+  };
+};
 
 // userInfo={ email: email, password: password, nickname: nickname }
 export const signup = (userInfo) => {
   return (dispatch) => {
     return axios.post('/api/user/signup/', userInfo, {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
       .then(
         (res) => {
-          alert("Sign Up Success")
-          dispatch(signup_(res.data))
-        }
-      )
+          // eslint-disable-next-line no-alert
+          alert('Sign Up Success');
+          dispatch(signup_(res.data));
+        },
+      );
   };
 };

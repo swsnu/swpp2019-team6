@@ -18,6 +18,7 @@ const reducer = (state = initialState, action) => {
         authError: null,
       };
     case actionTypes.LOGIN_FAILURE:
+      // eslint-disable-next-line no-alert
       alert('Email or password is wrong');
       return {
         state,

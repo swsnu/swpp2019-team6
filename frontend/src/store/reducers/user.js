@@ -2,19 +2,18 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
 
-    user: null,
+  user: null,
 };
 
-const userReducer = (state=initialState, action) =>{
-    switch(action.type){
-        case actionTypes.SIGN_UP:
-            return {...state, user:action.userInfo}
-        
-        default: break
-    }
-    return state
+const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case actionTypes.SIGN_UP:
+      return { ...state, user: action.userInfo };
 
-}
+    default: break;
+  }
+  return state;
+};
 
 
-export default userReducer
+export default userReducer;
