@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// travelOverviewItem(.title .author .summary .period .likes .photo)
 const TravelOverviewBlock = ({ travelOverviewItem }) => {
   const classes = useStyles();
 
@@ -43,9 +44,21 @@ const TravelOverviewBlock = ({ travelOverviewItem }) => {
               </Hidden>
             ) : (null)}
             <div className={classes.cardDetails}>
-              <CardContent>
-                <Typography component="h2" variant="h5">
+              <CardContent align="left">
+                <Typography component="h2" variant="h5" gutterBottom>
                   {travelOverviewItem.title}
+                </Typography>
+                <Typography variant="subtitle1" color="textSecondary">
+                  {travelOverviewItem.period}
+                </Typography>
+                <Typography variant="subtitle2" color="primary" display="inline">
+                  by {travelOverviewItem.author}
+                </Typography>
+                <Typography variant="subtitle" display="inline">
+                  {' '}| {travelOverviewItem.likes} likes
+                </Typography>
+                <Typography paragraph variant="body1">
+                  {travelOverviewItem.summary}
                 </Typography>
               </CardContent>
             </div>
