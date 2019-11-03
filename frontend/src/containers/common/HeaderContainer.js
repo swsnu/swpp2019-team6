@@ -46,6 +46,8 @@ class HeaderContainer extends Component {
 
 
   render() {
+    console.log(this.state.currentUser);
+    console.log(this.props.user);
     if (this.state.currentUser) {
       return (
         <Header
@@ -72,7 +74,13 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(HeaderContainer);
