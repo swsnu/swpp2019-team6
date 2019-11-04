@@ -27,34 +27,32 @@ class SignupForm extends Component {
       const { value, name } = e.target;
       this.setState({ [name]: value });
       this.setState({ [`${name}_checked`]: null });
-      this.setState({ [`${name}_helperText`]: null })
+      this.setState({ [`${name}_helperText`]: null });
     };
 
-  
+
     onChangePassword = (e) => {
       const { value, name } = e.target;
       this.setState({ [name]: value });
 
       let password_checked;
-      if ( name==='password'){
-        
-        if ( !this.state.password_confirm ){
-          this.setState({password_checked:null})
+      if (name === 'password') {
+        if (!this.state.password_confirm) {
+          this.setState({ password_checked: null });
           this.setState({ password_helperText: 'Enter your password' });
-          return
+          return;
         }
         const password = value;
         password_checked = (password === this.state.password_confirm);
-      }else if(name==='password_confirm'){
-        if( !this.state.password){
-          this.setState({password_checked:null})
+      } else if (name === 'password_confirm') {
+        if (!this.state.password) {
+          this.setState({ password_checked: null });
           this.setState({ password_helperText: 'Enter your password' });
-          return
+          return;
         }
 
         const password_confirm = value;
         password_checked = (password_confirm === this.state.password);
-       
       }
       this.setState({ password_checked: password_checked });
       this.setState({ password_helperText: (password_checked ? 'Valid Password' : 'Must match password') });
@@ -102,9 +100,9 @@ class SignupForm extends Component {
         };
         this.props.onSignup(newUserInfo);
       } else {
-        if(!this.state.password || !this.state.password_confirm){
-          this.setState({password_checked:false})
-          this.setState({password_helperText:'Enter your password'})
+        if (!this.state.password || !this.state.password_confirm) {
+          this.setState({ password_checked: false });
+          this.setState({ password_helperText: 'Enter your password' });
         }
         this.clickCheckEmail();
         this.clickCheckNickname();
@@ -145,7 +143,6 @@ class SignupForm extends Component {
               onChange={this.onChangePassword}
               helperText={this.state.password_helperText}
             />
-            {/* <Button id="checkPassword" onClick={this.clickCheckPassword}>Check Password Confirmation</Button> */}
             <FormControl
               id="nickname"
               validated={this.state.nickname_checked}

@@ -59,7 +59,7 @@ describe('SignupForm Test', () => {
 
     const wrapper1 = component.find('input').find({ name: 'email' });
     expect(wrapper1.length).toBe(1);
-    wrapper1.simulate('change',{target:{name:'email',value:'test'}})
+    wrapper1.simulate('change', { target: { name: 'email', value: 'test' } });
     expect(SignupFormInstance.state.email).toEqual('test');
 
     axios.get = jest.fn((url) => {
@@ -97,25 +97,22 @@ describe('SignupForm Test', () => {
 
     expect(wrapper1.length).toBe(1);
     expect(wrapper2.length).toBe(1);
-    wrapper1.simulate('change',{target:{name:'password',value:'pw'}})
-    let SignupFormInstance = component.find(SignupForm.WrappedComponent).instance();
-    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password')
-    wrapper2.simulate('change',{target:{name:'password_confirm',value:'p'}})
-    expect(SignupFormInstance.state.password_helperText).toEqual('Must match password')
-    wrapper2.simulate('change',{target:{name:'password_confirm',value:'pw'}})
-    expect(SignupFormInstance.state.password_helperText).toEqual('Valid Password')
+    wrapper1.simulate('change', { target: { name: 'password', value: 'pw' } });
+    const SignupFormInstance = component.find(SignupForm.WrappedComponent).instance();
+    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password');
+    wrapper2.simulate('change', { target: { name: 'password_confirm', value: 'p' } });
+    expect(SignupFormInstance.state.password_helperText).toEqual('Must match password');
+    wrapper2.simulate('change', { target: { name: 'password_confirm', value: 'pw' } });
+    expect(SignupFormInstance.state.password_helperText).toEqual('Valid Password');
 
-    wrapper1.simulate('change',{target:{name:'password',value:''}})
-    wrapper2.simulate('change',{target:{name:'password_confirm',value:''}})
-    wrapper2.simulate('change',{target:{name:'password_confirm',value:'pw'}})
-    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password')
-    wrapper1.simulate('change',{target:{name:'password',value:'p'}})
-    expect(SignupFormInstance.state.password_helperText).toEqual('Must match password')
-    wrapper1.simulate('change',{target:{name:'password',value:'pw'}})
-    expect(SignupFormInstance.state.password_helperText).toEqual('Valid Password')
-
-
-
+    wrapper1.simulate('change', { target: { name: 'password', value: '' } });
+    wrapper2.simulate('change', { target: { name: 'password_confirm', value: '' } });
+    wrapper2.simulate('change', { target: { name: 'password_confirm', value: 'pw' } });
+    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password');
+    wrapper1.simulate('change', { target: { name: 'password', value: 'p' } });
+    expect(SignupFormInstance.state.password_helperText).toEqual('Must match password');
+    wrapper1.simulate('change', { target: { name: 'password', value: 'pw' } });
+    expect(SignupFormInstance.state.password_helperText).toEqual('Valid Password');
   });
 
   it('should call clickCheckNickname', (done) => {
