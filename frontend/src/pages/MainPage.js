@@ -6,7 +6,7 @@ import PopularTravelOverviewList from '../containers/travel-overview/PopularTrav
 class MainPage extends Component {
   render() {
     return (
-      <div>
+      <div className="mainPage">
         <HeaderContainer />
         <PopularTravelOverviewList />
         <RecentTravelOverviewList />
