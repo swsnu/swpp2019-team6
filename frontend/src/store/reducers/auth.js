@@ -2,8 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 // 로그인, 회원가입, 현재 로그인한 유저의 정보를 담습니다.
 const initialState = {
   user: null,
-  auth: null,
-  authError: null,
+  token: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,8 +14,7 @@ const reducer = (state = initialState, action) => {
       localStorage.setItem('token', action.auth.token);
       return {
         user: action.auth.user,
-        auth: action.auth.token,
-        authError: null,
+        token: action.auth.token,
       };
     case actionTypes.LOGIN_FAILURE:
       alert('Email or password is wrong');
@@ -28,8 +26,7 @@ const reducer = (state = initialState, action) => {
       localStorage.removeItem('token');
       return {
         user: null,
-        auth: null,
-        authError: null,
+        token: null,
       };
     case actionTypes.SIGNUP_SUCCESS:
       return {

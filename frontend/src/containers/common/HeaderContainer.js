@@ -22,9 +22,9 @@ class HeaderContainer extends Component {
   };
 
   componentDidMount() {
-    axios.get('/api/user/search/test/')
+    axios.post('/api/user/auth/verify/', { token: localStorage.getItem('token') })
       .catch((res) => {
-        if (res.response.status === 401) {
+        if (res.response.status === 400) {
           alert('please login first');
         }
       });
