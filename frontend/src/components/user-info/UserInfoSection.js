@@ -40,7 +40,7 @@ const UserInfoSection = ({
   return (
     <div>
       <Paper className={classes.userInfoSection}>
-        <Grid container spacing={3}>
+        <Grid xs container spacing={3}>
           {/* For Avartar */}
           <Grid item xs={4}>
             <Avatar className={classes.avatar} alt={nickname} src={user_photo} />
