@@ -42,7 +42,7 @@ describe('ActionCreators : login', () => {
     store.dispatch(actionCreators.login(stubLoginInfo)).then(() => {
       const newState = store.getState();
       expect(newState.auth.user).toEqual(stubUser);
-      expect(newState.auth.auth).toEqual('123');
+      expect(newState.auth.token).toEqual('123');
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -67,7 +67,7 @@ describe('ActionCreators : login', () => {
     store.dispatch(actionCreators.login(stubLoginInfo)).then(() => {
       const newState = store.getState();
       expect(newState.auth.user).toBeFalsy();
-      expect(newState.auth.auth).toBeFalsy();
+      expect(newState.auth.token).toBeFalsy();
       expect(spyAlert).toBeCalled();
       expect(spy).toHaveBeenCalledTimes(1);
       done();
@@ -77,7 +77,7 @@ describe('ActionCreators : login', () => {
     store.dispatch(actionCreators.logout());
     const newState = store.getState();
     expect(newState.auth.user).toBeFalsy();
-    expect(newState.auth.auth).toBeFalsy();
+    expect(newState.auth.token).toBeFalsy();
     done();
   });
 });

@@ -38,7 +38,7 @@ module.exports = {
     "no-underscore-dangle":0,
     "no-unused-vars":0,
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-    "no-param-reassign":0
-    "linebreak-style":0
+    "no-param-reassign":0,
+    "linebreak-style":0,
   },
 };
