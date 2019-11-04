@@ -57,7 +57,7 @@ class SignupForm extends Component {
        
       }
       this.setState({ password_checked: password_checked });
-      this.setState({ password_helperText: (password_checked ? 'Vaild Password' : 'Must match password') });
+      this.setState({ password_helperText: (password_checked ? 'Valid Password' : 'Must match password') });
     }
 
     clickCheckEmail = () => {
@@ -101,7 +101,6 @@ class SignupForm extends Component {
           nickname: this.state.nickname,
         };
         this.props.onSignup(newUserInfo);
-        // this.props.history.push('/login')
       } else {
         if(!this.state.password || !this.state.password_confirm){
           this.setState({password_checked:false})

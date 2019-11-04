@@ -57,7 +57,11 @@ describe('SignupForm Test', () => {
     const SignupFormInstance = component.find(SignupForm.WrappedComponent).instance();
     expect(SignupFormInstance.state.email_helperText).toEqual('Enter your email');
 
-    SignupFormInstance.setState({ email: 'test' });
+    const wrapper1 = component.find('input').find({ name: 'email' });
+    expect(wrapper1.length).toBe(1);
+    wrapper1.simulate('change',{target:{name:'email',value:'test'}})
+    expect(SignupFormInstance.state.email).toEqual('test');
+
     axios.get = jest.fn((url) => {
       return new Promise((resolve, reject) => {
         const result = {
@@ -89,11 +93,28 @@ describe('SignupForm Test', () => {
     const component = mount(signupForm);
 
     const wrapper1 = component.find('input').find({ name: 'password' });
-    expect(wrapper1.length).toBe(1);
-    wrapper1.simulate('change', { target: { value: 'pw' } });
+    const wrapper2 = component.find('input').find({ name: 'password_confirm' });
 
-    const SignupFormInstance = component.find(SignupForm.WrappedComponent).instance();
-    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password');
+    expect(wrapper1.length).toBe(1);
+    expect(wrapper2.length).toBe(1);
+    wrapper1.simulate('change',{target:{name:'password',value:'pw'}})
+    let SignupFormInstance = component.find(SignupForm.WrappedComponent).instance();
+    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password')
+    wrapper2.simulate('change',{target:{name:'password_confirm',value:'p'}})
+    expect(SignupFormInstance.state.password_helperText).toEqual('Must match password')
+    wrapper2.simulate('change',{target:{name:'password_confirm',value:'pw'}})
+    expect(SignupFormInstance.state.password_helperText).toEqual('Valid Password')
+
+    wrapper1.simulate('change',{target:{name:'password',value:''}})
+    wrapper2.simulate('change',{target:{name:'password_confirm',value:''}})
+    wrapper2.simulate('change',{target:{name:'password_confirm',value:'pw'}})
+    expect(SignupFormInstance.state.password_helperText).toEqual('Enter your password')
+    wrapper1.simulate('change',{target:{name:'password',value:'p'}})
+    expect(SignupFormInstance.state.password_helperText).toEqual('Must match password')
+    wrapper1.simulate('change',{target:{name:'password',value:'pw'}})
+    expect(SignupFormInstance.state.password_helperText).toEqual('Valid Password')
+
+
 
   });
 
@@ -134,7 +155,6 @@ describe('SignupForm Test', () => {
   it('should call clickSubmit', () => {
     const spySignup = jest.spyOn(actionCreators, 'signup')
       .mockImplementation((userInfo) => { return (dispatch) => { }; });
-
     const component = mount(signupForm);
     const wrapper = component.find('button#submit');
     expect(wrapper.length).toBe(1);

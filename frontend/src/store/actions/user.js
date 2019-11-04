@@ -42,6 +42,7 @@ export const signup = (userInfo) => {
           // eslint-disable-next-line no-alert
           alert('Sign Up Success');
           dispatch(signup_(res.data));
+          dispatch(push('/login')); 
         },
       ).catch(
         (res) =>{
