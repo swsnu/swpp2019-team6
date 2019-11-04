@@ -12,16 +12,21 @@ const tempUser = {
   user_photo: '/images/1.jpeg',
 };
 
+const is_mypage = true;
+
 class UserInfoSectionContainer extends Component {
   state = {
     currentUser: tempUser,
   };
 
+  onEditButtonClicked = () => {
+  }
+
   render() {
     return (
       <div>
         {this.state.currentUser ? (
-          <div className="userInfoSection">
+          <div className="userInfo">
             <UserInfoSection
               nickname={this.state.currentUser.nickname}
               register_date={this.state.currentUser.register_date}
@@ -30,6 +35,8 @@ class UserInfoSectionContainer extends Component {
               num_likes={this.state.currentUser.num_likes}
               num_forked={this.state.currentUser.num_forked}
               user_photo={this.state.currentUser.user_photo}
+              is_mypage={is_mypage}
+              onEditButtonClicked={this.onEditButtonClicked}
             />
           </div>
         ) : (

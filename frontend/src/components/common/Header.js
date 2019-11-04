@@ -9,7 +9,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Avartar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import DetailIcon from '@material-ui/icons/DetailsRounded';
@@ -132,7 +132,7 @@ const Header = ({
         {/* right side: user profile, dropdown menu for mypage, logout */}
         <Grid item xs container spacing={1} direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
-            <Avartar alt={user.nickname} src={user.profile} className={classes.avatar} />
+            <Avatar alt={user.nickname} src={user.profile} className={classes.avatar} />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1" className={classes.userNickname}>
