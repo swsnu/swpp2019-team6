@@ -13,6 +13,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import DetailIcon from '@material-ui/icons/DetailsRounded';
+import Paper from '@material-ui/core/Paper';
 import 'typeface-roboto';
 // Set styles of different classes here,
 // and use them by setting className={classes....}
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     left: -45,
     width: 100,
+    zIndex: 1,
     border: '1px solid',
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
@@ -147,14 +149,14 @@ const Header = ({
                 </IconButton>
                 {open
                   ? (
-                    <div className={classes.paper}>
-                      <Button size="small" onClick={onMyPageClicked}>
+                    <Paper className={classes.paper}>
+                      <Button size="small" onClick={onMyPageClicked} fullWidth>
                         My Page
                       </Button>
-                      <Button size="small" onClick={onLogoutClicked}>
+                      <Button size="small" onClick={onLogoutClicked} fullWidth>
                         Logout
                       </Button>
-                    </div>
+                    </Paper>
                   )
                   : null}
               </div>
