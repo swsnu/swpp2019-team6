@@ -25,6 +25,7 @@ class HeaderContainer extends Component {
     axios.post('/api/user/auth/verify/', { token: localStorage.getItem('token') })
       .catch((res) => {
         if (res.response.status === 400) {
+          // eslint-disable-next-line no-alert
           alert('please login first');
         }
       });

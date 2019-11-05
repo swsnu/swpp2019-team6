@@ -17,6 +17,7 @@ const reducer = (state = initialState, action) => {
         token: action.auth.token,
       };
     case actionTypes.LOGIN_FAILURE:
+      // eslint-disable-next-line no-alert
       alert('Email or password is wrong');
       return {
         state,
@@ -27,14 +28,6 @@ const reducer = (state = initialState, action) => {
       return {
         user: null,
         token: null,
-      };
-    case actionTypes.SIGNUP_SUCCESS:
-      return {
-        state,
-      };
-    case actionTypes.SIGNUP_FAILURE:
-      return {
-        state,
       };
     default:
       break;

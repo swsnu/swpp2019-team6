@@ -39,21 +39,3 @@ export const logout = () => {
     dispatch(push('/login'));
   };
 };
-
-export const signUp_success = (temp) => {
-  return { type: actionTypes.SIGNUP_SUCCESS, temp: temp };
-};
-
-export const signUp_failure = () => {
-  return { type: actionTypes.SIGNUP_FAILURE };
-};
-
-// signUp({ email: email, password: password, nickname: nickname }
-export const signUp = (info) => {
-  return (dispatch) => {
-    return axios.post('/api/user/signup/', info)
-      .then((res) => dispatch(signUp_success(res.data)))
-      .catch((res) => dispatch(signUp_failure()));
-    // dispatch(login_success(info.email));
-  };
-};
