@@ -14,16 +14,13 @@ import CommentIcon from '@material-ui/icons/ForumRounded';
 import CollaboratorsIcon from '@material-ui/icons/People';
 import ForkedIcon from '@material-ui/icons/GetApp';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     height: 240,
-    '@media (max-width:600px)': {
+    [theme.breakpoints.down('xs')]: {
       height: 180,
     },
   },
@@ -39,11 +36,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 'large',
     color: 'grey',
   },
-  bottomRight: {
-    position: 'absolute',
-    bottom: theme.spacing(1),
-    right: theme.spacing(1),
-  },
 }));
 
 // travelOverviewItem(.title .author .summary .period .likes .photo
@@ -52,117 +44,103 @@ const useStyles = makeStyles((theme) => ({
 const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
   const classes = useStyles();
 
-  // For travel plan overview option menu
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   // Have to change onCardClicked to make a link to its detail page
   const onCardClicked = (e) => {
-    console.log('onCardClicked!');
+    // console.log('onCardClicked!');
   };
 
   return (
     <div>
       {travelOverviewItem ? (
-        <CardActionArea component="button" onClick={onCardClicked}>
-          <Card className={classes.card}>
-            {/* For image */}
-            {travelOverviewItem.photo ? (
-              <Hidden xsDown>
-                <CardMedia
-                  component="img"
-                  className={classes.cardMedia}
-                  image={travelOverviewItem.photo}
-                  title={travelOverviewItem.title}
-                />
-              </Hidden>
-            ) : (null)}
-            <div className={classes.cardDetails}>
-              <CardContent align="left">
-                <Typography component="h2" variant="h5" gutterBottom>
-                  {travelOverviewItem.title}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  {travelOverviewItem.period}
-                </Typography>
-                <Typography variant="subtitle2" color="primary" display="inline">
-                  by {travelOverviewItem.author}
-                </Typography>
-                <Typography display="inline">
-                  {' '}| {travelOverviewItem.likes} likes {' '}
-                </Typography>
-                {is_mypage ? (
-                  <span>
-                    {travelOverviewItem.is_public ? (
-                      <Tooltip title="Public">
-                        <PublicIcon className={classes.icons} />
-                      </Tooltip>
-                    ) : (
-                      <Tooltip title="Private">
-                        <PrivateIcon className={classes.icons} />
-                      </Tooltip>
-                    )}
-                    {travelOverviewItem.allow_comment ? (
-                      <Tooltip title="Comments allowed">
-                        <CommentIcon className={classes.icons} />
-                      </Tooltip>
-                    ) : (
-                      <span />
-                    )}
-                    {travelOverviewItem.is_forked ? (
-                      <Tooltip title="Forked">
-                        <ForkedIcon className={classes.icons} />
-                      </Tooltip>
-                    ) : (
-                      <span />
-                    )}
-                    {travelOverviewItem.collaborators.length > 1 ? (
-                      <Tooltip title={`${travelOverviewItem.collaborators.length - 1} collaborators`}>
-                        <CollaboratorsIcon className={classes.icons} />
-                      </Tooltip>
-                    ) : (
-                      <span />
-                    )}
-                  </span>
-                ) : (
-                  <span />
-                )}
-                <Typography paragraph variant="body1">
-                  {travelOverviewItem.summary}
-                </Typography>
-                <div className={classes.bottomRight}>
+        <div>
+          <CardActionArea component="button" onClick={onCardClicked}>
+            <Card className={classes.card}>
+              {/* For image */}
+              {travelOverviewItem.photo ? (
+                <Hidden xsDown>
+                  <CardMedia
+                    component="img"
+                    className={classes.cardMedia}
+                    image={travelOverviewItem.photo}
+                    title={travelOverviewItem.title}
+                  />
+                </Hidden>
+              ) : (null)}
+              <div className={classes.cardDetails}>
+                <CardContent align="left">
+                  <Typography component="h2" variant="h5">
+                    {travelOverviewItem.title}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {travelOverviewItem.period}
+                  </Typography>
+                  <Typography variant="subtitle2" color="primary" display="inline">
+                    by {travelOverviewItem.author}
+                  </Typography>
+                  <Typography display="inline">
+                    {' '}| {travelOverviewItem.likes} likes {' '}
+                  </Typography>
                   {is_mypage ? (
-                    <div>
-                      <IconButton aria-controls="option-menu" aria-haspopup="true" onClick={handleClick}>
-                        <MoreVertIcon />
-                      </IconButton>
-                      <Menu
-                        id="option-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem onClick={handleClose}>HELLO</MenuItem>
-                        <MenuItem onClick={handleClose}>HELLO</MenuItem>
-                        <MenuItem onClick={handleClose}>HELLO</MenuItem>
-                      </Menu>
-                    </div>
+                    <span>
+                      {travelOverviewItem.is_public ? (
+                        <Tooltip title="Public">
+                          <PublicIcon className={classes.icons} />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Private">
+                          <PrivateIcon className={classes.icons} />
+                        </Tooltip>
+                      )}
+                      {travelOverviewItem.allow_comment ? (
+                        <Tooltip title="Comments allowed">
+                          <CommentIcon className={classes.icons} />
+                        </Tooltip>
+                      ) : (
+                        <span />
+                      )}
+                      {travelOverviewItem.is_forked ? (
+                        <Tooltip title="Forked">
+                          <ForkedIcon className={classes.icons} />
+                        </Tooltip>
+                      ) : (
+                        <span />
+                      )}
+                      {travelOverviewItem.collaborators.length > 1 ? (
+                        <Tooltip title={`${travelOverviewItem.collaborators.length - 1} collaborators`}>
+                          <CollaboratorsIcon className={classes.icons} />
+                        </Tooltip>
+                      ) : (
+                        <span />
+                      )}
+                    </span>
                   ) : (
                     <span />
                   )}
-                </div>
-              </CardContent>
-            </div>
-          </Card>
-        </CardActionArea>
+                  <Typography paragraph variant="body1">
+                    {travelOverviewItem.summary}
+                  </Typography>
+                </CardContent>
+              </div>
+            </Card>
+          </CardActionArea>
+          <Grid container xs justify="space-between">
+            <Grid item xs={4}>
+              <Button variant="outlined" color="default" fullWidth>
+                Edit
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button variant="outlined" color="primary" fullWidth>
+                Settings
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button variant="outlined" color="secondary" fullWidth>
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
+        </div>
       ) : null}
     </div>
   );

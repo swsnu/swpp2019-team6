@@ -6,7 +6,7 @@ import TravelOverviewList from '../../components/travel-overview/TravelOverviewL
 const tempTravelList = [{
   title: 'Seoul Palace Tour 22 JSADFJE JAEFJAWE',
   author: 'Alice',
-  summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
+  summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.afefas dfawefaw efawfawe faw',
   period: '2019.10.01 ~ 2019.10.04',
   likes: 57,
   photo: '/images/1.jpeg',
