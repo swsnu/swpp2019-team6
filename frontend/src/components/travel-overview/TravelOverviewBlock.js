@@ -8,6 +8,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
+import PublicIcon from '@material-ui/icons/Public';
+import PrivateIcon from '@material-ui/icons/Lock';
+import CommentIcon from '@material-ui/icons/ForumRounded';
+import CollaboratorsIcon from '@material-ui/icons/People';
+import ForkedIcon from '@material-ui/icons/GetApp';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -25,9 +31,14 @@ const useStyles = makeStyles((theme) => ({
     width: 160,
     height: 240,
   },
+  icons: {
+    fontSize: 'large',
+    color: 'grey',
+  },
 }));
 
-// travelOverviewItem(.title .author .summary .period .likes .photo)
+// travelOverviewItem(.title .author .summary .period .likes .photo
+// .is_public, .allow_comment, .is_forked, .collaborators)
 // is_mypage: should detailed option be shown?
 const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
   const classes = useStyles();
@@ -65,8 +76,44 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
                   by {travelOverviewItem.author}
                 </Typography>
                 <Typography display="inline">
-                  {' '}| {travelOverviewItem.likes} likes
+                  {' '}| {travelOverviewItem.likes} likes {' '}
                 </Typography>
+                {is_mypage ? (
+                  <span>
+                    {travelOverviewItem.is_public ? (
+                      <Tooltip title="Public">
+                        <PublicIcon className={classes.icons} />
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="Private">
+                        <PrivateIcon className={classes.icons} />
+                      </Tooltip>
+                    )}
+                    {travelOverviewItem.allow_comment ? (
+                      <Tooltip title="Comments allowed">
+                        <CommentIcon className={classes.icons} />
+                      </Tooltip>
+                    ) : (
+                      <span />
+                    )}
+                    {travelOverviewItem.is_forked ? (
+                      <Tooltip title="Forked">
+                        <ForkedIcon className={classes.icons} />
+                      </Tooltip>
+                    ) : (
+                      <span />
+                    )}
+                    {travelOverviewItem.collaborators.length > 1 ? (
+                      <Tooltip title={`${travelOverviewItem.collaborators.length - 1} collaborators`}>
+                        <CollaboratorsIcon className={classes.icons} />
+                      </Tooltip>
+                    ) : (
+                      <span />
+                    )}
+                  </span>
+                ) : (
+                  <span />
+                )}
                 <Typography paragraph variant="body1">
                   {travelOverviewItem.summary}
                 </Typography>

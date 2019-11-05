@@ -4,12 +4,16 @@ import Divider from '@material-ui/core/Divider';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
 const tempTravelList = [{
-  title: 'A',
+  title: 'Seoul Palace Tour 22 JSADFJE JAEFJAWE',
   author: 'Alice',
   summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
   period: '2019.10.01 ~ 2019.10.04',
   likes: 57,
   photo: '/images/1.jpeg',
+  is_public: false,
+  allow_comment: false,
+  is_forked: false,
+  collaborators: ['iluvswpp'],
 },
 {
   title: 'B',
@@ -18,6 +22,10 @@ const tempTravelList = [{
   period: '2019.01.03 ~ 2019.10.15',
   likes: 30,
   photo: '/images/2.jpeg',
+  is_public: true,
+  allow_comment: true,
+  is_forked: false,
+  collaborators: ['iluvswpp'],
 },
 {
   title: 'C',
@@ -26,6 +34,10 @@ const tempTravelList = [{
   period: '2019.07.29 ~ 2019.08.01',
   likes: 19,
   photo: '/images/3.jpeg',
+  is_public: true,
+  allow_comment: false,
+  is_forked: false,
+  collaborators: ['iluvswpp'],
 },
 {
   title: 'D',
@@ -34,28 +46,17 @@ const tempTravelList = [{
   period: '2019.10.01 ~ 2019.10.04',
   likes: 57,
   photo: '/images/1.jpeg',
+  is_public: false,
+  allow_comment: false,
+  is_forked: true,
+  collaborators: ['iluvswpp', 'tom', 'mei'],
 },
-{
-  title: 'E',
-  author: 'Bob',
-  summary: 'IT\'S NEW YORK.',
-  period: '2019.01.03 ~ 2019.10.15',
-  likes: 30,
-  photo: '/images/2.jpeg',
-},
-{
-  title: 'F',
-  author: 'Catherine',
-  summary: 'Welcome!',
-  period: '2019.07.29 ~ 2019.08.01',
-  likes: 19,
-  photo: '/images/3.jpeg',
-}];
+];
 
 const emptyTravelList = [];
 
 // somehow determine whether this page is of current user or not.
-const is_mypage = false;
+const is_mypage = true;
 
 class UserTravelOverviewList extends Component {
   state = {
