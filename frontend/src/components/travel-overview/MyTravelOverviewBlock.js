@@ -1,1 +1,0 @@
-// this block should have a button for detailed options

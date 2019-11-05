@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // travelOverviewItem(.title .author .summary .period .likes .photo)
-const TravelOverviewBlock = ({ travelOverviewItem }) => {
+// is_mypage: should detailed option be shown?
+const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
   const classes = useStyles();
 
   // Have to change onCardClicked to make a link to its detail page

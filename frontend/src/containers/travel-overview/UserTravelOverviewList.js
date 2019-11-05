@@ -54,6 +54,7 @@ const tempTravelList = [{
 
 const emptyTravelList = [];
 
+// somehow determine whether this page is of current user or not.
 const is_mypage = false;
 
 class UserTravelOverviewList extends Component {
@@ -67,16 +68,8 @@ class UserTravelOverviewList extends Component {
         <div style={{ marginBottom: 24 }} />
         {this.state.travelList.length ? (
           <div className="userTravelOverview">
-            {is_mypage ? (
-              <div>
-                When mypage
-              </div>
-            ) : (
-              <div>
-                <TravelOverviewList travelList={this.state.travelList} />
-                <Divider style={{ margin: 8 }} />
-              </div>
-            )}
+            <TravelOverviewList travelList={this.state.travelList} is_mypage={is_mypage} />
+            <Divider style={{ margin: 8 }} />
           </div>
         ) : (
           <Typography align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>

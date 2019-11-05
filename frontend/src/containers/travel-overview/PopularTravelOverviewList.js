@@ -37,7 +37,7 @@ class PopularTravelOverviewList extends Component {
           <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
             Popular
           </Typography>
-          <TravelOverviewList travelList={this.state.travelList} />
+          <TravelOverviewList travelList={this.state.travelList} is_mypage={false} />
           <Divider style={{ margin: 8 }} />
         </div>
       );

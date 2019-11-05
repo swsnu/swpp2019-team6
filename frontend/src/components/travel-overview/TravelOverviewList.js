@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TravelOverviewList = ({ travelList }) => {
+const TravelOverviewList = ({ travelList, is_mypage }) => {
   const classes = useStyles();
 
   return (
@@ -22,6 +22,7 @@ const TravelOverviewList = ({ travelList }) => {
               <TravelOverviewBlock
                 key={travelOverviewItem.id}
                 travelOverviewItem={travelOverviewItem}
+                is_mypage={is_mypage}
               />
             </Grid>
           ))}

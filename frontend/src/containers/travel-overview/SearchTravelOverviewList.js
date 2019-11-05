@@ -66,7 +66,7 @@ class SearchTravelOverviewList extends Component {
             <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
               Result for #{this.props.tag}
             </Typography>
-            <TravelOverviewList travelList={this.state.travelList} />
+            <TravelOverviewList travelList={this.state.travelList} is_mypage={false} />
             <Divider style={{ margin: 8 }} />
           </div>
         ) : (
