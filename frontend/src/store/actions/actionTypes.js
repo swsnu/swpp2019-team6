@@ -1,3 +1,6 @@
+// for default
+export const DEFAULT_ACTION_TYPE = 'DEFAULT_ACTION_TYPE';
+
 // for auth
 export const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';

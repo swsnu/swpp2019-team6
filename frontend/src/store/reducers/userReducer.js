@@ -4,9 +4,15 @@ const initialState = {
 
   user: null,
 };
+const initialAction = {
 
-const userReducer = (state = initialState, action) => {
+  type: actionTypes.DEFAULT_ACTION_TYPE,
+};
+
+const userReducer = (state = initialState, action = initialAction) => {
   switch (action.type) {
+    case actionTypes.DEFAULT_ACTION_TYPE:
+      break;
     case actionTypes.SIGN_UP:
       return { ...state, user: action.userInfo };
 
