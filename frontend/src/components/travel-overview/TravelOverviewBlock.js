@@ -14,6 +14,10 @@ import CommentIcon from '@material-ui/icons/ForumRounded';
 import CollaboratorsIcon from '@material-ui/icons/People';
 import ForkedIcon from '@material-ui/icons/GetApp';
 import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -35,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 'large',
     color: 'grey',
   },
+  bottomRight: {
+    position: 'absolute',
+    bottom: theme.spacing(1),
+    right: theme.spacing(1),
+  },
 }));
 
 // travelOverviewItem(.title .author .summary .period .likes .photo
@@ -43,9 +52,20 @@ const useStyles = makeStyles((theme) => ({
 const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
   const classes = useStyles();
 
+  // For travel plan overview option menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   // Have to change onCardClicked to make a link to its detail page
   const onCardClicked = (e) => {
-    // console.log('onCardClicked!');
+    console.log('onCardClicked!');
   };
 
   return (
@@ -117,6 +137,28 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
                 <Typography paragraph variant="body1">
                   {travelOverviewItem.summary}
                 </Typography>
+                <div className={classes.bottomRight}>
+                  {is_mypage ? (
+                    <div>
+                      <IconButton aria-controls="option-menu" aria-haspopup="true" onClick={handleClick}>
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        id="option-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={handleClose}>HELLO</MenuItem>
+                        <MenuItem onClick={handleClose}>HELLO</MenuItem>
+                        <MenuItem onClick={handleClose}>HELLO</MenuItem>
+                      </Menu>
+                    </div>
+                  ) : (
+                    <span />
+                  )}
+                </div>
               </CardContent>
             </div>
           </Card>
