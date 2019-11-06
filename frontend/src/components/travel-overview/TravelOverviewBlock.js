@@ -123,23 +123,27 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
               </div>
             </Card>
           </CardActionArea>
-          <Grid container xs justify="space-between">
-            <Grid item xs={4}>
-              <Button variant="outlined" color="default" fullWidth>
-                Edit
-              </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <Button variant="outlined" color="primary" fullWidth>
-                Settings
-              </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <Button variant="outlined" color="secondary" fullWidth>
-                Delete
-              </Button>
-            </Grid>
-          </Grid>
+          <div>
+            {is_mypage ? (
+              <Grid container xs justify="space-between">
+                <Grid item xs={4}>
+                  <Button variant="outlined" color="default" fullWidth>
+                  Edit
+                  </Button>
+                </Grid>
+                <Grid item xs={4}>
+                  <Button variant="outlined" color="primary" fullWidth>
+                  Settings
+                  </Button>
+                </Grid>
+                <Grid item xs={4}>
+                  <Button variant="outlined" color="secondary" fullWidth>
+                  Delete
+                  </Button>
+                </Grid>
+              </Grid>
+            ) : (<span />)}
+          </div>
         </div>
       ) : null}
     </div>
