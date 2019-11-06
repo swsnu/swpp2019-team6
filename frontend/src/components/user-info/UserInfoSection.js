@@ -28,12 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-// data: nickname, register_date, status_messaage, num_plans, num_likes, num_forked, user_photo
+// user: nickname, register_date, status_messaage, num_plans, num_likes, num_forked, user_photo
 // boolean check: is_mypage
 // function: onEditButtonClicked
 const UserInfoSection = ({
-  nickname, register_date, status_message, num_plans, num_likes, num_forked,
-  user_photo, is_mypage, onEditButtonClicked,
+  user, is_mypage, onEditButtonClicked,
 }) => {
   const classes = useStyles();
 
@@ -43,20 +42,20 @@ const UserInfoSection = ({
         <Grid xs container spacing={3}>
           {/* For Avartar */}
           <Grid item xs={4}>
-            <Avatar className={classes.avatar} alt={nickname} src={user_photo} />
+            <Avatar className={classes.avatar} alt={user.nickname} src={user.user_photo} />
           </Grid>
           {/* For other components */}
           <Grid item xs container direction="column">
             <Grid item container dirction="row" wrap="nowrap">
               <Grid xs={10} item zeroMinWidth>
                 <Typography variant="h5" gutterBottom nowrap>
-                  @{nickname}
+                  @{user.nickname}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
-                  since {register_date}
+                  since {user.register_date}
                 </Typography>
                 <Typography variaint="subtitle2" color="primary" gutterBottom>
-                  {num_plans} plans, {num_likes} likes, forked {num_forked} times
+                  {user.num_plans} plans, {user.num_likes} likes, forked {user.num_forked} times
                 </Typography>
               </Grid>
               <Grid item xs>
@@ -69,7 +68,7 @@ const UserInfoSection = ({
             </Grid>
             <Grid item xs>
               <Typography variaint="body1">
-                {status_message}
+                {user.status_message}
               </Typography>
             </Grid>
           </Grid>
