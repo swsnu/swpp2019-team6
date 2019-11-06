@@ -5,6 +5,12 @@ import axios from 'axios';
 import Header from '../../components/common/Header';
 import * as actionCreators from '../../store/actions/index';
 
+const tempUser = {
+  email: 'swpp@snu.ac.kr',
+  nickname: 'iluvswpp',
+  profile: '/images/13.jpeg',
+};
+
 // function: onLogoutClicked, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked
 
 /*

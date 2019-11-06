@@ -3,56 +3,58 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
+const tempTravelList = [{
+  title: 'Curabitur gravida arcu ac tortor convallis',
+  author: 'David',
+  summary: 'Tortor dignissim convallis aenean et tortor. Euismod lacinia at quis risus sed.',
+  period: '2019.10.01 ~ 2019.10.04',
+  likes: 57,
+  photo: null,
+},
+{
+  title: 'Habitasse platea dictumst quisque sagittis',
+  author: 'Emily',
+  summary: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
+  period: '2019.01.03 ~ 2019.10.15',
+  likes: 30,
+  photo: '/images/4.jpeg',
+},
+{
+  title: 'Mattis aliquam faucibus purus',
+  author: 'Fred',
+  summary: 'Integer quis auctor elit sed vulputate mi sit. Cum sociis natoque penatibus et magnis dis parturient montes nascetur.',
+  period: '2019.07.29 ~ 2019.08.01',
+  likes: 19,
+  photo: '/images/5.jpeg',
+},
+{
+  title: 'Quis viverra nibh cras pulvinar mattis',
+  author: 'George',
+  summary: 'Habitasse platea dictumst vestibulum rhoncus est pellentesque.',
+  period: '2019.10.01 ~ 2019.10.04',
+  likes: 57,
+  photo: '/images/6.jpeg',
+},
+{
+  title: 'Magnis dis parturient montes nascetur',
+  author: 'Harry',
+  summary: 'Et leo duis ut diam quam.',
+  period: '2019.01.03 ~ 2019.10.15',
+  likes: 30,
+  photo: null,
+},
+{
+  title: 'Ridiculus mus mauris vitae',
+  author: 'Isabella',
+  summary: 'Ac tortor vitae purus faucibus. Odio eu feugiat pretium nibh ipsum.',
+  period: '2019.07.29 ~ 2019.08.01',
+  likes: 19,
+  photo: '/images/7.jpeg',
+}];
+
 class SearchTravelOverviewList extends Component {
   state = {
-    travelList: [{
-      title: 'A',
-      author: 'Alice',
-      summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
-      period: '2019.10.01 ~ 2019.10.04',
-      likes: 57,
-      photo: '/images/1.jpeg',
-    },
-    {
-      title: 'B',
-      author: 'Bob',
-      summary: 'IT\'S NEW YORK.',
-      period: '2019.01.03 ~ 2019.10.15',
-      likes: 30,
-      photo: '/images/2.jpeg',
-    },
-    {
-      title: 'C',
-      author: 'Catherine',
-      summary: 'Welcome!',
-      period: '2019.07.29 ~ 2019.08.01',
-      likes: 19,
-      photo: '/images/3.jpeg',
-    },
-    {
-      title: 'D',
-      author: 'Alice',
-      summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
-      period: '2019.10.01 ~ 2019.10.04',
-      likes: 57,
-      photo: '/images/1.jpeg',
-    },
-    {
-      title: 'E',
-      author: 'Bob',
-      summary: 'IT\'S NEW YORK.',
-      period: '2019.01.03 ~ 2019.10.15',
-      likes: 30,
-      photo: '/images/2.jpeg',
-    },
-    {
-      title: 'F',
-      author: 'Catherine',
-      summary: 'Welcome!',
-      period: '2019.07.29 ~ 2019.08.01',
-      likes: 19,
-      photo: '/images/3.jpeg',
-    }],
+    travelList: tempTravelList,
   }
   // query keyword will be served in this.props.tag
   // need to make function that gets query result form DB,
@@ -64,9 +66,9 @@ class SearchTravelOverviewList extends Component {
         {this.props.tag ? (
           <div className="SearchTravelOverview">
             <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
-              Result for #{this.props.tag}
+              Results for #{this.props.tag}
             </Typography>
-            <TravelOverviewList travelList={this.state.travelList} />
+            <TravelOverviewList travelList={this.state.travelList} is_mypage={false} />
             <Divider style={{ margin: 8 }} />
           </div>
         ) : (

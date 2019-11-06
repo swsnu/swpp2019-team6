@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import RecentTravelOverviewList from './RecentTravelOverviewList';
+import UserTravelOverviewList from './UserTravelOverviewList';
 
 jest.mock('../../components/travel-overview/TravelOverviewList', () => {
   return jest.fn((props) => {
@@ -23,17 +23,17 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
 });
 
 
-describe('RecentTravelOverviewList', () => {
-  let recentTravelOverviewList;
+describe('SearchTravelOverviewList', () => {
+  let userTravelOverviewList;
 
   beforeEach(() => {
-    recentTravelOverviewList = (
-      <RecentTravelOverviewList />
+    userTravelOverviewList = (
+      <UserTravelOverviewList />
     );
   });
 
   it('should render.', () => {
-    const component = mount(recentTravelOverviewList);
+    const component = mount(userTravelOverviewList);
     expect(component.find('.travelOverviewList').length).toBe(1);
   });
 });
