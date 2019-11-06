@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../../components/common/Header';
+import * as actionCreators from '../../store/actions/index';
 
 const tempUser = {
   email: 'swpp@snu.ac.kr',
@@ -10,17 +13,32 @@ const tempUser = {
 
 // function: onLogoutClicked, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked
 
-
+/*
+const config = {
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `JWT ${localStorage.getItem('token')}`,
+  },
+};
+*/
 class HeaderContainer extends Component {
   state = {
-    currentUser: tempUser,
+    currentUser: JSON.parse(localStorage.getItem('user')),
     searchText: '',
   };
 
   componentDidMount() {
+    axios.post('/api/user/auth/verify/', { token: localStorage.getItem('token') })
+      .catch((res) => {
+        if (res.response.status === 400) {
+          // eslint-disable-next-line no-alert
+          alert('please login first');
+        }
+      });
   }
 
   onLogoutClicked = (e) => {
+    this.props.onLogout();
   }
 
   onMyPageClicked = (e) => {
@@ -35,17 +53,39 @@ class HeaderContainer extends Component {
 
 
   render() {
+    if (this.state.currentUser) {
+      return (
+        <Header
+          user={this.state.currentUser}
+          searchText={this.state.searchText}
+          onLogoutClicked={this.onLogoutClicked}
+          onMyPageClicked={this.onMyPageClicked}
+          onSearchInputChanged={this.onSearchInputChanged}
+          onSearchButtonClicked={this.onSearchButtonClicked}
+        />
+      );
+    }
     return (
-      <Header
-        user={this.state.currentUser}
-        searchText={this.state.searchText}
-        onLogoutClicked={this.onLogoutClicked}
-        onMyPageClicked={this.onMyPageClicked}
-        onSearchInputChanged={this.onSearchInputChanged}
-        onSearchButtonClicked={this.onSearchButtonClicked}
-      />
+      <Redirect to="/login" />
     );
   }
 }
 
-export default HeaderContainer;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogout: () => {
+      dispatch(actionCreators.logout());
+    },
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HeaderContainer);

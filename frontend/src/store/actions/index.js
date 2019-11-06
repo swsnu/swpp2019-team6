@@ -1,9 +1,9 @@
 export {
   getUser,
+  signup,
 } from './user';
 
 export {
   login,
   logout,
-  signUp,
 } from './auth';
