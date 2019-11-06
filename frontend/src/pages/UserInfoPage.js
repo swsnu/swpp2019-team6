@@ -6,7 +6,7 @@ import UserTravelOverviewList from '../containers/travel-overview/UserTravelOver
 class UserInfoPage extends Component {
   render() {
     return (
-      <div>
+      <div className="userInfoPage">
         <HeaderContainer />
         <UserInfoSectionContainer nickname={this.props.match.params.nickname} />
         <UserTravelOverviewList nickname={this.props.match.params.nickname} />

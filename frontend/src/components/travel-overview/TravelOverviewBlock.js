@@ -125,7 +125,7 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
           </CardActionArea>
           <div>
             {is_mypage ? (
-              <Grid container xs justify="space-between">
+              <Grid container justify="space-between">
                 <Grid item xs={4}>
                   <Button variant="outlined" color="default" fullWidth>
                   Edit
