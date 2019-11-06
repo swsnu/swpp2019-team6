@@ -21,8 +21,10 @@ import DirectionsIcon from '@material-ui/icons/Directions';
 
 const useCardStyles = makeStyles({
   card: {
-    minWidth: 275,
+    minWidth: 720,
     maxWidth: 720,
+    margin: 10,
+    backgroundColor: '#F5DAFC',
   },
   title: {
     fontSize: 14,
@@ -37,7 +39,7 @@ const useMapStyles = makeStyles((theme) => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    width: 400,
+    width: 360,
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -47,7 +49,7 @@ const useMapStyles = makeStyles((theme) => ({
     padding: 10,
   },
   divider: {
-    height: 28,
+    height: 20,
     margin: 4,
   },
 }));
@@ -74,11 +76,11 @@ export default function TravelActivityBlockEdit(props) {
 
   return (
     <Card className={cardClasses.card}>
-      <CardHeader
+      {/* <CardHeader
         // title="Transportation"
         id="title"
         subheader={props.title}
-      />
+      /> */}
       <CardContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container direction="column" justify="space-around">

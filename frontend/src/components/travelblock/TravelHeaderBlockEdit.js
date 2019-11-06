@@ -18,6 +18,8 @@ const useCardStyles = makeStyles({
   card: {
     minWidth: 275,
     maxWidth: 720,
+    margin: 10,
+    backgroundColor: '#83BFFF',
   },
   title: {
     fontSize: 14,
@@ -72,7 +74,7 @@ export default function TravelHeaderBlockEdit() {
       /> */}
       <CardContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid container direction="row" justify="space-around" alignItems="base-line">
+          <Grid container direction="row" justify="space-around" alignItems="baseline">
             <Grid item>
               <FormControl className={textClasses.formControl}>
                 <InputLabel htmlFor="component-title">Title</InputLabel>

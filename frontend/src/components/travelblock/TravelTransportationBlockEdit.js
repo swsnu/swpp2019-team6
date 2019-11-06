@@ -21,8 +21,10 @@ import DirectionsIcon from '@material-ui/icons/Directions';
 
 const useCardStyles = makeStyles({
   card: {
-    minWidth: 275,
-    maxWidth: 720,
+    minWidth: 720,
+    maxWidth: 900,
+    margin: 10,
+    backgroundColor: '#DBFBFF',
   },
   title: {
     fontSize: 14,
@@ -38,6 +40,7 @@ const useMapStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     width: 400,
+    marginLeft: theme.spacing(4),
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -68,15 +71,16 @@ export default function TravelUnitBlockEdit(props) {
 
   const handleDateChangeList = [handleDateChange0, handleDateChange1];
   const selectedDateList = [selectedDate0, selectedDate1];
+  const labelList = ['Start Time', 'End Time'];
 
   const containerId = [0, 1];
 
   return (
     <Card className={cardClasses.card}>
-      <CardHeader
+      {/* <CardHeader
         // title="Transportation"
         subheader="Transportation"
-      />
+      /> */}
 
       <CardContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -87,7 +91,7 @@ export default function TravelUnitBlockEdit(props) {
                   <TimePicker
                     margin="normal"
                     id="time-picker"
-                    label="Start Time"
+                    label={labelList[i]}
                     value={selectedDateList[i]}
                     onChange={handleDateChangeList[i]}
                     KeyboardButtonProps={{

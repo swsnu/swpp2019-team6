@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
-import TravelUnitBlockEdit from './TravelUnitBlockEdit';
+import TravelUnitBlockEdit from './TravelTransportationBlockEdit';
 import '../../setupTests';
 
 describe('<TravelUnitBlockEdit />', () => {

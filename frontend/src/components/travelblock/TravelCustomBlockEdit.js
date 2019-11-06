@@ -17,8 +17,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 const useCardStyles = makeStyles({
   card: {
-    minWidth: 275,
+    minWidth: 720,
     maxWidth: 720,
+    margin: 10,
+    backgroundColor: '#FFFBD2',
   },
   title: {
     fontSize: 14,
@@ -66,11 +68,11 @@ export default function TravelActivityBlockEdit(props) {
 
   return (
     <Card className={cardClasses.card}>
-      <CardHeader
+      {/* <CardHeader
         // title="Transportation"
         id="title"
         subheader="Custom"
-      />
+      /> */}
       <CardContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container direction="column" justify="space-around">
