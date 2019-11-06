@@ -4,12 +4,29 @@ import TravelOverviewBlock from './TravelOverviewBlock';
 
 
 const temptravelOverviewItem = {
-  title: 'Seoul Palace Tour',
-  author: 'Alice',
-  summary: 'Exciting time warp to Chosun Dyasty. Feel the vivid color of Korea.',
-  period: '2019.10.01 ~ 2019.10.04',
-  likes: 57,
-  photo: '/images/1.jpeg',
+  title: 'Ultricies lacus sed turpis tincidunt',
+  author: 'iluvswpp',
+  summary: 'Pharetra magna ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
+  period: '2019.03.04 ~ 2019.03.08',
+  likes: 7,
+  photo: null,
+  is_public: true,
+  allow_comment: true,
+  is_forked: true,
+  collaborators: ['iluvswpp', 'Alice', 'George'],
+};
+
+const temptravelOverviewItem2 = {
+  title: 'Ultricies lacus sed turpis tincidunt',
+  author: 'iluvswpp',
+  summary: 'Pharetra magna ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
+  period: '2019.03.04 ~ 2019.03.08',
+  likes: 7,
+  photo: null,
+  is_public: false,
+  allow_comment: false,
+  is_forked: false,
+  collaborators: ['iluvswpp'],
 };
 
 const emptytravelOverviewItem = {
@@ -19,23 +36,57 @@ const emptytravelOverviewItem = {
   period: null,
   likes: null,
   photo: null,
+  is_public: null,
+  allow_comment: null,
+  is_forked: null,
+  collaborators: null,
 };
 
 
 describe('TravelOverviewBlock', () => {
   let travelOverviewBlock;
 
-  beforeEach(() => {
+  // beforeEach(() => {
+  //   travelOverviewBlock = (
+  //     <TravelOverviewBlock
+  //       travelOverviewItem={temptravelOverviewItem}
+  //       is_mypage={false}
+  //     />
+  //   );
+  // });
+
+  it('should render - is_mypage: false.', () => {
     travelOverviewBlock = (
       <TravelOverviewBlock
         travelOverviewItem={temptravelOverviewItem}
+        is_mypage={false}
       />
     );
-  });
-
-  it('should render.', () => {
     const component = mount(travelOverviewBlock);
     expect(component.find('button').length).toBe(1);
+  });
+
+  it('should render - is_mypage: true / with collaborators', () => {
+    travelOverviewBlock = (
+      <TravelOverviewBlock
+        travelOverviewItem={temptravelOverviewItem}
+        is_mypage
+      />
+    );
+    const component = mount(travelOverviewBlock);
+    expect(component.find('button').length).toBe(4);
+  });
+
+
+  it('should render - is_mypage: true. without collaborators', () => {
+    travelOverviewBlock = (
+      <TravelOverviewBlock
+        travelOverviewItem={temptravelOverviewItem2}
+        is_mypage
+      />
+    );
+    const component = mount(travelOverviewBlock);
+    expect(component.find('button').length).toBe(4);
   });
 
   it('should render empty content.', () => {

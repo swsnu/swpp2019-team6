@@ -52,22 +52,33 @@ const tempTravelList = [{
   photo: '/images/7.jpeg',
 }];
 
-class RecentTravelOverviewList extends Component {
+class SearchTravelOverviewList extends Component {
   state = {
     travelList: tempTravelList,
   }
+  // query keyword will be served in this.props.tag
+  // need to make function that gets query result form DB,
+  // and store resulting list in state.travelList
 
   render() {
     return (
-      <div className="recentTravelOverview">
-        <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
-            Recent
-        </Typography>
-        <TravelOverviewList travelList={this.state.travelList} is_mypage={false} />
-        <Divider style={{ margin: 8 }} />
+      <div>
+        {this.props.tag ? (
+          <div className="SearchTravelOverview">
+            <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
+              Results for #{this.props.tag}
+            </Typography>
+            <TravelOverviewList travelList={this.state.travelList} is_mypage={false} />
+            <Divider style={{ margin: 8 }} />
+          </div>
+        ) : (
+          <Typography variant="h4" style={{ marginTop: 8, padding: 16 }}>
+            No search tag
+          </Typography>
+        )}
       </div>
     );
   }
 }
 
-export default RecentTravelOverviewList;
+export default SearchTravelOverviewList;

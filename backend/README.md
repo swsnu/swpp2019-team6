@@ -8,8 +8,9 @@ Django API server for the **Triplannet** frontend
 # setup for virtual environment
 pip install -r requirements.txt
 
-# run server
+# migrate and run server
 cd triplannet
+python manage.py migrate
 python manage.py runserver
 
 # You can run test suite by typing:

@@ -9,10 +9,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Avartar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import DetailIcon from '@material-ui/icons/DetailsRounded';
+import Paper from '@material-ui/core/Paper';
 import 'typeface-roboto';
 // Set styles of different classes here,
 // and use them by setting className={classes....}
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     left: -45,
     width: 100,
+    zIndex: 1,
     border: '1px solid',
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
@@ -132,7 +134,7 @@ const Header = ({
         {/* right side: user profile, dropdown menu for mypage, logout */}
         <Grid item xs container spacing={1} direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
-            <Avartar alt={user.nickname} src={user.profile} className={classes.avatar} />
+            <Avatar alt={user.nickname} src={user.profile} className={classes.avatar} />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1" className={classes.userNickname}>
@@ -147,14 +149,14 @@ const Header = ({
                 </IconButton>
                 {open
                   ? (
-                    <div className={classes.paper}>
-                      <Button size="small" onClick={onMyPageClicked}>
+                    <Paper className={classes.paper}>
+                      <Button size="small" onClick={onMyPageClicked} fullWidth>
                         My Page
                       </Button>
-                      <Button size="small" onClick={onLogoutClicked}>
+                      <Button size="small" onClick={onLogoutClicked} fullWidth>
                         Logout
                       </Button>
-                    </div>
+                    </Paper>
                   )
                   : null}
               </div>

@@ -6,11 +6,12 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import authReducer from './reducers/auth';
-// import todoReducer from './reducers/todo';
+import userReducer from './reducers/userReducer';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   auth: authReducer,
+  userReducer: userReducer,
   router: connectRouter(history),
 });
 export const middlewares = [thunk, routerMiddleware(history)];

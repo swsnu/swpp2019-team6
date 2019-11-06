@@ -1,7 +1,7 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import TravelOverviewList from './TravelOverviewList';
-
+import React, { Component } from 'react';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
 const tempTravelList = [{
   title: 'Curabitur gravida arcu ac tortor dignissim',
@@ -9,7 +9,7 @@ const tempTravelList = [{
   summary: 'Habitasse platea dictumst quisque sagittis. Mattis aliquam faucibus purus in massa tempor nec feugiat.',
   period: '2019.10.01 ~ 2019.10.04',
   likes: 57,
-  photo: null,
+  photo: '/images/8.jpeg',
   is_public: false,
   allow_comment: false,
   is_forked: false,
@@ -21,7 +21,7 @@ const tempTravelList = [{
   summary: 'Magnis dis parturient montes nascetur ridiculus mus mauris vitae. Pellentesque pulvinar pellentesque habitant morbi tristique.',
   period: '2019.01.03 ~ 2019.10.15',
   likes: 30,
-  photo: null,
+  photo: '/images/9.jpeg',
   is_public: true,
   allow_comment: true,
   is_forked: false,
@@ -33,7 +33,7 @@ const tempTravelList = [{
   summary: 'Eget mauris pharetra et ultrices neque ornare. Faucibus et molestie ac feugiat sed lectus vestibulum.',
   period: '2019.07.29 ~ 2019.08.01',
   likes: 19,
-  photo: null,
+  photo: '/images/10.jpeg',
   is_public: true,
   allow_comment: false,
   is_forked: false,
@@ -45,7 +45,7 @@ const tempTravelList = [{
   summary: 'Pharetra magna ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
   period: '2019.03.04 ~ 2019.03.08',
   likes: 7,
-  photo: null,
+  photo: '/images/11.jpeg',
   is_public: false,
   allow_comment: false,
   is_forked: true,
@@ -55,50 +55,31 @@ const tempTravelList = [{
 
 const emptyTravelList = [];
 
+// somehow determine whether this page is of current user or not.
+const is_mypage = true;
 
-describe('TravelOverviewList', () => {
-  let travelOverviewList;
+class UserTravelOverviewList extends Component {
+  state = {
+    travelList: tempTravelList,
+  }
 
-  // beforeEach(() => {
-  //   travelOverviewList = (
-  //     <TravelOverviewList
-  //       travelList={tempTravelList}
-  //     />
-  //   );
-  // });
-
-  it('should render. - is_mypage: false', () => {
-    travelOverviewList = (
-      <TravelOverviewList
-        travelList={tempTravelList}
-        is_mypage={false}
-      />
+  render() {
+    return (
+      <div>
+        <div style={{ marginBottom: 24 }} />
+        {this.state.travelList.length ? (
+          <div className="userTravelOverview">
+            <TravelOverviewList travelList={this.state.travelList} is_mypage={is_mypage} />
+            <Divider style={{ margin: 8 }} />
+          </div>
+        ) : (
+          <Typography align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>
+            Make your first plan for a travel, {this.props.nickname}!
+          </Typography>
+        )}
+      </div>
     );
-    const component = mount(travelOverviewList);
-    expect(component.find('button').length).toBe(4);
-  });
+  }
+}
 
-  it('should render. - is_mypage: true', () => {
-    travelOverviewList = (
-      <TravelOverviewList
-        travelList={tempTravelList}
-        is_mypage
-      />
-    );
-    const component = mount(travelOverviewList);
-    expect(component.find('button').length).toBe(17);
-  });
-
-
-  it('should render empty content.', () => {
-    const component = mount(<TravelOverviewList
-      travelList={emptyTravelList}
-    />);
-    expect(component.find('.MuiGrid-item').length).toBe(0);
-  });
-
-  it('should render nothing.', () => {
-    const component = mount(<TravelOverviewList />);
-    expect(component.find('.MuiGrid-container').length).toBe(0);
-  });
-});
+export default UserTravelOverviewList;
