@@ -2,12 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
-import TravelUnitBlockEdit from './TravelTransportationBlockEdit';
+import TravelTransportationBlockEdit from './TravelTransportationBlockEdit';
 import '../../setupTests';
 
-describe('<TravelUnitBlockEdit />', () => {
+describe('<TravelTransportationBlockEdit />', () => {
   it('should render without errors', () => {
-    const component = shallow(<TravelUnitBlockEdit />);
+    const component = shallow(<TravelTransportationBlockEdit />);
     const wrapperCard = component.find(Card);
     expect(wrapperCard.length).toBe(1);
     const wrapperPaper = component.find(Paper);
@@ -15,7 +15,7 @@ describe('<TravelUnitBlockEdit />', () => {
   });
   it('should request search', () => {
     const searchHandler = jest.fn();
-    const component = shallow(<TravelUnitBlockEdit searchHandler={searchHandler} />);
+    const component = shallow(<TravelTransportationBlockEdit searchHandler={searchHandler} />);
     const button = component.find('#search');
     expect(button.length).toBe(2);
     button.at(0).simulate('click');
