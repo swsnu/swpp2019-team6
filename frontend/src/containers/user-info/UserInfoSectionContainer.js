@@ -28,13 +28,7 @@ class UserInfoSectionContainer extends Component {
         {this.state.currentUser ? (
           <div className="userInfo">
             <UserInfoSection
-              nickname={this.state.currentUser.nickname}
-              register_date={this.state.currentUser.register_date}
-              status_message={this.state.currentUser.status_message}
-              num_plans={this.state.currentUser.num_plans}
-              num_likes={this.state.currentUser.num_likes}
-              num_forked={this.state.currentUser.num_forked}
-              user_photo={this.state.currentUser.user_photo}
+              user={this.state.currentUser}
               is_mypage={is_mypage}
               onEditButtonClicked={this.onEditButtonClicked}
             />

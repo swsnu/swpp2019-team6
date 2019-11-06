@@ -6,7 +6,7 @@ import TravelOverviewList from '../../components/travel-overview/TravelOverviewL
 const tempTravelList = [{
   title: 'Curabitur gravida arcu ac tortor convallis',
   author: 'David',
-  summary: 'Tortor dignissim convallis aenean et tortor. Euismod lacinia at quis risus sed.',
+  summary: 'Tortor dignissim convallis aenean et tortor. Euismod lacinia at quis risus sedi.',
   period: '2019.10.01 ~ 2019.10.04',
   likes: 57,
   photo: null,
@@ -14,7 +14,7 @@ const tempTravelList = [{
 {
   title: 'Habitasse platea dictumst quisque sagittis',
   author: 'Emily',
-  summary: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
+  summary: 'Lorem ipsum dolor sit amet consectetur adipiscing eliti.',
   period: '2019.01.03 ~ 2019.10.15',
   likes: 30,
   photo: '/images/4.jpeg',
@@ -22,7 +22,7 @@ const tempTravelList = [{
 {
   title: 'Mattis aliquam faucibus purus',
   author: 'Fred',
-  summary: 'Integer quis auctor elit sed vulputate mi sit. Cum sociis natoque penatibus et magnis dis parturient montes nascetur.',
+  summary: 'Integer quis auctor elit sed vulputate mi sit. Cum sociis natoque penatibus et magnis dis parturient montes nasceturi.',
   period: '2019.07.29 ~ 2019.08.01',
   likes: 19,
   photo: '/images/5.jpeg',
@@ -30,7 +30,7 @@ const tempTravelList = [{
 {
   title: 'Quis viverra nibh cras pulvinar mattis',
   author: 'George',
-  summary: 'Habitasse platea dictumst vestibulum rhoncus est pellentesque.',
+  summary: 'Habitasse platea dictumst vestibulum rhoncus est pellentesquei.',
   period: '2019.10.01 ~ 2019.10.04',
   likes: 57,
   photo: '/images/6.jpeg',
@@ -38,7 +38,7 @@ const tempTravelList = [{
 {
   title: 'Magnis dis parturient montes nascetur',
   author: 'Harry',
-  summary: 'Et leo duis ut diam quam.',
+  summary: 'Et leo duis ut diam quami.',
   period: '2019.01.03 ~ 2019.10.15',
   likes: 30,
   photo: null,
@@ -46,7 +46,7 @@ const tempTravelList = [{
 {
   title: 'Ridiculus mus mauris vitae',
   author: 'Isabella',
-  summary: 'Ac tortor vitae purus faucibus. Odio eu feugiat pretium nibh ipsum.',
+  summary: 'Ac tortor vitae purus faucibus. Odio eu feugiat pretium nibh ipsumi.',
   period: '2019.07.29 ~ 2019.08.01',
   likes: 19,
   photo: '/images/7.jpeg',
