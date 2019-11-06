@@ -5,7 +5,7 @@ import Header from '../../components/common/Header';
 const tempUser = {
   email: 'swpp@snu.ac.kr',
   nickname: 'iluvswpp',
-  profile: null,
+  profile: '/images/13.jpeg',
 };
 
 // function: onLogoutClicked, onMyPageClicked, onSearchInputChanged, onSearchButtonClicked

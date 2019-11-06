@@ -5,11 +5,11 @@ import UserInfoSection from '../../components/user-info/UserInfoSection';
 const tempUser = {
   nickname: 'iluvswpp',
   register_date: '2019.10.10',
-  status_message: 'I love swpp. Believe it or not!',
-  num_plans: 6,
+  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a scelerisque purus semper eget.',
+  num_plans: 4,
   num_likes: 45,
   num_forked: 3,
-  user_photo: '/images/1.jpeg',
+  user_photo: '/images/13.jpeg',
 };
 
 const is_mypage = true;
