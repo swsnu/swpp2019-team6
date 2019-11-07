@@ -5,10 +5,10 @@ import CreateTravel from '../containers/createTravel/CreateTravel';
 class CreateTravelPage extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <HeaderContainer />
         <CreateTravel />
-      </React.Fragment>
+      </>
     );
   }
 }
