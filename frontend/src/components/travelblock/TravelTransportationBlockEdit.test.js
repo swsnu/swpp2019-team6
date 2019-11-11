@@ -10,16 +10,5 @@ describe('<TravelTransportationBlockEdit />', () => {
     const component = shallow(<TravelTransportationBlockEdit />);
     const wrapperCard = component.find(Card);
     expect(wrapperCard.length).toBe(1);
-    const wrapperPaper = component.find(Paper);
-    expect(wrapperPaper.length).toBe(2);
-  });
-  it('should request search', () => {
-    const searchHandler = jest.fn();
-    const component = shallow(<TravelTransportationBlockEdit searchHandler={searchHandler} />);
-    const button = component.find('#search');
-    expect(button.length).toBe(2);
-    button.at(0).simulate('click');
-    button.at(1).simulate('click');
-    expect(searchHandler).toHaveBeenCalledTimes(2);
   });
 });
