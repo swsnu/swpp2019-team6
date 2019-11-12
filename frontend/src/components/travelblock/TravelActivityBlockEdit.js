@@ -30,14 +30,14 @@ const useCardStyles = makeStyles({
 export default function TravelActivityBlockEdit(props) {
   const cardClasses = useCardStyles();
 
-  const [startDate, setStartDate] = React.useState(new Date('2020-01-01T09:00:00'));
-  const [endDate, setEndDate] = React.useState(new Date('2020-01-01T09:00:00'));
+  const [startTime, setStartTime] = React.useState(new Date('2030-01-01T09:00:00'));
+  const [endTime, setEndTime] = React.useState(new Date('2030-01-01T09:00:00'));
 
-  const handleStartDate = (date) => {
-    setStartDate(date);
+  const handleStartTime = (date) => {
+    setStartTime(date);
   };
-  const handleEndDate = (date) => {
-    setEndDate(date);
+  const handleEndTime = (date) => {
+    setEndTime(date);
   };
 
   return (
@@ -56,13 +56,13 @@ export default function TravelActivityBlockEdit(props) {
             <Grid container direction="row" justify="space-around" alignItems="center">
               <TimePickerWrapper
                 label="Start Time"
-                value={startDate}
-                onChange={handleStartDate}
+                value={startTime}
+                onChange={handleStartTime}
               />
               <TimePickerWrapper
                 label="End Time"
-                value={endDate}
-                onChange={handleEndDate}
+                value={endTime}
+                onChange={handleEndTime}
               />
             </Grid>
           </Grid>
