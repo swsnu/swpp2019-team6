@@ -4,20 +4,13 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
+import GoogleMapSearch from '../common/GoogleMapSearch';
+import TimePickerWrapper from '../common/TimePicker';
 
 const useCardStyles = makeStyles({
   card: {
@@ -34,45 +27,18 @@ const useCardStyles = makeStyles({
   },
 });
 
-const useMapStyles = makeStyles((theme) => ({
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: 360,
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 20,
-    margin: 4,
-  },
-}));
-
 export default function TravelActivityBlockEdit(props) {
   const cardClasses = useCardStyles();
-  const mapClasses = useMapStyles();
 
-  const [selectedDate0, setSelectedDate0] = React.useState(new Date('2020-01-01T09:00:00'));
-  const [selectedDate1, setSelectedDate1] = React.useState(new Date('2020-01-01T09:00:00'));
+  const [startTime, setStartTime] = React.useState(new Date('2030-01-01T09:00:00'));
+  const [endTime, setEndTime] = React.useState(new Date('2030-01-01T09:00:00'));
 
-  const handleDateChange0 = (date) => {
-    setSelectedDate0(date);
+  const handleStartTime = (date) => {
+    setStartTime(date);
   };
-  const handleDateChange1 = (date) => {
-    setSelectedDate1(date);
+  const handleEndTime = (date) => {
+    setEndTime(date);
   };
-
-  const handleDateChangeList = [handleDateChange0, handleDateChange1];
-  const selectedDateList = [selectedDate0, selectedDate1];
-
-  const containerId = [0, 1];
-  const labelList = ['Start Time', 'End Time'];
 
   return (
     <Card className={cardClasses.card}>
@@ -85,43 +51,19 @@ export default function TravelActivityBlockEdit(props) {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container direction="column" justify="space-around">
             <Grid container direction="row" justify="space-around" alignItems="center">
-              <Paper className={mapClasses.root}>
-                <IconButton className={mapClasses.iconButton} aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
-                <InputBase
-                  className={mapClasses.input}
-                  placeholder="Search Google Maps"
-                  inputProps={{ 'aria-label': 'search google maps' }}
-                />
-                <IconButton
-                  className={mapClasses.iconButton}
-                  id="search"
-                  aria-label="search"
-                  onClick={() => props.searchHandler()}
-                >
-                  <SearchIcon />
-                </IconButton>
-                <Divider className={mapClasses.divider} orientation="vertical" />
-                <IconButton color="primary" className={mapClasses.iconButton} aria-label="directions">
-                  <DirectionsIcon />
-                </IconButton>
-              </Paper>
+              <GoogleMapSearch searchHandler={props.searchHandler} />
             </Grid>
             <Grid container direction="row" justify="space-around" alignItems="center">
-              {containerId.map((i) => {
-                return (
-                  <TimePicker
-                    key={i}
-                    margin="normal"
-                    id="time-picker"
-                    label={labelList[i]}
-                    value={selectedDateList[i]}
-                    onChange={handleDateChangeList[i]}
-                    KeyboardButtonProps={{ 'aria-label': 'change time' }}
-                  />
-                );
-              })}
+              <TimePickerWrapper
+                label="Start Time"
+                value={startTime}
+                onChange={handleStartTime}
+              />
+              <TimePickerWrapper
+                label="End Time"
+                value={endTime}
+                onChange={handleEndTime}
+              />
             </Grid>
           </Grid>
         </MuiPickersUtilsProvider>

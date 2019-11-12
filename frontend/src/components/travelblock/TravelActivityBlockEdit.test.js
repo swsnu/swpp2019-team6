@@ -3,7 +3,9 @@ import { shallow } from 'enzyme';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
 import CardHeader from '@material-ui/core/CardHeader';
+
 import TravelActivityBlockEdit from './TravelActivityBlockEdit';
+import TimePickerWrapper from '../common/TimePicker';
 
 import '../../setupTests';
 
@@ -12,21 +14,17 @@ describe('<TravelActivityBlockEdit />', () => {
     const component = shallow(<TravelActivityBlockEdit />);
     const wrapperCard = component.find(Card);
     expect(wrapperCard.length).toBe(1);
-    const wrapperPaper = component.find(Paper);
-    expect(wrapperPaper.length).toBe(1);
   });
-  it('should request search', () => {
-    const searchHandler = jest.fn();
-    const component = shallow(<TravelActivityBlockEdit searchHandler={searchHandler} />);
-    const button = component.find('#search');
-    expect(button.length).toBe(1);
-    button.simulate('click');
-    expect(searchHandler).toHaveBeenCalledTimes(1);
+
+  it('should change time', () => {
+    const setState = jest.fn();
+    const useStateSpy = jest.spyOn(React, 'useState');
+    useStateSpy.mockImplementation((init) => [init, setState]);
+    const component = shallow(<TravelActivityBlockEdit />);
+    const wrapperTimePicker = component.find(TimePickerWrapper);
+    expect(wrapperTimePicker.length).toBe(2);
+    wrapperTimePicker.at(0).simulate('change', { target: { value: '2000-01-01T00:00:00' } });
+    wrapperTimePicker.at(1).simulate('change', { target: { value: '2000-01-01T00:00:00' } });
+    expect(setState).toHaveBeenCalledTimes(2);
   });
-  // it('should render title', () => {
-  //   const title = 'Activity';
-  //   const component = shallow(<TravelActivityBlockEdit title={title} />);
-  //   const header = component.find(CardHeader);
-  //   expect(header.props().subheader).toBe(title);
-  // });
 });

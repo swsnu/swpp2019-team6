@@ -6,13 +6,14 @@ import Grid from '@material-ui/core/Grid';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  DatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+
+import DatePickerWrapper from '../common/DatePicker';
 
 const useCardStyles = makeStyles({
   card: {
@@ -43,8 +44,8 @@ export default function TravelHeaderBlockEdit() {
   const cardClasses = useCardStyles();
   const textClasses = useTextStyles();
 
-  const [selectedDate0, setSelectedDate0] = React.useState(new Date().getTime());
-  const [selectedDate1, setSelectedDate1] = React.useState(new Date().getTime());
+  const [startDate, setStartDate] = React.useState(new Date().getTime());
+  const [endDate, setEndDate] = React.useState(new Date().getTime());
 
   const [name, setName] = React.useState('Travel Title');
 
@@ -52,18 +53,12 @@ export default function TravelHeaderBlockEdit() {
     setName(event.target.value);
   };
 
-  const handleDateChange0 = (date) => {
-    setSelectedDate0(date);
+  const handleStartDate = (date) => {
+    setStartDate(date);
   };
-  const handleDateChange1 = (date) => {
-    setSelectedDate1(date);
+  const handleEndDate = (date) => {
+    setEndDate(date);
   };
-
-  const handleDateChangeList = [handleDateChange0, handleDateChange1];
-  const selectedDateList = [selectedDate0, selectedDate1];
-
-  const containerId = [0, 1];
-  const labelList = ['Start Date', 'End Date'];
 
   return (
     <Card className={cardClasses.card}>
@@ -82,23 +77,16 @@ export default function TravelHeaderBlockEdit() {
               </FormControl>
             </Grid>
             <Grid item>
-              {containerId.map((i) => {
-                return (
-                  <DatePicker
-                    key={i}
-                    disableToolbar
-                    className={textClasses.formControl}
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label={labelList[i]}
-                    value={selectedDateList[i]}
-                    onChange={handleDateChangeList[i]}
-                    KeyboardButtonProps={{ 'aria-label': 'change date' }}
-                  />
-                );
-              })}
+              <DatePickerWrapper
+                label="Start Date"
+                value={startDate}
+                onChange={handleStartDate}
+              />
+              <DatePickerWrapper
+                label="End Date"
+                value={endDate}
+                onChange={handleEndDate}
+              />
             </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
