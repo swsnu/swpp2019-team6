@@ -8,6 +8,9 @@ import RestaurantIcon from '@material-ui/icons/Restaurant';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import HotelIcon from '@material-ui/icons/Hotel';
+import AddIcon from '@material-ui/icons/Add';
+import Box from '@material-ui/core/Box';
+import { borders } from '@material-ui/system';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import TravelHeaderBlockEdit from '../../components/travelblock/TravelHeaderBlockEdit';
@@ -81,12 +84,15 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-const getFloatStyle = (isDragging, draggableStyle) => ({
-  background: isDragging ? 'white' : '#11ffee00',
-
-  width: isDragging ? 720 : 'inherit',
-  height: isDragging ? 200 : 'inherit',
+const getFloatStyle = (isDragging, draggableStyle, otherDragging) => ({
+  background: isDragging ? 'green' : 'transparent',
+  shadow: isDragging ? 2 : 0,
+  border: isDragging ? '2px solid black' : 0,
+  borderRadius: 8,
+  minWidth: isDragging ? 720 : 'inherit',
+  minHeight: isDragging ? 100 : 'inherit',
   ...draggableStyle,
+  opacity: (isDragging && 0.30) || (otherDragging && 0.90) || 0.0,
 });
 
 const getListStyle = (isDraggingOver) => ({
@@ -102,8 +108,14 @@ const getPaddingStyle = () => ({
 export default function CreateTravel(props) {
   const fabClasses = useFabStyles();
   const [items, setItems] = useState(getItems(0));
+  const [buttonDraggable, setButtonDraggable] = useState(true);
+
+  const onBeforeDragStart = (event) => {
+    setButtonDraggable(false);
+  };
 
   const onDragEnd = (result) => {
+    setButtonDraggable(true);
     if (!result.destination) {
       return;
     }
@@ -138,7 +150,7 @@ export default function CreateTravel(props) {
       <Grid container alignItems="center" direction="column" justify="space-around">
         <TravelHeaderBlockEdit />
       </Grid>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <>
@@ -153,32 +165,34 @@ export default function CreateTravel(props) {
               >
                 {items.map((item, index) => (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(_provided, _snapshot) => (
-                      <Grid
-                        container
-                        alignItems="center"
-                        direction="column"
-                        justify="space-around"
-                        ref={_provided.innerRef}
-                        {..._provided.draggableProps}
-                        {..._provided.dragHandleProps}
-                        style={getItemStyle(
-                          _snapshot.isDragging,
-                          _provided.draggableProps.style,
-                        )}
-                      >
-                        { item.id.startsWith('restaurant')
-                          && <TravelActivityBlockEdit title="Restaurant" />}
-                        { item.id.startsWith('transportation')
-                          && <TravelTransportationBlockEdit />}
-                        { item.id.startsWith('activity')
-                          && <TravelActivityBlockEdit title="Activity" /> }
-                        { item.id.startsWith('hotel')
-                          && <TravelActivityBlockEdit title="Hotel" /> }
-                        { item.id.startsWith('custom')
-                          && <TravelCustomBlockEdit />}
-                      </Grid>
-                    )}
+                    {(_provided, _snapshot) => {
+                      return (
+                        <Grid
+                          container
+                          alignItems="center"
+                          direction="column"
+                          justify="space-around"
+                          ref={_provided.innerRef}
+                          {..._provided.draggableProps}
+                          {..._provided.dragHandleProps}
+                          style={getItemStyle(
+                            _snapshot.isDragging,
+                            _provided.draggableProps.style,
+                          )}
+                        >
+                          { item.id.startsWith('restaurant')
+                            && <TravelActivityBlockEdit title="Restaurant" />}
+                          { item.id.startsWith('transportation')
+                            && <TravelTransportationBlockEdit />}
+                          { item.id.startsWith('activity')
+                            && <TravelActivityBlockEdit title="Activity" /> }
+                          { item.id.startsWith('hotel')
+                            && <TravelActivityBlockEdit title="Hotel" /> }
+                          { item.id.startsWith('custom')
+                            && <TravelCustomBlockEdit />}
+                        </Grid>
+                      );
+                    }}
                   </Draggable>
                 ))}
                 {provided.placeholder}
@@ -190,74 +204,162 @@ export default function CreateTravel(props) {
               </Grid>
               <>
                 <Draggable draggableId="restaurant" index={getMaxItemIndex()}>
-                  {(_provided, _snapshot) => (
-                    <Fab className={fabClasses.restaurant}>
-                      <Grid
-                        item
-                        ref={_provided.innerRef}
-                        {..._provided.draggableProps}
-                        {..._provided.dragHandleProps}
-                      >
-                        <RestaurantIcon className={fabClasses.restaurantIcon} />
-                      </Grid>
-                    </Fab>
-                  )}
+                  {(_provided, _snapshot) => {
+                    const style = getFloatStyle(_snapshot.isDragging,
+                      _provided.draggableProps.style, buttonDraggable);
+                    return (
+                      <>
+                        <Fab className={fabClasses.restaurant}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            ref={_provided.innerRef}
+                            {..._provided.draggableProps}
+                            {..._provided.dragHandleProps}
+                            style={style}
+                          >
+                            {_snapshot.isDragging
+                              ? <AddIcon className={fabClasses.restaurantIcon} />
+                              : <RestaurantIcon className={fabClasses.restaurantIcon} />}
+                          </Box>
+                        </Fab>
+                        {!buttonDraggable && (
+                          <Fab className={fabClasses.restaurant}>
+                            <Grid item>
+                              <RestaurantIcon className={fabClasses.restaurantIcon} />
+                            </Grid>
+                          </Fab>
+                        )}
+                      </>
+                    );
+                  }}
                 </Draggable>
                 <Draggable draggableId="transportation" index={getMaxItemIndex()}>
-                  {(_provided, _snapshot) => (
-                    <Fab className={fabClasses.transportation}>
-                      <Grid
-                        item
-                        ref={_provided.innerRef}
-                        {..._provided.draggableProps}
-                        {..._provided.dragHandleProps}
-                      >
-                        <DriveEtaIcon className={fabClasses.transportationIcon} />
-                      </Grid>
-                    </Fab>
-                  )}
+                  {(_provided, _snapshot) => {
+                    const style = getFloatStyle(_snapshot.isDragging,
+                      _provided.draggableProps.style, buttonDraggable);
+                    return (
+                      <>
+                        <Fab className={fabClasses.transportation}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            ref={_provided.innerRef}
+                            {..._provided.draggableProps}
+                            {..._provided.dragHandleProps}
+                            style={style}
+                          >
+                            {_snapshot.isDragging
+                              ? <AddIcon className={fabClasses.transportationIcon} />
+                              : <DriveEtaIcon className={fabClasses.transportationIcon} />}
+                          </Box>
+                        </Fab>
+                        {!buttonDraggable && (
+                          <Fab className={fabClasses.transportation}>
+                            <Grid item>
+                              <DriveEtaIcon className={fabClasses.transportationIcon} />
+                            </Grid>
+                          </Fab>
+                        )}
+                      </>
+                    );
+                  }}
                 </Draggable>
+
                 <Draggable draggableId="activity" index={getMaxItemIndex()}>
-                  {(_provided, _snapshot) => (
-                    <Fab className={fabClasses.activity}>
-                      <Grid
-                        item
-                        ref={_provided.innerRef}
-                        {..._provided.draggableProps}
-                        {..._provided.dragHandleProps}
-                      >
-                        <AccessibilityNewIcon className={fabClasses.activityIcon} />
-                      </Grid>
-                    </Fab>
-                  )}
+                  {(_provided, _snapshot) => {
+                    const style = getFloatStyle(_snapshot.isDragging,
+                      _provided.draggableProps.style, buttonDraggable);
+                    return (
+                      <>
+                        <Fab className={fabClasses.activity}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            ref={_provided.innerRef}
+                            {..._provided.draggableProps}
+                            {..._provided.dragHandleProps}
+                            style={style}
+                          >
+                            {_snapshot.isDragging ? <AddIcon className={fabClasses.activityIcon} />
+                              : <AccessibilityNewIcon className={fabClasses.activityIcon} />}
+                          </Box>
+                        </Fab>
+                        {!buttonDraggable && (
+                          <Fab className={fabClasses.activity}>
+                            <Grid item>
+                              <AccessibilityNewIcon className={fabClasses.activityIcon} />
+                            </Grid>
+                          </Fab>
+                        )}
+                      </>
+                    );
+                  }}
                 </Draggable>
                 <Draggable draggableId="hotel" index={getMaxItemIndex()}>
-                  {(_provided, _snapshot) => (
-                    <Fab className={fabClasses.hotel}>
-                      <Grid
-                        item
-                        ref={_provided.innerRef}
-                        {..._provided.draggableProps}
-                        {..._provided.dragHandleProps}
-                      >
-                        <HotelIcon className={fabClasses.hotelIcon} />
-                      </Grid>
-                    </Fab>
-                  )}
+                  {(_provided, _snapshot) => {
+                    const style = getFloatStyle(_snapshot.isDragging,
+                      _provided.draggableProps.style, buttonDraggable);
+                    return (
+                      <>
+                        <Fab className={fabClasses.hotel}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            ref={_provided.innerRef}
+                            {..._provided.draggableProps}
+                            {..._provided.dragHandleProps}
+                            style={style}
+                          >
+                            {_snapshot.isDragging ? <AddIcon className={fabClasses.hotelIcon} />
+                              : <HotelIcon className={fabClasses.hotelIcon} />}
+                          </Box>
+                        </Fab>
+                        {!buttonDraggable && (
+                          <Fab className={fabClasses.hotel}>
+                            <Grid item>
+                              <HotelIcon className={fabClasses.hotelIcon} />
+                            </Grid>
+                          </Fab>
+                        )}
+                      </>
+                    );
+                  }}
                 </Draggable>
                 <Draggable draggableId="custom" index={getMaxItemIndex()}>
-                  {(_provided, _snapshot) => (
-                    <Fab className={fabClasses.custom}>
-                      <Grid
-                        item
-                        ref={_provided.innerRef}
-                        {..._provided.draggableProps}
-                        {..._provided.dragHandleProps}
-                      >
-                        <ContactSupportIcon className={fabClasses.customIcon} />
-                      </Grid>
-                    </Fab>
-                  )}
+                  {(_provided, _snapshot) => {
+                    const style = getFloatStyle(_snapshot.isDragging,
+                      _provided.draggableProps.style, buttonDraggable);
+                    return (
+                      <>
+                        <Fab className={fabClasses.custom}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            ref={_provided.innerRef}
+                            {..._provided.draggableProps}
+                            {..._provided.dragHandleProps}
+                            style={style}
+                          >
+                            {_snapshot.isDragging ? <AddIcon className={fabClasses.hotelIcon} />
+                              : <ContactSupportIcon className={fabClasses.hotelIcon} />}
+                          </Box>
+                        </Fab>
+                        {!buttonDraggable && (
+                          <Fab className={fabClasses.custom}>
+                            <Grid item>
+                              <ContactSupportIcon className={fabClasses.hotelIcon} />
+                            </Grid>
+                          </Fab>
+                        )}
+                      </>
+                    );
+                  }}
                 </Draggable>
               </>
             </>
