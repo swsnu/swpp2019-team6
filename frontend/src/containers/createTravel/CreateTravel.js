@@ -10,7 +10,6 @@ import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import HotelIcon from '@material-ui/icons/Hotel';
 import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';
-import { borders } from '@material-ui/system';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import TravelHeaderBlockEdit from '../../components/travelblock/TravelHeaderBlockEdit';
