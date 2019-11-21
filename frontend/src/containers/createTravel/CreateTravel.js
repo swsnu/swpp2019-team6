@@ -76,9 +76,16 @@ const useFabStyles = makeStyles((theme) => ({
   },
 }));
 
-const getItems = (count) => Array.from({ length: count }, (v, k) => k).map((k) => ({
-  id: `item-${k}`,
-}));
+export function getItems(count) {
+  console.log('getItems', count);
+  return Array.from({ length: count }, (v, k) => k).map((k) => ({
+    id: `item-${k}`,
+  }));
+}
+
+// export const getItems = (count) => Array.from({ length: count }, (v, k) => k).map((k) => ({
+//   id: `item-${k}`,
+// }));
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -93,12 +100,6 @@ const removeItem = (list, index) => {
   return result;
 };
 
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // background: isDragging ? 'white' : 'white',
-  ...draggableStyle,
-});
-
 const getFloatStyle = (isDragging, draggableStyle, otherDragging) => ({
   background: isDragging ? 'green' : 'transparent',
   shadow: isDragging ? 2 : 0,
@@ -112,7 +113,7 @@ const getFloatStyle = (isDragging, draggableStyle, otherDragging) => ({
 
 const getListStyle = (isDraggingOver) => ({
   width: 720,
-  minHeight: 300,
+  minHeight: 100,
 });
 
 const getButtonDivStyle = (isDraggingOver) => ({
@@ -124,6 +125,7 @@ const getButtonDivStyle = (isDraggingOver) => ({
 });
 
 const getRemoveDivStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? 'red' : 'green',
   position: 'absolute',
   left: 0,
   bottom: 0,
@@ -132,16 +134,18 @@ const getRemoveDivStyle = (isDraggingOver) => ({
 });
 
 const getPaddingStyle = () => ({
-  backgroundColor: 'red',
   minHeight: 150,
 });
 
 export default function CreateTravel(props) {
   const fabClasses = useFabStyles();
-  const [items, setItems] = useState(getItems(0));
+  const [items, setItems] = useState(props.items || getItems(0));
   const [buttonDraggable, setButtonDraggable] = useState(true);
   const [removeDraggable, setRemoveDraggable] = useState(false);
-
+  // if (props.items) {
+  //   setItems(props.items);
+  // }
+  console.log(items, buttonDraggable);
   const getMaxItemIndex = () => {
     return items.length;
   };
@@ -217,7 +221,6 @@ export default function CreateTravel(props) {
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
-                {provided.placeholder}
                 {items.map((item, index) => (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(_provided, _snapshot) => {
@@ -230,10 +233,6 @@ export default function CreateTravel(props) {
                           ref={_provided.innerRef}
                           {..._provided.draggableProps}
                           {..._provided.dragHandleProps}
-                          // style={getItemStyle(
-                          //   _snapshot.isDragging,
-                          //   _provided.draggableProps.style,
-                          // )}
                         >
                           { item.id.startsWith('restaurant') && (!_snapshot.isDragging || !removeDraggable)
                             && <TravelActivityBlockEdit title="Restaurant" />}
@@ -252,14 +251,15 @@ export default function CreateTravel(props) {
                     }}
                   </Draggable>
                 ))}
-                <Button variant="contained" color="secondary" disabled={items.length === 0}>
-                  Create
-                </Button>
-                <Grid style={getPaddingStyle()} />
               </Grid>
+              {provided.placeholder}
             </>
           )}
         </Droppable>
+        <Button variant="contained" color="secondary" disabled={items.length === 0}>
+          Create
+        </Button>
+        <Grid style={getPaddingStyle()} />
         <Droppable droppableId="droppableButton" direction="horizontal">
           {(provided, snapshot) => (
             <Grid
@@ -273,6 +273,7 @@ export default function CreateTravel(props) {
                 {(_provided, _snapshot) => {
                   const style = getFloatStyle(_snapshot.isDragging,
                     _provided.draggableProps.style, buttonDraggable);
+                  console.log("test", _snapshot);
                   return (
                     <>
                       <Fab className={fabClasses.restaurant}>
