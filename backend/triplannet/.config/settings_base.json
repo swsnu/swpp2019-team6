@@ -1,0 +1,5 @@
+{
+    "django": {
+        "secret_key": "swpp2019-team6"
+    }
+}
