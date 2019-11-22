@@ -18,7 +18,6 @@ const useCardStyles = makeStyles({
   card: {
     minWidth: 720,
     maxWidth: 900,
-    margin: 10,
     backgroundColor: '#DBFBFF',
   },
   title: {

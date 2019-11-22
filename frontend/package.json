@@ -11,6 +11,7 @@
     "@material-ui/system": "^4.5.2",
     "axios": "^0.19.0",
     "babel-eslint": "^10.0.3",
+    "clsx": "^1.0.4",
     "connected-react-router": "^6.5.2",
     "date-fns": "^2.6.0",
     "enzyme": "^3.10.0",

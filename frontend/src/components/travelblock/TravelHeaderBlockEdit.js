@@ -19,7 +19,6 @@ const useCardStyles = makeStyles({
   card: {
     minWidth: 275,
     maxWidth: 720,
-    margin: 10,
     backgroundColor: '#83BFFF',
   },
   title: {
@@ -40,51 +39,44 @@ const useTextStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TravelHeaderBlockEdit() {
+export default function TravelHeaderBlockEdit(props) {
   const cardClasses = useCardStyles();
   const textClasses = useTextStyles();
 
-  const [startDate, setStartDate] = React.useState(new Date().getTime());
-  const [endDate, setEndDate] = React.useState(new Date().getTime());
-
-  const [name, setName] = React.useState('Travel Title');
-
   const handleChange = (event) => {
-    setName(event.target.value);
+    props.setTravelTitle(event.target.value);
   };
 
   const handleStartDate = (date) => {
-    setStartDate(date);
+    props.handlePeriodChange(date, props.endDate);
+    props.setStartDate(date);
   };
+
   const handleEndDate = (date) => {
-    setEndDate(date);
+    props.handlePeriodChange(props.startDate, date);
+    props.setEndDate(date);
   };
 
   return (
     <Card className={cardClasses.card}>
-      {/* <CardHeader
-        // title="Transportation"
-        id="title"
-        subheader="Travel"
-      /> */}
       <CardContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container direction="row" justify="space-around" alignItems="baseline">
             <Grid item>
               <FormControl className={textClasses.formControl}>
                 <InputLabel htmlFor="component-title">Title</InputLabel>
-                <Input id="component-title" value={name} onChange={handleChange} />
+                <Input id="component-title" value={props.travelTitle} onChange={handleChange} />
               </FormControl>
             </Grid>
             <Grid item>
               <DatePickerWrapper
                 label="Start Date"
-                value={startDate}
+                value={props.startDate}
                 onChange={handleStartDate}
               />
               <DatePickerWrapper
                 label="End Date"
-                value={endDate}
+                value={props.endDate}
                 onChange={handleEndDate}
               />
             </Grid>
