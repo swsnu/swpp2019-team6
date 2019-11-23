@@ -1,5 +1,8 @@
 {
     "django": {
         "secret_key": "swpp2019-team6"
+    },
+    "credential": {
+        "google_maps_api": "SECRET KEY"
     }
 }

@@ -32,6 +32,8 @@ config_base = json.loads(open(CONFIG_BASE_FILE).read())
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config_base['django']['secret_key']
 
+CREDENTIAL_GOOGLE_MAPS = config_base['credential']['google_maps_api']
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -48,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'user.apps.UserConfig'
+    'user.apps.UserConfig',
+    'mapsapi.apps.MapsapiConfig'
 ]
 
 AUTH_USER_MODEL = 'user.User'
