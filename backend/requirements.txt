@@ -1,8 +1,13 @@
+certifi==2019.9.11
+chardet==3.0.4
 coverage==4.5.4
-Django==2.1.*
+Django==2.2.6
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
+idna==2.8
+Pillow==6.2.1
 PyJWT==1.7.1
 pytz==2019.3
+requests==2.22.0
 sqlparse==0.3.0
-coveralls==1.8.2
+urllib3==1.25.7
