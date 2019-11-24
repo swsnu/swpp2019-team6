@@ -98,17 +98,14 @@ const getButtonDivStyle = (isDraggingOver) => ({
   position: 'absolute',
   left: 0,
   top: 0,
-  // width: '30%',
-  // minHeight: '70%',
 });
 
 const getRemoveDivStyle = (isDraggingOver) => ({
-  // background: isDraggingOver ? 'red' : 'green',
   position: 'fixed',
   left: 0,
   bottom: 0,
-  width: '10%',
-  minHeight: '30%',
+  // width: '10%',
+  // minHeight: '30%',
 });
 
 const getPaddingStyle = () => ({
@@ -149,7 +146,6 @@ const compareWithDate = (self, other) => {
 export default function CreateTravel(props) {
   const fabClasses = useFabStyles();
   const [buttonDraggable, setButtonDraggable] = useState(true);
-  const [removeDraggable, setRemoveDraggable] = useState(false);
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
   const initItem = {
@@ -250,19 +246,23 @@ export default function CreateTravel(props) {
     };
   };
 
-  const handleExpandClick = (index, _expand) => {
-    const newItems = items.map(
-      (item, idx) => ((index === idx)
-        ? { ...item, info: { ...item.info, expand: !_expand } }
-        : item),
-    );
-    setItems(newItems);
+  const handleRemove = (index) => {
+    const removeItems = Array.from(items);
+    removeItems.splice(index, 1);
+    setItems(removeItems);
   };
 
-  const handleDayBlockTitle = (index, title) => {
+  const handleBlockInfo = (index, key, value) => {
     const newItems = items.map(
       (item, idx) => ((index === idx)
-        ? { ...item, info: { ...item.info, title: title } }
+        ? ((key === 'title') && { ...item, info: { ...item.info, title: value } })
+        || ((key === 'description') && { ...item, info: { ...item.info, description: value } })
+        || ((key === 'expand') && { ...item, info: { ...item.info, expand: value } })
+        || ((key === 'startTime') && { ...item, info: { ...item.info, startTime: value } })
+        || ((key === 'endTime') && { ...item, info: { ...item.info, endTime: value } })
+        || ((key === 'startPoint') && { ...item, info: { ...item.info, startPoint: value } })
+        || ((key === 'endPoint') && { ...item, info: { ...item.info, endPoint: value } })
+        || ((key === 'point') && { ...item, info: { ...item.info, point: value } })
         : item),
     );
     setItems(newItems);
@@ -272,14 +272,6 @@ export default function CreateTravel(props) {
     setButtonDraggable(false);
   };
 
-  const onDragUpdate = (result) => {
-    if (result.destination && result.destination.droppableId === 'droppableRemove') {
-      setRemoveDraggable(true);
-    } else {
-      setRemoveDraggable(false);
-    }
-  };
-
   const onDragEnd = (result) => {
     setButtonDraggable(true);
     if (!result.destination) {
@@ -287,24 +279,39 @@ export default function CreateTravel(props) {
     }
 
     let pushItems = Array.from(items);
-    if (result.destination.droppableId === 'droppableRemove'
-      && result.source.droppableId === 'droppableList') {
-      setItems(removeItem(pushItems, result.source.index));
-      return;
-    }
 
     const maxId = getMaxItemIndex();
     let sourceIndex = maxId;
+    const newItem = {
+      id: '',
+      info: {
+        startTime: new Date('2030-01-01T09:00:00'),
+        endTime: new Date('2030-01-01T09:00:00'),
+        description: '',
+        expand: false,
+      },
+    };
     if (result.draggableId === 'transportation') {
-      pushItems.push({ id: `transportation-${maxId}`, info: {} });
+      newItem.id = `transportation-${maxId}`;
+      newItem.info.startPoint = '';
+      newItem.info.endPoint = '';
+      pushItems.push(newItem);
     } else if (result.draggableId === 'activity') {
-      pushItems.push({ id: `activity-${maxId}`, info: {} });
+      newItem.id = `activity-${maxId}`;
+      newItem.info.point = '';
+      pushItems.push(newItem);
     } else if (result.draggableId === 'hotel') {
-      pushItems.push({ id: `hotel-${maxId}`, info: {} });
+      newItem.id = `hotel-${maxId}`;
+      newItem.info.point = '';
+      pushItems.push(newItem);
     } else if (result.draggableId === 'restaurant') {
-      pushItems.push({ id: `restaurant-${maxId}`, info: {} });
+      newItem.id = `restaurant-${maxId}`;
+      newItem.info.point = '';
+      pushItems.push(newItem);
     } else if (result.draggableId === 'custom') {
-      pushItems.push({ id: `custom-${maxId}`, info: {} });
+      newItem.id = `custom-${maxId}`;
+      newItem.info.title = '';
+      pushItems.push(newItem);
     } else {
       sourceIndex = result.source.index;
       pushItems = items;
@@ -316,6 +323,8 @@ export default function CreateTravel(props) {
     );
     setItems(newItems);
   };
+
+  let skip = !items[0].info.expand;
 
   return (
     <Grid container alignItems="center" direction="column" justify="space-around">
@@ -332,7 +341,6 @@ export default function CreateTravel(props) {
       </Grid>
       <DragDropContext
         onBeforeDragStart={onBeforeDragStart}
-        onDragUpdate={onDragUpdate}
         onDragEnd={onDragEnd}
       >
         <Droppable droppableId="droppableList">
@@ -356,13 +364,25 @@ export default function CreateTravel(props) {
                   <TravelDayBlock
                     items={items}
                     index={0}
-                    handleExpandClick={handleExpandClick}
-                    handleDayBlockTitle={handleDayBlockTitle}
+                    handleBlockInfo={handleBlockInfo}
                   />
                 </Grid>
                 {items.slice(1).map((item, index) => (
                   <Draggable key={item.id} draggableId={item.id} index={index + 1} isDragDisabled={item.id.startsWith('day')}>
                     {(_provided, _snapshot) => {
+                      if (item.id.startsWith('day')) {
+                        skip = !item.info.expand;
+                      }
+                      if (!(item.id.startsWith('day')) && skip) {
+                        return (
+                          <div
+                            ref={_provided.innerRef}
+                            {..._provided.draggableProps}
+                            {..._provided.dragHandleProps}
+                          />
+                        );
+                      }
+
                       return (
                         <Grid
                           container
@@ -378,55 +398,61 @@ export default function CreateTravel(props) {
                             <TravelDayBlock
                               items={items}
                               index={index + 1}
-                              handleExpandClick={handleExpandClick}
-                              handleDayBlockTitle={handleDayBlockTitle}
+                              handleBlockInfo={handleBlockInfo}
                             />
                             )}
-                          { item.id.startsWith('restaurant') && (!_snapshot.isDragging || !removeDraggable)
+                          { item.id.startsWith('restaurant')
                             && (
                             <TravelActivityBlockEdit
                               title="Restaurant"
                               items={items}
-                              setItems={setItems}
                               index={index + 1}
+                              handleRemove={handleRemove}
+                              handleBlockInfo={handleBlockInfo}
                             />
                             )}
-                          { item.id.startsWith('transportation') && (!_snapshot.isDragging || !removeDraggable)
+                          { item.id.startsWith('transportation')
                             && (
                             <TravelTransportationBlockEdit
                               items={items}
                               setItems={setItems}
                               index={index + 1}
+                              handleRemove={handleRemove}
+                              handleBlockInfo={handleBlockInfo}
                             />
                             )}
-                          { item.id.startsWith('activity') && (!_snapshot.isDragging || !removeDraggable)
+                          { item.id.startsWith('activity')
                             && (
                             <TravelActivityBlockEdit
                               title="Activity"
                               items={items}
                               setItems={setItems}
                               index={index + 1}
+                              handleRemove={handleRemove}
+                              handleBlockInfo={handleBlockInfo}
                             />
                             )}
-                          { item.id.startsWith('hotel') && (!_snapshot.isDragging || !removeDraggable)
+                          { item.id.startsWith('hotel')
                             && (
                             <TravelActivityBlockEdit
                               title="Hotel"
                               items={items}
                               setItems={setItems}
                               index={index + 1}
+                              handleRemove={handleRemove}
+                              handleBlockInfo={handleBlockInfo}
                             />
                             )}
-                          { item.id.startsWith('custom') && (!_snapshot.isDragging || !removeDraggable)
+                          { item.id.startsWith('custom')
                             && (
                             <TravelCustomBlockEdit
                               items={items}
                               setItems={setItems}
                               index={index + 1}
+                              handleRemove={handleRemove}
+                              handleBlockInfo={handleBlockInfo}
                             />
                             )}
-                          { _snapshot.isDragging && removeDraggable
-                            && <TravelRemoveBlock />}
                         </Grid>
                       );
                     }}
@@ -608,22 +634,6 @@ export default function CreateTravel(props) {
                   );
                 }}
               </Draggable>
-            </Grid>
-          )}
-        </Droppable>
-
-        <Droppable droppableId="droppableRemove" direction="horizontal">
-          {(provided, snapshot) => (
-            <Grid
-              container
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              style={getRemoveDivStyle(snapshot.isDraggingOver)}
-            >
-              {provided.placeholder}
-              <Fab className={fabClasses.remove}>
-                <DeleteForeverIcon className={fabClasses.removeIcon} />
-              </Fab>
             </Grid>
           )}
         </Droppable>

@@ -27,7 +27,9 @@ const useCardStyles = makeStyles((theme) => ({
     maxWidth: 720,
     marginTop: 5,
     marginBottom: 5,
-    background: blue[50],
+    '&:hover': {
+      background: blue[50],
+    },
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -60,14 +62,19 @@ export default function TravelDayBlock(props) {
   const cardClasses = useCardStyles();
   const textClasses = useTextStyles();
   const {
-    items, index, handleExpandClick, handleDayBlockTitle,
+    items, index, handleBlockInfo,
   } = props;
   const { expand, title, datetime } = items[index].info;
 
 
   const clickHandler = () => {
-    handleExpandClick(index, expand);
+    handleBlockInfo(index, 'expand', !expand);
   };
+
+  const handleTitle = (e) => {
+    handleBlockInfo(index, 'title', e.target.value);
+  };
+
   return (
     <Card className={cardClasses.card}>
       <CardActions disableSpacing>
@@ -82,15 +89,12 @@ export default function TravelDayBlock(props) {
           )
           : (
             <TextField
-              id="outlined-password-input"
               label="Description"
               className={textClasses.textField}
-              type="password"
-              autoComplete="current-password"
               margin="normal"
               variant="outlined"
               value={title}
-              onChange={handleDayBlockTitle}
+              onChange={handleTitle}
             />
           )}
         <IconButton
@@ -104,10 +108,6 @@ export default function TravelDayBlock(props) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
-      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-        </CardContent>
-      </Collapse> */}
     </Card>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 import AddIcon from '@material-ui/icons/Add';
-import CreateTravel, { getItems } from './CreateTravel';
+import CreateTravel from './CreateTravel';
 import TravelTransportationBlockEdit from '../../components/travelblock/TravelTransportationBlockEdit';
 import TravelCustomBlockEdit from '../../components/travelblock/TravelCustomBlockEdit';
 import TravelActivityBlockEdit from '../../components/travelblock/TravelActivityBlockEdit';
