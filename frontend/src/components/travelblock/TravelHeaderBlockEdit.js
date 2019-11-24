@@ -70,11 +70,13 @@ export default function TravelHeaderBlockEdit(props) {
             </Grid>
             <Grid item>
               <DatePickerWrapper
+                id="StartDate"
                 label="Start Date"
                 value={props.startDate}
                 onChange={handleStartDate}
               />
               <DatePickerWrapper
+                id="EndDate"
                 label="End Date"
                 value={props.endDate}
                 onChange={handleEndDate}

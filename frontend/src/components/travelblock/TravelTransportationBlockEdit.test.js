@@ -1,28 +1,107 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '@material-ui/core/Card';
-import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
 
 import TravelTransportationBlockEdit from './TravelTransportationBlockEdit';
 import TimePickerWrapper from '../common/TimePicker';
 import '../../setupTests';
 
 describe('<TravelTransportationBlockEdit />', () => {
+  let items;
+  let index;
+  let handleRemove;
+  let handleBlockInfo;
+
+  beforeEach(() => {
+    items = [
+      {
+        id: 'transportation-0',
+        info: {
+          startTime: new Date('2030-01-01T09:00:00'),
+          endTime: new Date('2030-01-01T09:00:00'),
+          description: '',
+          expand: false,
+          startPoint: '',
+          endPoint: '',
+        },
+      },
+    ];
+    index = 0;
+    handleRemove = jest.fn();
+    handleBlockInfo = jest.fn();
+  });
+
   it('should render without errors', () => {
-    const component = shallow(<TravelTransportationBlockEdit />);
+    const component = shallow(<TravelTransportationBlockEdit
+      items={items}
+      index={index}
+      handleRemove={handleRemove}
+      handleBlockInfo={handleBlockInfo}
+    />);
     const wrapperCard = component.find(Card);
     expect(wrapperCard.length).toBe(1);
   });
 
-  it('should change time', () => {
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, 'useState');
-    useStateSpy.mockImplementation((init) => [init, setState]);
-    const component = shallow(<TravelTransportationBlockEdit />);
+  it('should change start Time', () => {
+    const component = shallow(<TravelTransportationBlockEdit
+      items={items}
+      index={index}
+      handleRemove={handleRemove}
+      handleBlockInfo={handleBlockInfo}
+    />);
     const wrapperTimePicker = component.find(TimePickerWrapper);
-    expect(wrapperTimePicker.length).toBe(2);
     wrapperTimePicker.at(0).simulate('change', { target: { value: '2000-01-01T00:00:00' } });
+    expect(handleBlockInfo).toHaveBeenCalledTimes(1);
+  });
+
+  it('should change end Time', () => {
+    const component = shallow(<TravelTransportationBlockEdit
+      items={items}
+      index={index}
+      handleRemove={handleRemove}
+      handleBlockInfo={handleBlockInfo}
+    />);
+    const wrapperTimePicker = component.find(TimePickerWrapper);
     wrapperTimePicker.at(1).simulate('change', { target: { value: '2000-01-01T00:00:00' } });
-    expect(setState).toHaveBeenCalledTimes(2);
+    expect(handleBlockInfo).toHaveBeenCalledTimes(1);
+  });
+
+  it('should close travel block', () => {
+    const component = shallow(<TravelTransportationBlockEdit
+      items={items}
+      index={index}
+      handleRemove={handleRemove}
+      handleBlockInfo={handleBlockInfo}
+    />);
+    const wrapperIconButton = component.find(IconButton);
+    wrapperIconButton.at(1).simulate('click');
+    expect(handleRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('should expand travel block', () => {
+    const component = shallow(<TravelTransportationBlockEdit
+      items={items}
+      index={index}
+      handleRemove={handleRemove}
+      handleBlockInfo={handleBlockInfo}
+    />);
+    const wrapperIconButton = component.find(IconButton);
+    wrapperIconButton.at(0).simulate('click');
+    expect(handleBlockInfo).toHaveBeenCalledTimes(1);
+  });
+
+  it('should change travel description', () => {
+    items[0].info.expand = true;
+    const component = shallow(<TravelTransportationBlockEdit
+      items={items}
+      index={index}
+      handleRemove={handleRemove}
+      handleBlockInfo={handleBlockInfo}
+    />);
+    const wrapperTextField = component.find(TextField);
+    wrapperTextField.simulate('change', { target: { value: 'TEST' } });
+    expect(handleBlockInfo).toHaveBeenCalledTimes(1);
   });
 });

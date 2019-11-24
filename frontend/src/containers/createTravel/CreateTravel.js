@@ -9,7 +9,6 @@ import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import HotelIcon from '@material-ui/icons/Hotel';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Box from '@material-ui/core/Box';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -17,7 +16,6 @@ import TravelHeaderBlockEdit from '../../components/travelblock/TravelHeaderBloc
 import TravelTransportationBlockEdit from '../../components/travelblock/TravelTransportationBlockEdit';
 import TravelCustomBlockEdit from '../../components/travelblock/TravelCustomBlockEdit';
 import TravelActivityBlockEdit from '../../components/travelblock/TravelActivityBlockEdit';
-import TravelRemoveBlock from '../../components/travelblock/TravelRemoveBlock';
 import TravelDayBlock from '../../components/travelblock/TravelDayBlock';
 
 
@@ -100,14 +98,6 @@ const getButtonDivStyle = (isDraggingOver) => ({
   top: 0,
 });
 
-const getRemoveDivStyle = (isDraggingOver) => ({
-  position: 'fixed',
-  left: 0,
-  bottom: 0,
-  // width: '10%',
-  // minHeight: '30%',
-});
-
 const getPaddingStyle = () => ({
   minHeight: 100,
 });
@@ -116,12 +106,6 @@ const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-  return result;
-};
-
-const removeItem = (list, index) => {
-  const result = Array.from(list);
-  result.splice(index, 1);
   return result;
 };
 
