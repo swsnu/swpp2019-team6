@@ -26,7 +26,7 @@ class PlaceSearch(APIView):
             photos = result.get("photos", [])
             photo = photos[0] if photos else {}
             parse_data.append({
-                "index": idx,
+                "search_index": idx,
                 "query": query,
                 "name": result.get("name", None),
                 "formatted_address": result.get("formatted_address", None),
@@ -36,18 +36,51 @@ class PlaceSearch(APIView):
                 "types": (result.get("types", []) or [None])[0],
                 "rating": result.get("rating", None),
                 "icon": result.get("icon", None),
-                "photo_reference": photo.get("reference", None),
+                "photo_reference": photo.get("photo_reference", None),
                 "photo_width": photo.get("width", None),
                 "photo_height": photo.get("height", None),
             })
         return parse_data
 
     def cache(self, data, query):
-        pass
+        new_query = Query.objects.create(query=query)
+        tuples = []
+        for row in data:
+            place = Place()
+            place.search_index = row.get("search_index")
+            place.query = new_query
+            place.name = row.get("name")
+            place.formatted_address = row.get("formatted_address")
+            place.lat = row.get("lat")
+            place.lng = row.get("lng")
+            place.place_id = row.get("place_id")
+            place.types = row.get("types")
+            place.rating = row.get("rating")
+            place.icon = row.get("icon")
+            place.photo_reference = row.get("photo_reference")
+            place.photo_width = row.get("photo_width")
+            place.photo_height = row.get("photo_height")
+            tuples.append(place)
+        Place.objects.bulk_create(tuples)
 
     def get(self, request, query, *args, **kwargs):
         if self._check_query_cache(query):
-            pass
+            query_item = Query.objects.get(query=query)
+            places = Place.objects.filter(query=query)
+            places = [{"search_index": place.search_index,
+                       "query": place.query.query,
+                       "name": place.name,
+                       "formatted_address": place.formatted_address,
+                       "lat": place.lat,
+                       "lng": place.lng,
+                       "place_id": place.place_id,
+                       "types": place.types,
+                       "rating": place.rating,
+                       "icon": place.icon,
+                       "photo_reference": place.photo_reference,
+                       "photo_width": place.photo_width,
+                       "photo_height": place.photo_height} for place in places]
+            return Response(places, status=status.HTTP_200_OK)
         else:
             url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
             params = {
@@ -58,9 +91,9 @@ class PlaceSearch(APIView):
             if response.status_code != 200:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             data = response.json()
-            input_data = self.parse(data, query)
-            if input_data == None:
+            places = self.parse(data, query)
+            if places == None:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-            self.cache(input_data, query)
-            return Response(input_data, status=status.HTTP_200_OK)
+            self.cache(places, query)
+            return Response(places, status=status.HTTP_201_CREATED)
 

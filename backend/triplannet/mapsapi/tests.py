@@ -55,6 +55,21 @@ sample_response = {
     "status" : "OK"
 }
 
+result_response = {
+    "search_index": 0,
+    "query": "TEST",
+    "name": sample_response["results"][0]["name"],
+    "formatted_address": sample_response["results"][0]["formatted_address"],
+    "lat": sample_response["results"][0]["geometry"]["location"]["lat"],
+    "lng": sample_response["results"][0]["geometry"]["location"]["lng"],
+    "place_id": sample_response["results"][0]["place_id"],
+    "types": sample_response["results"][0]["types"][0],
+    "rating": sample_response["results"][0]["rating"],
+    "icon": sample_response["results"][0]["icon"],
+    "photo_reference": sample_response["results"][0]["photos"][0]["photo_reference"],
+    "photo_width": sample_response["results"][0]["photos"][0]["width"],
+    "photo_height": sample_response["results"][0]["photos"][0]["height"],
+}
 
 
 def mocked_request(*args, **kwargs):
@@ -77,11 +92,15 @@ def mocked_request(*args, **kwargs):
         def json(self):
             return self.data
 
-    if isinstance(args[0], str) and\
-        args[0].startswith("https://maps.googleapis.com/maps/api"):
-        return MockResponse(sample_response, 200)
-    else:
-        return MockResponse({}, 400)
+    if "params" in kwargs and isinstance(kwargs["params"], dict):
+        if kwargs["params"]["query"] == "ERROR":
+            return MockResponse({}, 400)
+        if kwargs["params"]["query"] == "NONE":
+            return MockResponse({}, 200)
+
+    assert isinstance(args[0], str) and\
+        args[0].startswith("https://maps.googleapis.com/maps/api")
+    return MockResponse(sample_response, 200)
 
 
 
@@ -110,8 +129,36 @@ class UserTestCase(TestCase):
 
         response = client.get('/api/maps/search/TEST/',
                               HTTP_AUTHORIZATION="JWT {}".format(token))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         result = json.loads(response.content)
         self.assertEqual(len(result), 1)
-        self.assertIn("formatted_address", result[0])
+        self.assertDictEqual(result[0], result_response)
 
+    @mock.patch('requests.get', side_effect=mocked_request)
+    def test_result_cache(self, mocked_get):
+        client = Client()
+        token = self.get_token(client)
+
+        response = client.get('/api/maps/search/TEST/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = client.get('/api/maps/search/TEST/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        result = json.loads(response.content)
+        self.assertEqual(mocked_get.call_count, 1)
+        self.assertEqual(len(result), 1)
+        self.assertDictEqual(result[0], result_response)
+
+    @mock.patch('requests.get', side_effect=mocked_request)
+    def test_error_case(self, mocked_get):
+        client = Client()
+        token = self.get_token(client)
+
+        response = client.get('/api/maps/search/ERROR/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        response = client.get('/api/maps/search/NONE/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(mocked_get.call_count, 2)
