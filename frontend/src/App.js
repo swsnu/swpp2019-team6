@@ -12,7 +12,6 @@ import SearchPage from './pages/SearchPage';
 import UserInfoPage from './pages/UserInfoPage';
 
 function App(props) {
-  // console.log(props.history.location);
   return (
     <ConnectedRouter history={props.history}>
       <div className="App">
@@ -23,7 +22,7 @@ function App(props) {
           <Route path="/travel/create" exact render={() => <CreateTravel />} />
           <Route path="/search" component={SearchPage} />
           <Route path="/user/:nickname" component={UserInfoPage} />
-          <Route render={() => <h1>Not Found</h1>} />
+          <Route render={() => <div id="error"><h1>Not Found</h1></div>} />
         </Switch>
       </div>
     </ConnectedRouter>
