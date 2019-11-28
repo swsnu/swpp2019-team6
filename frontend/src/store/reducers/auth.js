@@ -4,8 +4,11 @@ const initialState = {
   user: null,
   token: null,
 };
+const initialAction = {
+  type: actionTypes.INITIALIZE_FORM,
+};
 
-const auth = (state = initialState, action) => {
+const auth = (state = initialState, action = initialAction) => {
   switch (action.type) {
     case actionTypes.INITIALIZE_FORM:
       return initialState;
