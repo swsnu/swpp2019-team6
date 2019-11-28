@@ -5,7 +5,7 @@ const initialState = {
   token: null,
 };
 
-const reducer = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.INITIALIZE_FORM:
       return initialState;
@@ -19,7 +19,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.LOGIN_FAILURE:
       // eslint-disable-next-line no-alert
       alert('Email or password is wrong');
-      return state;
+      break;
     case actionTypes.LOGOUT:
       localStorage.removeItem('user');
       localStorage.removeItem('token');
@@ -33,4 +33,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export default reducer;
+export default auth;
