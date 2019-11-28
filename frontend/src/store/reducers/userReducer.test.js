@@ -9,7 +9,7 @@ const initialState = {
 
 describe('userReducer', () => {
   it('should get default', () => {
-    const newState = userReducer(undefined, {});
+    const newState = userReducer(undefined, undefined);
     expect(newState).toEqual({
       user: null,
     });

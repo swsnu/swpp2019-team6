@@ -11,7 +11,7 @@ const stubState = {
 
 describe('Auth Reducer', () => {
   it('should return default state', () => {
-    const newState = reducer(undefined, {});
+    const newState = reducer(undefined, undefined);
     expect(newState).toEqual({
       user: null,
       token: null,
