@@ -1,10 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Card from '@material-ui/core/Card';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 
 import TravelTransportationBlockEdit from './TravelTransportationBlockEdit';
+import TravelBlockCloseButton from '../common/TravelBlockCloseButton';
+import TravelBlockExpandButton from '../common/TravelBlockExpandButton';
 import TimePickerWrapper from '../common/TimePicker';
 import '../../setupTests';
 
@@ -69,26 +70,26 @@ describe('<TravelTransportationBlockEdit />', () => {
   });
 
   it('should close travel block', () => {
-    const component = shallow(<TravelTransportationBlockEdit
+    const component = mount(<TravelTransportationBlockEdit
       items={items}
       index={index}
       handleRemove={handleRemove}
       handleBlockInfo={handleBlockInfo}
     />);
-    const wrapperIconButton = component.find(IconButton);
-    wrapperIconButton.at(1).simulate('click');
+    const wrapperIconButton = component.find(TravelBlockCloseButton);
+    wrapperIconButton.simulate('click');
     expect(handleRemove).toHaveBeenCalledTimes(1);
   });
 
   it('should expand travel block', () => {
-    const component = shallow(<TravelTransportationBlockEdit
+    const component = mount(<TravelTransportationBlockEdit
       items={items}
       index={index}
       handleRemove={handleRemove}
       handleBlockInfo={handleBlockInfo}
     />);
-    const wrapperIconButton = component.find(IconButton);
-    wrapperIconButton.at(0).simulate('click');
+    const wrapperIconButton = component.find(TravelBlockExpandButton);
+    wrapperIconButton.simulate('click');
     expect(handleBlockInfo).toHaveBeenCalledTimes(1);
   });
 

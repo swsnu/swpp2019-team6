@@ -1,6 +1,18 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import AddIcon from '@material-ui/icons/Add';
+import { within, render } from '@testing-library/react';
+import {
+  mockGetComputedSpacing,
+  mockDndElSpacing,
+  makeDnd,
+  DND_DRAGGABLE_DATA_ATTR,
+  DND_DIRECTION_DOWN,
+  DND_DIRECTION_UP,
+} from 'react-beautiful-dnd-test-utils';
+
+// import { wrapInTestContext } from 'react-dnd-test-utils';
+import TestUtils from 'react-dom/test-utils';
 
 import CreateTravel from './CreateTravel';
 import TravelHeaderBlockEdit from '../../components/travelblock/TravelHeaderBlockEdit';
@@ -10,6 +22,28 @@ import TravelActivityBlockEdit from '../../components/travelblock/TravelActivity
 import TravelDayBlock from '../../components/travelblock/TravelDayBlock';
 import DatePickerWrapper from '../../components/common/DatePicker';
 import '../../setupTests';
+
+// const createTestTextOrderByTestIdHelper = (getAllByTestId) => {
+//   const testTextOrderByTestId = (testId, expectedTexts) => {
+//     const texts = getAllByTestId(testId).map((x) => x.textContent);
+//     expect(texts).toEqual(expectedTexts);
+//   };
+//   return testTextOrderByTestId;
+// };
+
+// const renderCreateTravel = (items) => {
+//   const rtlUtils = render(<CreateTravel items={items} />);
+
+//   mockDndElSpacing(rtlUtils);
+
+//   // console.log(rtlUtils.debug());
+
+//   const makeGetDragEl = (text) => () =>
+//     rtlUtils.getByTestId(text).closest(DND_DRAGGABLE_DATA_ATTR);
+
+//   return { makeGetDragEl, ...rtlUtils };
+// };
+
 
 jest.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }) => children({
@@ -31,6 +65,9 @@ jest.mock('react-beautiful-dnd', () => ({
 }));
 
 describe('<CreateTravel />', () => {
+  // beforeEach(() => {
+  //   mockGetComputedSpacing();
+  // });
   it('should render restaurant without errors', () => {
     const items = [
       {

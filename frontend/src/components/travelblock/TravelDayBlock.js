@@ -9,6 +9,9 @@ import { blue } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
 
+
+import TravelBlockExpandButton from '../common/TravelBlockExpandButton';
+
 const useTextStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -30,16 +33,6 @@ const useCardStyles = makeStyles((theme) => ({
     '&:hover': {
       background: blue[50],
     },
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
   },
   text: {
     ...theme.typography.button,
@@ -97,16 +90,7 @@ export default function TravelDayBlock(props) {
               onChange={handleTitle}
             />
           )}
-        <IconButton
-          className={clsx(cardClasses.expand, {
-            [cardClasses.expandOpen]: expand,
-          })}
-          onClick={clickHandler}
-          aria-expanded={expand}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
+        <TravelBlockExpandButton expand={expand} clickExpandHandler={clickHandler} />
       </CardActions>
     </Card>
   );

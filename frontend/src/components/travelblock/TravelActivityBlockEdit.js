@@ -9,16 +9,13 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-
-import clsx from 'clsx';
 import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 
 import GoogleMapSearch from '../common/GoogleMapSearch';
+import TravelBlockExpandButton from '../common/TravelBlockExpandButton';
 import TimePickerWrapper from '../common/TimePicker';
+import TravelBlockCloseButton from '../common/TravelBlockCloseButton';
 
 
 const useCardStyles = makeStyles((theme) => ({
@@ -28,19 +25,6 @@ const useCardStyles = makeStyles((theme) => ({
     '&:hover': {
       background: blue[50],
     },
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  remove: {
-    marginLeft: 'auto',
   },
 }));
 
@@ -100,22 +84,8 @@ export default function TravelActivityBlockEdit(props) {
         <Grid item>
           <GoogleMapSearch searchHandler={props.searchHandler} />
         </Grid>
-        <IconButton
-          className={clsx(cardClasses.expand, {
-            [cardClasses.expandOpen]: expand,
-          })}
-          onClick={clickExpandHandler}
-          aria-expanded={expand}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-        <IconButton
-          onClick={removeHandler}
-          aria-label="remove"
-        >
-          <CloseIcon />
-        </IconButton>
+        <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
+        <TravelBlockCloseButton removeHandler={removeHandler} />
       </CardActions>
       <Collapse in={expand} timeout="auto" unmountOnExit>
         <CardContent>
