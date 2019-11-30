@@ -26,7 +26,7 @@ class CollaboratorSettingContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="collaboratorSettingContainer">
         <CollaboratorSetting
           collaborators={this.state.collaborators}
           onAddButtonClicked={this.onAddButtonClicked}

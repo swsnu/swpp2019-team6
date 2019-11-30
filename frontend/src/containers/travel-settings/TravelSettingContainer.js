@@ -27,7 +27,7 @@ class TravelSettingContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="travelSettingContainer">
         <TravelSetting
           isPublic={this.state.isPublic}
           allowComments={this.state.allowComments}
