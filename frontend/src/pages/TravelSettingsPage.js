@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import HeaderContainer from '../containers/common/HeaderContainer';
 import OneTravelOverview from '../containers/travel-overview/OneTravelOverview';
 import CollaboratorSettingContainer from '../containers/travel-settings/CollaboratorSettingContainer';
+import TravelSettingContainer from '../containers/travel-settings/TravelSettingContainer';
 
 class TravelSettingsPage extends Component {
   render() {
@@ -16,6 +17,7 @@ class TravelSettingsPage extends Component {
         <CollaboratorSettingContainer
           travelId={this.props.match.params.id}
         />
+        <TravelSettingContainer travelId={this.props.match.params.id} />
       </div>
     );
   }

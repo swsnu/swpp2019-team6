@@ -22,10 +22,6 @@ const CollaboratorSetting = ({
 }) => {
   const classes = useStyles();
 
-  const onUserClicked = () => {
-    history.push('/user/1');
-  };
-
   return (
     <div>
       <Typography variant="h5" align="left" color="textPrimary" style={{ marginTop: 16, marginLeft: 8 }}>
