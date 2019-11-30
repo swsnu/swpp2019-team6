@@ -11,6 +11,7 @@ import CreateTravel from './pages/CreateTravel';
 import SearchPage from './pages/SearchPage';
 import UserInfoPage from './pages/UserInfoPage';
 import TravelSettingsPage from './pages/TravelSettingsPage';
+import EditUserInfoPage from './pages/EditUserInfoPage';
 
 function App(props) {
   return (
@@ -21,9 +22,10 @@ function App(props) {
           <Route path="/sign_up" exact render={() => <SignupPage />} />
           <Route path="/main" exact render={() => <MainPage />} />
           <Route path="/travel/create" exact render={() => <CreateTravel />} />
-          <Route path="/travel/:id/settings" component={TravelSettingsPage} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/user/:nickname" component={UserInfoPage} />
+          <Route path="/travel/:id/settings" exact component={TravelSettingsPage} />
+          <Route path="/search" exact component={SearchPage} />
+          <Route path="/user/:nickname" exact component={UserInfoPage} />
+          <Route path="/user/:nickname/edit" exact component={EditUserInfoPage} />
           <Route render={() => <div id="error"><h1>Not Found</h1></div>} />
         </Switch>
       </div>
