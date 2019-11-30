@@ -13,7 +13,9 @@ class TravelSettingsPage extends Component {
             Travel Settings
         </Typography>
         <OneTravelOverview travelId={this.props.match.params.id} />
-        <CollaboratorSettingContainer travelId={this.props.match.params.id} />
+        <CollaboratorSettingContainer
+          travelId={this.props.match.params.id}
+        />
       </div>
     );
   }

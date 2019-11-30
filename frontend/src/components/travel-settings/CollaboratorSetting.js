@@ -1,8 +1,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   leftMargin: {
@@ -10,19 +11,19 @@ const useStyles = makeStyles((theme) => ({
   },
   allMargin: {
     margin: theme.spacing(1),
-  }
+  },
 }));
 
 // props
 // data: collaborators(list)
 // function: onAddButtonClicked
 const CollaboratorSetting = ({
-  collaborators, onAddButtonClicked,
+  collaborators, onAddButtonClicked, history,
 }) => {
   const classes = useStyles();
 
   const onUserClicked = () => {
-    console.log('onUserClicked!');
+    history.push('/user/1');
   };
 
   return (
@@ -35,7 +36,11 @@ const CollaboratorSetting = ({
       </Typography>
       <div>
         {collaborators.map((collaborator, i) => (
-          <ButtonBase key={i} onClick={onUserClicked} className={classes.leftMargin}>
+          <ButtonBase
+            key={i}
+            onClick={() => { history.push(`/user/${collaborator.nickname}`); }}
+            className={classes.leftMargin}
+          >
             <Typography variant="body1" align="left" display="inline" color="primary" key={i}>
                 @{collaborator.nickname}
             </Typography>
@@ -55,4 +60,4 @@ const CollaboratorSetting = ({
   );
 };
 
-export default CollaboratorSetting;
+export default withRouter(CollaboratorSetting);
