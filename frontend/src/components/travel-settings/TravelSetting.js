@@ -35,7 +35,7 @@ const TravelSetting = ({
   return (
     <div>
       <Paper className={classes.settingSection}>
-        <Typography variant="subtitle1" align="left" color="textPrimary" style={{ marginTop: 16, marginLeft: 8 }}>
+        <Typography variant="subtitle2" align="left" color="textPrimary" style={{ marginTop: 16, marginLeft: 8 }}>
             Visibility
         </Typography>
         <FormControl component="fieldset" className={classes.formControl}>
@@ -45,7 +45,7 @@ const TravelSetting = ({
           </RadioGroup>
         </FormControl>
 
-        <Typography variant="subtitle1" align="left" color="textPrimary" style={{ marginTop: 16, marginLeft: 8 }}>
+        <Typography variant="subtitle2" align="left" color="textPrimary" style={{ marginTop: 16, marginLeft: 8 }}>
             Comments
         </Typography>
 
