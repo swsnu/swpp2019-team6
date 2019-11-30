@@ -40,5 +40,6 @@ module.exports = {
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-param-reassign":0,
     "linebreak-style":0,
+    "react/no-array-index-key":0,
   },
 };

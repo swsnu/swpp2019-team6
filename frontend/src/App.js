@@ -10,6 +10,7 @@ import SignupPage from './pages/SignupPage';
 import CreateTravel from './pages/CreateTravel';
 import SearchPage from './pages/SearchPage';
 import UserInfoPage from './pages/UserInfoPage';
+import TravelSettingsPage from './pages/TravelSettingsPage';
 
 function App(props) {
   return (
@@ -20,6 +21,7 @@ function App(props) {
           <Route path="/sign_up" exact render={() => <SignupPage />} />
           <Route path="/main" exact render={() => <MainPage />} />
           <Route path="/travel/create" exact render={() => <CreateTravel />} />
+          <Route path="/travel/:id/settings" component={TravelSettingsPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/user/:nickname" component={UserInfoPage} />
           <Route render={() => <div id="error"><h1>Not Found</h1></div>} />
