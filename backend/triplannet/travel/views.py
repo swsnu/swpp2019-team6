@@ -1,30 +1,71 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
-from .models import Travel
+from .models import Travel, TravelCommit, TravelDayList
+from .serializers import *
 
 class travel(APIView):
 
-    def post(self, request, *args, **kwargs):
-        return Response("POST SUCCESS")
+    serializer_class = TravelSerializer
+    # def post(self, request, *args, **kwargs):
+        
+    #     serializer = self.serializer_class(data=request.data)
+    #     if serializer.is_valid():
+    #         # TravelCommitSerializer(data=request.data['head'])
+    #         serializer.save()
+    #         return Response(serializer.data)
+        
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class travel_id(APIView):
+    serializer_class = TravelSerializer
+
+    def get(self,request,id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        serializer = self.serializer_class(travel)
+        return Response(serializer.data)
+
+    # def put(self,request,id,*args,**kwargs):
+
+    #     try:
+    #         travel = Travel.objects.get(pk=id)
+    #     except ObjectDoesNotExist:
+    #         raise Http404
+        
+    #     serializer = self.serializer_class(travel, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+        
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
 
 class travel_popular(APIView):
 
     def get(self, request, *args, **kwargs):
         
-        return Response("travel_popular get SUCCESS")
+        travels = Travel.objects.all().order_by('-likes')[:min(Travel.objects.count(),10)]
+        serializer = TravelSerializer(travels,many=True)        
+        return Response(serializer.data)
 
 
 class travel_recent(APIView):
+    
     def get(self, request, *args, **kwargs):
-        travels = Travel.objects.all()
-        # travels = travels[:min(len(travels),10)]
-        # return Response(travels)
-        return Response("travel_recent get SUCCESS")
+        travels = Travel.objects.all()[:min(Travel.objects.count(),10)]
+        serializer = TravelSerializer(travels,many=True)        
+        return Response(serializer.data)
 
-# class travelCommit(APIView):
 
 
 

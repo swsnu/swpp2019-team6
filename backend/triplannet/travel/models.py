@@ -48,7 +48,7 @@ class Travel(models.Model):
         blank=True
     )
     class Meta:
-        ordering = ['last_modified_time',]
+        ordering = ['-last_modified_time',]
 
 class TravelCommit(models.Model):
     title = models.CharField(max_length=100)
@@ -77,11 +77,11 @@ class TravelCommit(models.Model):
     #     Tag,
     #     related_name ='travel_committed', 
     # )
-    photo = models.ImageField(
-        upload_to = 'travel_photos/',
-        height_field=500,
-        width_field=500,
-    )
+    # photo = models.ImageField(
+    #     upload_to = 'travel_photos/',
+    #     height_field=500,
+    #     width_field=500,
+    # )
 
 class TravelDay(models.Model):
     title = models.CharField(max_length=100,blank=True)
@@ -90,12 +90,19 @@ class TravelDay(models.Model):
         through = 'TravelBlockList',
     )
     day = models.DateField()
+    parent_day = models.ForeignKey(
+        "self",
+        on_delete = models.SET_NULL,
+        related_name = 'child_day',
+        null = True,
+        default = None,
+    )
 
 
 class TravelBlock(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    time = models.TimeField(blank=True)
+    time = models.TimeField(null=True, blank=True)
     start_location = models.TextField()
     end_location = models.TextField()
     block_type = models.CharField(
@@ -129,7 +136,7 @@ class TravelDayList(models.Model):
     )
     index = models.IntegerField()
     class Meta:
-        ordering = ['index',]
+        ordering = ['TravelCommit','TravelDay','index',]
 
 
 class TravelBlockList(models.Model):
@@ -143,4 +150,4 @@ class TravelBlockList(models.Model):
     )
     index = models.IntegerField()
     class Meta:
-        ordering = ['index',]
+        ordering = ['TravelDay','TravelBlock','index',]
