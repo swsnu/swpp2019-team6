@@ -1,97 +1,140 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import CardActions from '@material-ui/core/CardActions';
+import { blue } from '@material-ui/core/colors';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+import clsx from 'clsx';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import TextField from '@material-ui/core/TextField';
 
+import TravelBlockExpandButton from '../common/TravelBlockExpandButton';
 import TimePickerWrapper from '../common/TimePicker';
+import TravelBlockCloseButton from '../common/TravelBlockCloseButton';
 
-const useCardStyles = makeStyles({
+
+const useCardStyles = makeStyles((theme) => ({
   card: {
     minWidth: 720,
     maxWidth: 720,
-    margin: 10,
-    backgroundColor: '#FFFBD2',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
-
-const useTextStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  formControl: {
-    margin: theme.spacing(1),
+    '&:hover': {
+      background: blue[50],
+    },
   },
 }));
 
-export default function TravelActivityBlockEdit(props) {
+const useTextStyles = makeStyles((theme) => ({
+  description: {
+    margin: 0,
+    marginLeft: theme.spacing(1),
+    width: 500,
+  },
+  title: {
+    margin: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+    width: 400,
+  },
+}));
+
+export default function TravelCustomBlockEdit(props) {
   const cardClasses = useCardStyles();
   const textClasses = useTextStyles();
+  const {
+    items, index, handleRemove, handleBlockInfo,
+  } = props;
+  const {
+    expand, description, startTime, endTime, title,
+  } = items[index].info;
 
-  const [name, setName] = React.useState('Travel Title');
-
-  const handleChange = (event) => {
-    setName(event.target.value);
+  const handleStartTime = (date) => {
+    handleBlockInfo(index, 'startTime', date);
   };
 
-  const [startDate, setStartDate] = React.useState(new Date('2020-01-01T09:00:00'));
-  const [endDate, setEndDate] = React.useState(new Date('2020-01-01T09:00:00'));
-
-  const handleStartDate = (date) => {
-    setStartDate(date);
+  const handleEndTime = (date) => {
+    handleBlockInfo(index, 'endTime', date);
   };
-  const handleEndDate = (date) => {
-    setEndDate(date);
+
+  const handleTitle = (e) => {
+    handleBlockInfo(index, 'title', e.target.value);
+  };
+
+  const removeHandler = () => {
+    handleRemove(index);
+  };
+
+  const clickExpandHandler = () => {
+    handleBlockInfo(index, 'expand', !expand);
+  };
+
+  const handleDescription = (e) => {
+    handleBlockInfo(index, 'description', e.target.value);
   };
 
   return (
     <Card className={cardClasses.card}>
-      {/* <CardHeader
-        // title="Transportation"
-        id="title"
-        subheader="Custom"
-      /> */}
-      <CardContent>
+      <CardActions disableSpacing>
+        {!expand
+        && (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid container direction="column" justify="space-around">
-            <Grid container direction="row" justify="space-around" alignItems="center">
-              <FormControl className={textClasses.formControl}>
-                <InputLabel htmlFor="component-title">Title</InputLabel>
-                <Input id="component-title" value={name} onChange={handleChange} />
-              </FormControl>
-            </Grid>
-            <Grid container direction="row" justify="space-around" alignItems="center">
-              <TimePickerWrapper
-                label="Start Time"
-                value={startDate}
-                onChange={handleStartDate}
-              />
-              <TimePickerWrapper
-                label="End Time"
-                value={endDate}
-                onChange={handleEndDate}
-              />
-            </Grid>
+          <Grid container direction="row" justify="space-around" alignItems="center">
+            <TimePickerWrapper
+              label="Start Time"
+              value={startTime}
+              onChange={handleStartTime}
+            />
           </Grid>
         </MuiPickersUtilsProvider>
-      </CardContent>
+        )}
+        <Grid item>
+          <TextField
+            id="standard-multiline-flexible"
+            label="Title"
+            rowsMax="4"
+            value={title}
+            onChange={handleTitle}
+            className={textClasses.title}
+          />
+        </Grid>
+        <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
+        <TravelBlockCloseButton removeHandler={removeHandler} />
+      </CardActions>
+      <Collapse in={expand} timeout="auto" unmountOnExit>
+        <CardContent>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container direction="column" justify="space-around">
+              <Grid container direction="row">
+                <TimePickerWrapper
+                  label="Start Time"
+                  value={startTime}
+                  onChange={handleStartTime}
+                />
+                <TimePickerWrapper
+                  label="End Time"
+                  value={endTime}
+                  onChange={handleEndTime}
+                />
+              </Grid>
+            </Grid>
+          </MuiPickersUtilsProvider>
+          <TextField
+            id="standard-multiline-flexible"
+            label="Description"
+            multiline
+            rowsMax="4"
+            value={description}
+            onChange={handleDescription}
+            className={textClasses.description}
+          />
+        </CardContent>
+      </Collapse>
     </Card>
   );
 }
