@@ -12,15 +12,22 @@ from .serializers import *
 class travel(APIView):
 
     serializer_class = TravelSerializer
-    # def post(self, request, *args, **kwargs):
-        
-    #     serializer = self.serializer_class(data=request.data)
-    #     if serializer.is_valid():
-    #         # TravelCommitSerializer(data=request.data['head'])
-    #         serializer.save()
-    #         return Response(serializer.data)
-        
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        request.data['author']=request.user.id
+        try: 
+            request.data['head']['author']=request.user.id
+        except KeyError:
+            pass
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print('TRAVELSERIALIZER VALID')
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            
+        print('TRAVELSERIALIZER INVALID')
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class travel_id(APIView):
     serializer_class = TravelSerializer

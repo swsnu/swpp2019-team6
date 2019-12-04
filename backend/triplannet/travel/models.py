@@ -12,16 +12,16 @@ class Travel(models.Model):
         on_delete=models.CASCADE,
         related_name = 'author_of_Travel',
     )
-    collaboraters = models.ManyToManyField(
+    collaborators = models.ManyToManyField(
         User,
         blank=True,
-        related_name = 'collaborater_of_Travel',
+        related_name = 'collaborator_of_Travel',
 
     )
     head = models.ForeignKey(
         'travel.TravelCommit',
         on_delete = models.SET_NULL,
-        related_name = 'head_of_Travel',
+        related_name = 'head_of_travel',
         null = True,
     )
     
@@ -65,13 +65,14 @@ class TravelCommit(models.Model):
     travel = models.ForeignKey(
         Travel,
         on_delete = models.CASCADE,
-        related_name = 'travel_of_TravelCommit'
+        related_name = 'travel_of_TravelCommit',
+        null=True
     )
     author = models.ForeignKey(
         User,
         on_delete = models.CASCADE,
         related_name = 'author_of_TravelCommit',
-        # collaboraters only
+        # collaborators only
     )
     # tags= models.ManyToManyField(
     #     Tag,
@@ -97,6 +98,8 @@ class TravelDay(models.Model):
         null = True,
         default = None,
     )
+    modified = models.BooleanField(default=True)
+
 
 
 class TravelBlock(models.Model):
