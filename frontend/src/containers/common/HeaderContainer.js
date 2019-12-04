@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/common/Header';
 import * as actionCreators from '../../store/actions/index';
@@ -42,6 +42,7 @@ class HeaderContainer extends Component {
   }
 
   onMyPageClicked = (e) => {
+    this.props.history.push(`/user/${this.state.currentUser.nickname}`);
   }
 
   onSearchInputChanged = (e) => {
@@ -49,6 +50,7 @@ class HeaderContainer extends Component {
   }
 
   onSearchButtonClicked = (e) => {
+    this.props.history.push(`/search?tag=${this.state.searchText}`);
   }
 
 
@@ -85,7 +87,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HeaderContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HeaderContainer));

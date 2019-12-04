@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -41,12 +42,12 @@ const useStyles = makeStyles((theme) => ({
 // travelOverviewItem(.title .author .summary .period .likes .photo
 // .is_public, .allow_comment, .is_forked, .collaborators)
 // is_mypage: should detailed option be shown?
-const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
+const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
   const classes = useStyles();
 
   // Have to change onCardClicked to make a link to its detail page
   const onCardClicked = (e) => {
-    // console.log('onCardClicked!');
+    history.push(`/travel/${travelOverviewItem.id}`);
   };
 
   return (
@@ -127,12 +128,22 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
             {is_mypage ? (
               <Grid container justify="space-between">
                 <Grid item xs={4}>
-                  <Button variant="outlined" color="default" fullWidth>
+                  <Button
+                    variant="outlined"
+                    color="default"
+                    fullWidth
+                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                  >
                   Edit
                   </Button>
                 </Grid>
                 <Grid item xs={4}>
-                  <Button variant="outlined" color="primary" fullWidth>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
+                  >
                   Settings
                   </Button>
                 </Grid>
@@ -150,4 +161,4 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage }) => {
   );
 };
 
-export default TravelOverviewBlock;
+export default withRouter(TravelOverviewBlock);

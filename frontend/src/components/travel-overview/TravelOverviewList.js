@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -31,11 +32,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TravelOverviewList = ({ travelList, is_mypage }) => {
+const TravelOverviewList = ({ travelList, is_mypage, history }) => {
   const classes = useStyles();
 
   const onCreateButtonClicked = (e) => {
     // console.log('createButtonClicked!');
+    history.push('/travel/create');
   };
 
   return (
@@ -81,4 +83,4 @@ const TravelOverviewList = ({ travelList, is_mypage }) => {
   );
 };
 
-export default TravelOverviewList;
+export default withRouter(TravelOverviewList);
