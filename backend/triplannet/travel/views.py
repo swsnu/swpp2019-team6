@@ -56,6 +56,20 @@ class travel_id(APIView):
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         
+class travelCommit(APIView):
+    serializer_class = TravelCommitSerializer
+    def post(self, request, *args, **kwargs):
+        request.data['author']=request.user.id
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print('TRAVELSERIALIZER VALID')
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            
+        print('TRAVELSERIALIZER INVALID')
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class travel_popular(APIView):
 
