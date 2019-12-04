@@ -54,6 +54,14 @@ export default function TravelUnitBlockEdit(props) {
     expand, description, startTime, endTime, startPoint, endPoint,
   } = items[index].info;
 
+  const handleStartPoint = (point) => {
+    handleBlockInfo(index, 'startPoint', point);
+  };
+
+  const handleEndPoint = (point) => {
+    handleBlockInfo(index, 'endPoint', point);
+  };
+
   const handleStartTime = (date) => {
     handleBlockInfo(index, 'startTime', date);
   };
@@ -84,7 +92,7 @@ export default function TravelUnitBlockEdit(props) {
               value={startTime}
               onChange={handleStartTime}
             />
-            <GoogleMapSearch searchHandler={props.searchHandler} />
+            <GoogleMapSearch value={startPoint} searchHandler={handleStartPoint} />
           </Grid>
         </MuiPickersUtilsProvider>
         <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
