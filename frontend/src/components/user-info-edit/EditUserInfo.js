@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   inputField: {
     padding: theme.spacing(1),
   },
+  helperText: {
+    marginTop: theme.spacing(1),
+  }
 }));
 
 // current user info: email, nickname, message
@@ -54,14 +57,60 @@ const EditUserInfo = ({
         Password
       </Typography>
       {passwordExpanded ? (
-        <Button
-          size="medium"
-          variant="contained"
-          className={classes.allMargin}
-          onClick={() => onCloseClicked('passwordExpanded')}
-        >
-          Cancel
-        </Button>
+        <>
+          <div className={classes.fieldSection}>
+            <div>
+              <Typography variant="body2" align="left" color="textPrimary" className={classes.helperText}>
+                Current Password
+              </Typography>
+              <TextField
+                onChange={(e) => onInputChanged(e, 'currentPasswordField')}
+                value={currentPasswordField}
+                className={classes.inputField}
+                type="password"
+              />
+            </div>
+            <div>
+              <Typography variant="body2" align="left" color="textPrimary" className={classes.helperText}>
+                New Password
+              </Typography>
+              <TextField
+                onChange={(e) => onInputChanged(e, 'newPasswordField')}
+                value={newPasswordField}
+                className={classes.inputField}
+                type="password"
+              />
+            </div>
+            <div>
+              <Typography variant="body2" align="left" color="textPrimary" className={classes.helperText}>
+                New Password Confirmation
+              </Typography>
+              <TextField
+                onChange={(e) => onInputChanged(e, 'confirmNewPasswordField')}
+                value={confirmNewPasswordField}
+                className={classes.inputField}
+                type="password"
+              />
+            </div>
+          </div>
+          <Button
+            size="medium"
+            color="primary"
+            variant="contained"
+            className={classes.allMargin}
+            onClick={onPasswordConfirmed}
+          >
+            Confirm
+          </Button>
+          <Button
+            size="medium"
+            variant="contained"
+            className={classes.allMargin}
+            onClick={() => onCloseClicked('passwordExpanded')}
+          >
+            Cancel
+          </Button>
+        </>
       ) : (
         <Button
           size="medium"
@@ -70,7 +119,7 @@ const EditUserInfo = ({
           className={classes.allMargin}
           onClick={() => onOpenClicked('passwordExpanded')}
         >
-          Change
+            Change
         </Button>
       )}
       <Divider className={classes.divider} />
@@ -87,6 +136,15 @@ const EditUserInfo = ({
               className={classes.inputField}
             />
           </div>
+          <Button
+            size="medium"
+            color="primary"
+            variant="contained"
+            className={classes.allMargin}
+            onClick={onNicknameConfirmed}
+          >
+            Confirm
+          </Button>
           <Button
             size="medium"
             variant="contained"
@@ -117,31 +175,53 @@ const EditUserInfo = ({
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
         Message
       </Typography>
-      <Typography variant="body1" align="left" className={classes.section}>
-        {message}
-      </Typography>
       {messageExpanded ? (
-        <Button
-          size="medium"
-          variant="contained"
-          className={classes.allMargin}
-          onClick={() => onCloseClicked('messageExpanded')}
-        >
-          Cancel
-        </Button>
+        <>
+          <div className={classes.fieldSection}>
+            <TextField
+              onChange={(e) => onInputChanged(e, 'newMessageField')}
+              value={newMessageField}
+              className={classes.inputField}
+              multiline
+              fullWidth
+            />
+          </div>
+          <Button
+            size="medium"
+            color="primary"
+            variant="contained"
+            className={classes.allMargin}
+            onClick={onMessageConfirmed}
+          >
+            Confirm
+          </Button>
+          <Button
+            size="medium"
+            variant="contained"
+            className={classes.allMargin}
+            onClick={() => onCloseClicked('messageExpanded')}
+          >
+            Cancel
+          </Button>
+        </>
       ) : (
-        <Button
-          size="medium"
-          variant="contained"
-          color="primary"
-          className={classes.allMargin}
-          onClick={() => onOpenClicked('messageExpanded')}
-        >
-          Change
-        </Button>
+        <>
+          <Typography variant="body1" align="left" className={classes.section}>
+            {message}
+          </Typography>
+          <Button
+            size="medium"
+            variant="contained"
+            color="primary"
+            className={classes.allMargin}
+            onClick={() => onOpenClicked('messageExpanded')}
+          >
+            Change
+          </Button>
+        </>
       )}
       <Divider className={classes.divider} />
-
+      
     </div>
   );
 };

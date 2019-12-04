@@ -26,7 +26,7 @@ class EditUserInfoContainer extends Component {
     newPasswordField: '',
     confirmNewPasswordField: '',
     newNicknameField: tempUser.nickname,
-    newMessageField: tempUser.message,
+    newMessageField: tempUser.status_message,
   }
 
   onOpenClicked = (which) => {
@@ -35,10 +35,37 @@ class EditUserInfoContainer extends Component {
 
   onCloseClicked = (which) => {
     this.setState({ [which]: false });
+    if (which === 'passwordExpanded') {
+      this.setState({ currentPasswordField: '' });
+      this.setState({ newPasswordField: '' });
+      this.setState({ confirmNewPasswordField: '' });
+    } else if (which === 'nicknameExpanded') {
+      this.setState({ newNicknameField: tempUser.nickname });
+    } else if (which === 'messageExpanded') {
+      this.setState({ newMessageField: tempUser.status_message });
+    }
   }
 
   onInputChanged = (e, which) => {
     this.setState({ [which]: e.target.value });
+  }
+
+  onPasswordConfirmed = () => {
+    // send currentPasswordField, newPasswordField, confirmNewPasswordField to backend
+    // apply changed user info
+    this.setState({ passwordExpanded: false });
+  }
+
+  onNicknameConfirmed = () => {
+    // send newNicknameField to backend
+    // apply changed user info
+    this.setState({ nicknameExpanded: false });
+  }
+
+  onMessageConfirmed = () => {
+    // send newMessageField to backend
+    // apply changed user info
+    this.setState({ messageExpanded: false });
   }
 
   render() {
@@ -49,7 +76,7 @@ class EditUserInfoContainer extends Component {
             <EditUserInfo
               email={this.state.currentUser.email}
               nickname={this.state.currentUser.nickname}
-              message={this.state.currentUser.message}
+              message={this.state.currentUser.status_message}
               passwordExpanded={this.state.passwordExpanded}
               nicknameExpanded={this.state.nicknameExpanded}
               messageExpanded={this.state.messageExpanded}
@@ -61,6 +88,9 @@ class EditUserInfoContainer extends Component {
               newNicknameField={this.state.newNicknameField}
               newMessageField={this.state.newMessageField}
               onInputChanged={this.onInputChanged}
+              onPasswordConfirmed={this.onPasswordConfirmed}
+              onNicknameConfirmed={this.onNicknameConfirmed}
+              onMessageConfirmed={this.onMessageConfirmed}
             />
           </div>
         ) : (
