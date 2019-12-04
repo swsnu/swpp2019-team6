@@ -23,3 +23,12 @@ class Place(models.Model):
     photo_width =models.IntegerField(null=True)
     photo_image =models.ImageField(null=True)
 
+
+class AutoComplete(models.Model):
+
+    query = models.ForeignKey(Query, to_field="query", on_delete=models.CASCADE)
+    search_index = models.SmallIntegerField(null=True)
+    description = models.CharField(max_length=200)
+    structured_formatting = models.TextField(null=True)
+    place_id = models.CharField(max_length=50)
+
