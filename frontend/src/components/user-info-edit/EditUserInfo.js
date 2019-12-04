@@ -24,11 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
   helperText: {
     marginTop: theme.spacing(1),
-  }
+  },
 }));
 
 // current user info: email, nickname, message
-// text fields: currentPasswordField, newPasswordField, confirmNewPasswordField, newNicknameField, newMessageField
+// text fields: currentPasswordField, newPasswordField,
+// confirmNewPasswordField, newNicknameField, newMessageField
 // for section status: passwordExpanded, nicknameExpanded, messageExpanded
 // for closing sections: onOpenClicked, onCloseClicked
 // for changing fields: onInputChanged
@@ -38,7 +39,8 @@ const EditUserInfo = ({
   passwordExpanded, nicknameExpanded, messageExpanded,
   onOpenClicked, onCloseClicked,
   onPasswordConfirmed, onNicknameConfirmed, onMessageConfirmed,
-  currentPasswordField, newPasswordField, confirmNewPasswordField, newNicknameField, newMessageField,
+  currentPasswordField, newPasswordField,
+  confirmNewPasswordField, newNicknameField, newMessageField,
   onInputChanged,
 }) => {
   const classes = useStyles();
@@ -64,6 +66,7 @@ const EditUserInfo = ({
                 Current Password
               </Typography>
               <TextField
+                id="currentPasswordField"
                 onChange={(e) => onInputChanged(e, 'currentPasswordField')}
                 value={currentPasswordField}
                 className={classes.inputField}
@@ -75,6 +78,7 @@ const EditUserInfo = ({
                 New Password
               </Typography>
               <TextField
+                id="newPasswordField"
                 onChange={(e) => onInputChanged(e, 'newPasswordField')}
                 value={newPasswordField}
                 className={classes.inputField}
@@ -86,6 +90,7 @@ const EditUserInfo = ({
                 New Password Confirmation
               </Typography>
               <TextField
+                id="confirmNewPasswordField"
                 onChange={(e) => onInputChanged(e, 'confirmNewPasswordField')}
                 value={confirmNewPasswordField}
                 className={classes.inputField}
@@ -94,6 +99,7 @@ const EditUserInfo = ({
             </div>
           </div>
           <Button
+            id="passwordConfirmButton"
             size="medium"
             color="primary"
             variant="contained"
@@ -103,6 +109,7 @@ const EditUserInfo = ({
             Confirm
           </Button>
           <Button
+            id="passwordCancelButton"
             size="medium"
             variant="contained"
             className={classes.allMargin}
@@ -113,6 +120,7 @@ const EditUserInfo = ({
         </>
       ) : (
         <Button
+          id="passwordChangeButton"
           size="medium"
           variant="contained"
           color="primary"
@@ -131,12 +139,14 @@ const EditUserInfo = ({
         <>
           <div className={classes.fieldSection}>
             <TextField
+              id="newNicknameField"
               onChange={(e) => onInputChanged(e, 'newNicknameField')}
               value={newNicknameField}
               className={classes.inputField}
             />
           </div>
           <Button
+            id="nicknameConfirmButton"
             size="medium"
             color="primary"
             variant="contained"
@@ -146,6 +156,7 @@ const EditUserInfo = ({
             Confirm
           </Button>
           <Button
+            id="nicknameCancelButton"
             size="medium"
             variant="contained"
             className={classes.allMargin}
@@ -160,6 +171,7 @@ const EditUserInfo = ({
             {nickname}
           </Typography>
           <Button
+            id="nicknameChangeButton"
             size="medium"
             variant="contained"
             color="primary"
@@ -179,6 +191,7 @@ const EditUserInfo = ({
         <>
           <div className={classes.fieldSection}>
             <TextField
+              id="newMessageField"
               onChange={(e) => onInputChanged(e, 'newMessageField')}
               value={newMessageField}
               className={classes.inputField}
@@ -187,6 +200,7 @@ const EditUserInfo = ({
             />
           </div>
           <Button
+            id="messageConfirmButton"
             size="medium"
             color="primary"
             variant="contained"
@@ -196,6 +210,7 @@ const EditUserInfo = ({
             Confirm
           </Button>
           <Button
+            id="messageCancelButton"
             size="medium"
             variant="contained"
             className={classes.allMargin}
@@ -210,6 +225,7 @@ const EditUserInfo = ({
             {message}
           </Typography>
           <Button
+            id="messageChangeButton"
             size="medium"
             variant="contained"
             color="primary"
@@ -221,7 +237,6 @@ const EditUserInfo = ({
         </>
       )}
       <Divider className={classes.divider} />
-      
     </div>
   );
 };
