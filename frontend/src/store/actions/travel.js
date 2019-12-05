@@ -68,7 +68,7 @@ const convertItemToPushFormat = (travel) => {
   const newTravel = {
     fork_parent: null,
     head: {
-      day: [],
+      days: [],
       title: '',
       summary: '',
       description: '',
@@ -120,7 +120,7 @@ const convertItemToPushFormat = (travel) => {
         parent_block: null,
       });
     }
-    newTravel.head.day.push(newDayBlock);
+    newTravel.head.days.push(newDayBlock);
   }
   return newTravel;
 };
@@ -128,6 +128,7 @@ const convertItemToPushFormat = (travel) => {
 export const createTravel = (travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
+    console.log("post", newTravel);
     return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',
@@ -136,7 +137,7 @@ export const createTravel = (travel) => {
       .then(
         (res) => {
           dispatch(_createTravel(res.data));
-          dispatch(push(`/travel/detail/${res.data.id}/`));
+          dispatch(push(`/travel/${res.data.id}/`));
         },
       ).catch(
         (res) => {
