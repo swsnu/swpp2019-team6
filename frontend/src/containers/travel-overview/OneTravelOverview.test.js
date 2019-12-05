@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 import OneTravelOverview from './OneTravelOverview';
 
 describe('OneTravelOverview', () => {
@@ -7,7 +8,10 @@ describe('OneTravelOverview', () => {
 
   beforeEach(() => {
     oneTravelOverview = (
-      <OneTravelOverview />
+      <MemoryRouter initialEntries={['/travel/1/settings']}>
+        <OneTravelOverview />
+      </MemoryRouter>
+
     );
   });
 
