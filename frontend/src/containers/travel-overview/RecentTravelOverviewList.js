@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 import { connect } from 'react-redux';
+import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
-import * as actionCreators from '../../store/actions/index'
+import * as actionCreators from '../../store/actions/index';
 
 const tempTravelList = [{
   title: 'Ante metus dictum at tempor commodo ullamcorper a lacus',
@@ -56,13 +56,10 @@ const tempTravelList = [{
 }];
 
 class RecentTravelOverviewList extends Component {
-  state = {
-    travelList: tempTravelList,
-  }
-  
-	componentDidMount() {
+  componentDidMount() {
     this.props.onGetRecentTravels();
   }
+
   render() {
     return (
       <div className="recentTravelOverview">
@@ -76,19 +73,17 @@ class RecentTravelOverviewList extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-      onGetRecentTravels: () =>
-          dispatch(actionCreators.getRecentTravels()),
+    onGetRecentTravels: () => dispatch(actionCreators.getRecentTravels()),
 
-  }
+  };
+};
 
-}
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-      recentTravels: state.travel.recentTravels,
+    recentTravels: state.travel.recentTravels,
 
-  }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(RecentTravelOverviewList);
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(RecentTravelOverviewList);

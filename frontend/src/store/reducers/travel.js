@@ -2,8 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   travel: {},
-  popularTravels :[],
-  recentTravels : [],
+  popularTravels: [],
+  recentTravels: [],
 };
 const initialAction = {
   type: null,
@@ -16,9 +16,9 @@ const travel = (state = initialState, action = initialAction) => {
     case actionTypes.CREATE_TRAVEL:
       return { travel: action.item };
     case actionTypes.GET_POPULAR_TRAVELS:
-      return {...state, popularTravels: action.travels}
+      return { ...state, popularTravels: action.travels };
     case actionTypes.GET_RECENT_TRAVELS:
-      return {...state, recentTravels: action.travels}
+      return { ...state, recentTravels: action.travels };
     default:
       break;
   }

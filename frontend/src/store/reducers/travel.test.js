@@ -15,8 +15,8 @@ describe('Travel Reducer', () => {
     const newState = reducer(undefined, undefined);
     expect(newState).toEqual({
       travel: {},
-      popularTravels : [],
-      recentTravels : []
+      popularTravels: [],
+      recentTravels: [],
     });
   });
   it('should get travel successfully', () => {
