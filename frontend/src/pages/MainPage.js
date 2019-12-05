@@ -9,7 +9,7 @@ class MainPage extends Component {
       <div className="mainPage">
         <HeaderContainer />
         <PopularTravelOverviewList />
-        {/* <RecentTravelOverviewList /> */}
+        <RecentTravelOverviewList />
       </div>
     );
   }

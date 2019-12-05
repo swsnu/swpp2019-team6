@@ -81,3 +81,15 @@ export const getPopularTravels = () => {
           .then(res => dispatch(getPopularTravels_(res.data)));
   }
 }
+
+export const getRecentTravels_ = (travels) => {
+  return { type: actionTypes.GET_RECENT_TRAVELS, travels: travels }
+}
+
+export const getRecentTravels = () => {
+  return dispatch => {
+      return axios.get('/api/travel/recent/')
+          .then(res => dispatch(getRecentTravels_(res.data)));
+  }
+}
+
