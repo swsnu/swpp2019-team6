@@ -1,11 +1,14 @@
 import * as actionTypes from '../actions/actionTypes';
-// 로그인, 회원가입, 현재 로그인한 유저의 정보를 담습니다.
+
 const initialState = {
   user: null,
   token: null,
 };
+const initialAction = {
+  type: actionTypes.INITIALIZE_FORM,
+};
 
-const reducer = (state = initialState, action) => {
+const auth = (state = initialState, action = initialAction) => {
   switch (action.type) {
     case actionTypes.INITIALIZE_FORM:
       return initialState;
@@ -19,9 +22,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.LOGIN_FAILURE:
       // eslint-disable-next-line no-alert
       alert('Email or password is wrong');
-      return {
-        state,
-      };
+      break;
     case actionTypes.LOGOUT:
       localStorage.removeItem('user');
       localStorage.removeItem('token');
@@ -35,4 +36,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export default reducer;
+export default auth;

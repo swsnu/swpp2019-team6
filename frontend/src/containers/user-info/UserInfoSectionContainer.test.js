@@ -21,17 +21,17 @@ jest.mock('../../components/user-info/UserInfoSection', () => {
 });
 
 
-describe('SearchTravelOverviewList', () => {
-  let userTravelOverviewList;
+describe('UserInfoSectionContainer', () => {
+  let userInfoSectionContainer;
 
   beforeEach(() => {
-    userTravelOverviewList = (
+    userInfoSectionContainer = (
       <UserInfoSectionContainer />
     );
   });
 
   it('should render.', () => {
-    const component = mount(userTravelOverviewList);
+    const component = mount(userInfoSectionContainer);
     expect(component.find('.userInfoSection').length).toBe(1);
   });
 });

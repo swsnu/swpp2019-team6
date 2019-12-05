@@ -1,0 +1,16 @@
+{
+    "django": {
+        "allowed_hosts": [
+            "localhost",
+            "127.0.0.1"
+        ],
+        "secret_key": "SECRET_KEY",
+        "database": {
+            "NAME": "SCHEMA",
+            "USER": "USER",
+            "PASSWORD": "PASSWORD",
+            "HOST": "HOST",
+            "PORT": 3306
+        }
+    }
+}

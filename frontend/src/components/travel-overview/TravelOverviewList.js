@@ -63,10 +63,10 @@ const TravelOverviewList = ({ travelList, is_mypage }) => {
       <div>
         {travelList ? (
           <Grid container spacing={3}>
-            {travelList.map((travelOverviewItem) => (
-              <Grid key={travelOverviewItem.id} item xs={12} md={6}>
+            {travelList.map((travelOverviewItem, i) => (
+              <Grid key={i} item xs={12} md={6}>
                 <TravelOverviewBlock
-                  key={travelOverviewItem.id}
+                  key={i}
                   travelOverviewItem={travelOverviewItem}
                   is_mypage={is_mypage}
                 />
