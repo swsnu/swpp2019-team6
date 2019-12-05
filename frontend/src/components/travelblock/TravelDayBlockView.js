@@ -18,8 +18,8 @@ const useCardStyles = makeStyles((theme) => ({
   },
   text: {
     ...theme.typography.button,
-    marginLeft: theme.spacing(5),
-    fontSize: 20,
+    marginLeft: theme.spacing(2),
+    fontSize: 16,
   },
 }));
 
