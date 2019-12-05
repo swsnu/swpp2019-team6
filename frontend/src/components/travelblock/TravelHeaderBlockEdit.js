@@ -43,18 +43,21 @@ export default function TravelHeaderBlockEdit(props) {
   const cardClasses = useCardStyles();
   const textClasses = useTextStyles();
 
-  const handleChange = (event) => {
-    props.setTravelTitle(event.target.value);
+  const handleTitleChange = (event) => {
+    props.setHeader({ ...props.header, title: event.target.value });
+    // props.setTravelTitle(event.target.value);
   };
 
   const handleStartDate = (date) => {
     props.handlePeriodChange(date, props.endDate);
-    props.setStartDate(date);
+    props.setHeader({ ...props.header, startDate: date });
+    // props.setStartDate(date);
   };
 
   const handleEndDate = (date) => {
     props.handlePeriodChange(props.startDate, date);
-    props.setEndDate(date);
+    props.setHeader({ ...props.header, endDate: date });
+    // props.setEndDate(date);
   };
 
   return (
@@ -65,20 +68,20 @@ export default function TravelHeaderBlockEdit(props) {
             <Grid item>
               <FormControl className={textClasses.formControl}>
                 <InputLabel htmlFor="component-title">Title</InputLabel>
-                <Input id="component-title" value={props.travelTitle} onChange={handleChange} />
+                <Input id="component-title" value={props.header.title} onChange={handleTitleChange} />
               </FormControl>
             </Grid>
             <Grid item>
               <DatePickerWrapper
                 id="StartDate"
                 label="Start Date"
-                value={props.startDate}
+                value={props.header.startDate}
                 onChange={handleStartDate}
               />
               <DatePickerWrapper
                 id="EndDate"
                 label="End Date"
-                value={props.endDate}
+                value={props.header.endDate}
                 onChange={handleEndDate}
               />
             </Grid>
