@@ -26,19 +26,17 @@ describe('EditUserInfoContainer', () => {
     const messageChangeButton = component.find('#messageChangeButton');
     messageChangeButton.at(0).simulate('click');
 
-    /*
-    This doesn't seem to work now
-    const currentPasswordField = component.find('#currentPasswordField');
-    currentPasswordField.at(0).simulate('change', { target: { value: 'test' } });
-    const newPasswordField = component.find('#newPasswordField');
-    newPasswordField.at(0).simulate('change', { target: { value: 'test' } });
-    const confirmNewPasswordField = component.find('#confirmNewPasswordField');
-    confirmNewPasswordField.at(0).simulate('change', { target: { value: 'test' } });
-    const newNicknameField = component.find('#newNicknameField');
-    newNicknameField.at(0).simulate('change', { target: { value: 'test' } });
-    const newMessageField = component.find('#newMessageField');
-    newMessageField.at(0).simulate('change', { target: { value: 'test' } });
-    */
+
+    const currentPasswordField = component.find('#currentPasswordField').find('input');
+    currentPasswordField.simulate('change', { target: { value: 'test' } });
+    const newPasswordField = component.find('#newPasswordField').find('input');
+    newPasswordField.simulate('change', { target: { value: 'test' } });
+    const confirmNewPasswordField = component.find('#confirmNewPasswordField').find('input');
+    confirmNewPasswordField.simulate('change', { target: { value: 'test' } });
+    const newNicknameField = component.find('#newNicknameField').find('input');
+    newNicknameField.simulate('change', { target: { value: 'test' } });
+    const newMessageField = component.find('#newMessageField').find('textarea').at(0);
+    newMessageField.simulate('change', { target: { value: 'test' } });
 
     const passwordCancelButton = component.find('#passwordCancelButton');
     passwordCancelButton.at(0).simulate('click');
