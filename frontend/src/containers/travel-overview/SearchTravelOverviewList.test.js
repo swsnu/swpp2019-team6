@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import Typography from '@material-ui/core/Typography';
 import SearchTravelOverviewList from './SearchTravelOverviewList';
 
 jest.mock('../../components/travel-overview/TravelOverviewList', () => {
@@ -24,18 +25,13 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
 
 
 describe('SearchTravelOverviewList', () => {
-  let searchTravelOverviewList;
-
-  beforeEach(() => {
-    searchTravelOverviewList = (
-      <SearchTravelOverviewList
-        tag="hello"
-      />
-    );
+  it('should render tag result', () => {
+    const component = mount(<SearchTravelOverviewList tag="TEST" />);
+    expect(component.find(Typography).at(0).text()).toBe('Results for #TEST');
   });
 
-  it('should render.', () => {
-    const component = mount(searchTravelOverviewList);
-    expect(component.find('.travelOverviewList').length).toBe(1);
+  it('should render no result', () => {
+    const component = mount(<SearchTravelOverviewList />);
+    expect(component.find(Typography).at(0).text()).toBe('No search tag');
   });
 });

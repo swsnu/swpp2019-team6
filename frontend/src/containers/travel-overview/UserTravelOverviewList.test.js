@@ -23,12 +23,12 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
 });
 
 
-describe('SearchTravelOverviewList', () => {
+describe('UserTravelOverviewList', () => {
   let userTravelOverviewList;
 
   beforeEach(() => {
     userTravelOverviewList = (
-      <UserTravelOverviewList />
+      <UserTravelOverviewList.WrappedComponent />
     );
   });
 

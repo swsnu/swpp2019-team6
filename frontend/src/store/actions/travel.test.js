@@ -92,6 +92,25 @@ const stubTravel = {
   ],
 };
 
+const stubRequestTravel = {
+  header: {
+    title: 'TEST',
+    description: 'TEST',
+    summary: 'TEST',
+    startDate: new Date(),
+    endDate: new Date(),
+  },
+  items: [
+    {
+      id: 'day-0',
+      info: {
+        title: 'TEST',
+        datetime: new Date(),
+      },
+    },
+  ],
+};
+
 
 describe('Travel Action', () => {
   afterEach(() => {
@@ -108,7 +127,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.createTravel(stubTravel)).then(() => {
+    store.dispatch(actionCreators.createTravel(stubRequestTravel)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -125,7 +144,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.createTravel(stubTravel)).then(() => {
+    store.dispatch(actionCreators.createTravel(stubRequestTravel)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
