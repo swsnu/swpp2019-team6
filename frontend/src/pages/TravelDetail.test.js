@@ -21,8 +21,8 @@ jest.mock('../containers/travelDetail/TravelDetail', () => {
 
 
 describe('TravelDetail Page', () => {
-  it('should render.', () => {
+  it('should render page', () => {
     const component = shallow(<TravelDetailPage />);
-    expect(component.find('.travelDetail').length).toBe(1);
+    expect(component.find('.TravelDetail').length).toBe(1);
   });
 });

@@ -60,7 +60,7 @@ export default function TravelActivityBlockView(props) {
       header = 'RESTAURANT';
       break;
     default:
-      header = 'UNDEFINDED';
+      header = 'UNDEFINED';
   }
 
   return (

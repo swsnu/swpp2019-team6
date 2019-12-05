@@ -89,4 +89,11 @@ describe('<TravelActivityBlockView />', () => {
     const wrapperTypography = component.find(Typography);
     expect(wrapperTypography.at(0).text()).toBe('RESTAURANT');
   });
+
+  it('should print DEFAULT block_type', () => {
+    item.block_type = 'UNDEFINED';
+    const component = shallow(<TravelActivityBlockView item={item} />);
+    const wrapperTypography = component.find(Typography);
+    expect(wrapperTypography.at(0).text()).toBe('UNDEFINED');
+  });
 });
