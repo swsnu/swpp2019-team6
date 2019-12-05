@@ -107,7 +107,7 @@ class TravelBlock(models.Model):
     description = models.TextField(blank=True)
     time = models.TimeField(null=True, blank=True)
     start_location = models.TextField()
-    end_location = models.TextField()
+    end_location = models.TextField(null=True, blank=True)
     block_type = models.CharField(
         max_length=3,
         choices=[
@@ -140,7 +140,7 @@ class TravelDayList(models.Model):
     index = models.IntegerField()
     class Meta:
         ordering = ['TravelCommit','TravelDay','index',]
-
+        unique_together = ['TravelCommit','TravelDay','index']
 
 class TravelBlockList(models.Model):
     TravelDay = models.ForeignKey(
@@ -154,3 +154,4 @@ class TravelBlockList(models.Model):
     index = models.IntegerField()
     class Meta:
         ordering = ['TravelDay','TravelBlock','index',]
+        unique_together = ['TravelDay','TravelBlock','index']
