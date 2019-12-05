@@ -6,11 +6,13 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import authReducer from './reducers/auth';
+import travelReducer from './reducers/travel';
 import userReducer from './reducers/userReducer';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   auth: authReducer,
+  travel: travelReducer,
   userReducer: userReducer,
   router: connectRouter(history),
 });
