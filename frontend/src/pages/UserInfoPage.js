@@ -8,8 +8,8 @@ class UserInfoPage extends Component {
     return (
       <div className="userInfoPage">
         <HeaderContainer />
-        <UserInfoSectionContainer nickname={this.props.match.params.nickname} />
-        <UserTravelOverviewList nickname={this.props.match.params.nickname} />
+        <UserInfoSectionContainer id={this.props.match.params.id} />
+        <UserTravelOverviewList id={this.props.match.params.id} />
       </div>
     );
   }

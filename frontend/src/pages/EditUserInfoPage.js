@@ -7,7 +7,7 @@ class EditUserInfoPage extends Component {
     return (
       <div className="editUserInfoPage">
         <HeaderContainer />
-        <EditUserInfoContainer nickname={this.props.match.params.nickname} />
+        <EditUserInfoContainer id={this.props.match.params.id} />
       </div>
     );
   }

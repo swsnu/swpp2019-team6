@@ -83,7 +83,7 @@ class UserTravelOverviewList extends Component {
           </div>
         ) : (
           <Typography align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>
-            Make your first plan for a travel, {this.props.nickname}!
+            Make your first plan for a travel, {this.props.id}!
           </Typography>
         )}
         <Grid container alignItems="center" direction="column" justify="space-around">

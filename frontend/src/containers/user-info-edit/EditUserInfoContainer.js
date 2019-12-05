@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import EditUserInfo from '../../components/user-info-edit/EditUserInfo';
 
 const tempUser = {
+  id: 1,
   nickname: 'iluvswpp',
   email: 'iluvswpp@snu.ac.kr',
   register_date: '2019.10.10',
@@ -15,7 +16,7 @@ const tempUser = {
 };
 
 // somehow have to get current user info
-// from this.params.nickname
+// from this.params.id
 class EditUserInfoContainer extends Component {
   state = {
     currentUser: tempUser,
