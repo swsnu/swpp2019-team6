@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { push } from 'connected-react-router';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
+import CreateTravelButton from '../../components/user-info/CreateTravelButton';
 
 const tempTravelList = [{
   title: 'Curabitur gravida arcu ac tortor dignissim',
@@ -60,6 +61,7 @@ const tempTravelList = [{
 const emptyTravelList = [];
 
 // somehow determine whether this page is of current user or not.
+// get user's travel list by using this.props.id
 const is_mypage = true;
 
 class UserTravelOverviewList extends Component {
@@ -76,6 +78,15 @@ class UserTravelOverviewList extends Component {
     return (
       <div>
         <div style={{ marginBottom: 24 }} />
+        <div>
+          {is_mypage ? (
+            <Grid container alignItems="center" direction="column" justify="space-around">
+              <CreateTravelButton handleClickCreate={this.handleClickCreate} />
+            </Grid>
+          ) : (
+            <span />
+          )}
+        </div>
         {this.state.travelList.length ? (
           <div className="userTravelOverview">
             <TravelOverviewList travelList={this.state.travelList} is_mypage={is_mypage} />
@@ -86,11 +97,6 @@ class UserTravelOverviewList extends Component {
             Make your first plan for a travel, {this.props.id}!
           </Typography>
         )}
-        <Grid container alignItems="center" direction="column" justify="space-around">
-          <Button variant="contained" color="secondary" onClick={this.handleClickCreate}>
-            Create
-          </Button>
-        </Grid>
       </div>
     );
   }

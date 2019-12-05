@@ -10,7 +10,9 @@ const tempUser = {
   id: 1,
   nickname: 'iluvswpp',
   register_date: '2019.10.10',
-  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a scelerisque purus semper eget.',
+  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum
+   est. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci
+    a scelerisque purus semper eget.',
   num_plans: 4,
   num_likes: 45,
   num_forked: 3,
