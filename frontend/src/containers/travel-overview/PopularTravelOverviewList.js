@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import { connect } from 'react-redux';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
+
+import * as actionCreators from '../../store/actions/index';
 
 const tempTravelList = [{
   title: 'Pharetra diam sit amet nisl',
@@ -29,21 +32,34 @@ const tempTravelList = [{
 }];
 
 class PopularTravelOverviewList extends Component {
-    state = {
-      travelList: tempTravelList,
-    }
+  componentDidMount() {
+    this.props.onGetPopularTravels();
+  }
 
-    render() {
-      return (
-        <div className="popularTravelOverview">
-          <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
+  render() {
+    return (
+      <div className="popularTravelOverview">
+        <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
             Popular
-          </Typography>
-          <TravelOverviewList travelList={this.state.travelList} is_mypage={false} />
-          <Divider style={{ margin: 8 }} />
-        </div>
-      );
-    }
+        </Typography>
+        <TravelOverviewList travelList={this.props.popularTravels} is_mypage={false} />
+        <Divider style={{ margin: 8 }} />
+      </div>
+    );
+  }
 }
 
-export default PopularTravelOverviewList;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetPopularTravels: () => dispatch(actionCreators.getPopularTravels()),
+
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    popularTravels: state.travel.popularTravels,
+
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(PopularTravelOverviewList);

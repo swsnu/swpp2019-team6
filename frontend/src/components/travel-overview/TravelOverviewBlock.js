@@ -57,23 +57,23 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
           <CardActionArea component="button" onClick={onCardClicked}>
             <Card className={classes.card}>
               {/* For image */}
-              {travelOverviewItem.photo ? (
+              {travelOverviewItem.head.photo ? (
                 <Hidden xsDown>
                   <CardMedia
                     component="img"
                     className={classes.cardMedia}
-                    image={travelOverviewItem.photo}
-                    title={travelOverviewItem.title}
+                    image={travelOverviewItem.head.photo}
+                    title={travelOverviewItem.head.title}
                   />
                 </Hidden>
               ) : (null)}
               <div className={classes.cardDetails}>
                 <CardContent align="left">
                   <Typography component="h2" variant="h5">
-                    {travelOverviewItem.title}
+                    {travelOverviewItem.head.title}
                   </Typography>
                   <Typography variant="subtitle1" color="textSecondary">
-                    {travelOverviewItem.period}
+                    {`${travelOverviewItem.head.start_date} ~ ${travelOverviewItem.head.end_date}`}
                   </Typography>
                   <Typography variant="subtitle2" color="primary" display="inline">
                     by {travelOverviewItem.author}
@@ -92,14 +92,14 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
                           <PrivateIcon className={classes.icons} />
                         </Tooltip>
                       )}
-                      {travelOverviewItem.allow_comment ? (
+                      {travelOverviewItem.allow_comments ? (
                         <Tooltip title="Comments allowed">
                           <CommentIcon className={classes.icons} />
                         </Tooltip>
                       ) : (
                         <span />
                       )}
-                      {travelOverviewItem.is_forked ? (
+                      {travelOverviewItem.fork_parent ? (
                         <Tooltip title="Forked">
                           <ForkedIcon className={classes.icons} />
                         </Tooltip>
@@ -118,7 +118,7 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
                     <span />
                   )}
                   <Typography paragraph variant="body1">
-                    {travelOverviewItem.summary}
+                    {travelOverviewItem.head.summary}
                   </Typography>
                 </CardContent>
               </div>
