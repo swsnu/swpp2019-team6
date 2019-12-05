@@ -10,7 +10,7 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
           <div>
             {props.travelList.map((travelOverviewItem, i) => (
               <div key={i} className="travelOverviewItem">
-                {travelOverviewItem.title}
+                {travelOverviewItem.head.title}
               </div>
             ))}
           </div>
