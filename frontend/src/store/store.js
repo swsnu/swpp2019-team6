@@ -13,7 +13,7 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   auth: authReducer,
   travel: travelReducer,
-  userReducer: userReducer,
+  user: userReducer, // not for current logged-in user
   router: connectRouter(history),
 });
 export const middlewares = [thunk, routerMiddleware(history)];

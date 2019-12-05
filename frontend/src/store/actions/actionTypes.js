@@ -10,7 +10,7 @@ export const LOGOUT = 'auth/LOGOUT';
 // export const SIGNUP_FAILURE = 'auth/SIGNUP_FAILURE';
 
 // for user
-export const GET_USER = 'GET_USER';
+export const GET_USER = 'user/GET_USER';
 export const SIGN_UP = 'SIGN_UP';
 
 // for travel
