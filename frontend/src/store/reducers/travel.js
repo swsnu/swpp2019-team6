@@ -10,9 +10,9 @@ const initialAction = {
 const travel = (state = initialState, action = initialAction) => {
   switch (action.type) {
     case actionTypes.GET_TRAVEL:
-      return { travel: action.travel.travel };
+      return { header: action.header, items: action.items, id: action.id };
     case actionTypes.CREATE_TRAVEL:
-      return { travel: action.travel.travel };
+      return { travel: action.item };
     default:
       break;
   }

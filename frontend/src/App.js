@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import SignupPage from './pages/SignupPage';
 import CreateTravel from './pages/CreateTravel';
+import TravelDetail from './pages/TravelDetail';
 import SearchPage from './pages/SearchPage';
 import UserInfoPage from './pages/UserInfoPage';
 import TravelSettingsPage from './pages/TravelSettingsPage';
@@ -22,6 +23,7 @@ function App(props) {
           <Route path="/sign_up" exact render={() => <SignupPage />} />
           <Route path="/main" exact render={() => <MainPage />} />
           <Route path="/travel/create" exact render={() => <CreateTravel />} />
+          <Route path="/travel/:id/" exact render={() => <TravelDetail />} />
           <Route path="/travel/:id/settings" exact component={TravelSettingsPage} />
           <Route path="/search" exact component={SearchPage} />
           <Route path="/user/:nickname" exact component={UserInfoPage} />
