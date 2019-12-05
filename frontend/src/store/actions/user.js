@@ -3,14 +3,15 @@ import { push } from 'connected-react-router';
 
 import * as actionTypes from './actionTypes';
 
-export const getUser_ = (temp) => {
-  return { type: actionTypes.GET_USER, temp: temp };
+export const getUser_ = (userInfo) => {
+  return { type: actionTypes.GET_USER, userInfo: userInfo };
 };
 
-export const getUser = (temp) => {
+export const getUser = (id) => {
   return (dispatch) => {
-    return axios.get('/api/user')
-      .then((res) => dispatch(getUser_(res.data)));
+    return axios.get(`/api/user/${id}`)
+      .then((res) => dispatch(getUser_(res.data)))
+      .catch((res) => dispatch(push('/error')));
   };
 };
 
