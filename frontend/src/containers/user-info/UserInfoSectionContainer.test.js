@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 import UserInfoSectionContainer from './UserInfoSectionContainer';
 
 jest.mock('../../components/user-info/UserInfoSection', () => {
@@ -26,7 +27,10 @@ describe('UserInfoSectionContainer', () => {
 
   beforeEach(() => {
     userInfoSectionContainer = (
-      <UserInfoSectionContainer />
+      <MemoryRouter initialEntries={['/user/1']}>
+        <UserInfoSectionContainer />
+      </MemoryRouter>
+
     );
   });
 

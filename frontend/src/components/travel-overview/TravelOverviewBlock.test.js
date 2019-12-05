@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 import TravelOverviewBlock from './TravelOverviewBlock';
 
 
@@ -57,10 +58,12 @@ describe('TravelOverviewBlock', () => {
 
   it('should render - is_mypage: false.', () => {
     travelOverviewBlock = (
-      <TravelOverviewBlock
-        travelOverviewItem={temptravelOverviewItem}
-        is_mypage={false}
-      />
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewBlock
+          travelOverviewItem={temptravelOverviewItem}
+          is_mypage={false}
+        />
+      </MemoryRouter>
     );
     const component = mount(travelOverviewBlock);
     expect(component.find('button').length).toBe(1);
@@ -68,10 +71,12 @@ describe('TravelOverviewBlock', () => {
 
   it('should render - is_mypage: true / with collaborators', () => {
     travelOverviewBlock = (
-      <TravelOverviewBlock
-        travelOverviewItem={temptravelOverviewItem}
-        is_mypage
-      />
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewBlock
+          travelOverviewItem={temptravelOverviewItem}
+          is_mypage
+        />
+      </MemoryRouter>
     );
     const component = mount(travelOverviewBlock);
     expect(component.find('button').length).toBe(4);
@@ -80,24 +85,34 @@ describe('TravelOverviewBlock', () => {
 
   it('should render - is_mypage: true. without collaborators', () => {
     travelOverviewBlock = (
-      <TravelOverviewBlock
-        travelOverviewItem={temptravelOverviewItem2}
-        is_mypage
-      />
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewBlock
+          travelOverviewItem={temptravelOverviewItem2}
+          is_mypage
+        />
+      </MemoryRouter>
     );
     const component = mount(travelOverviewBlock);
     expect(component.find('button').length).toBe(4);
   });
 
   it('should render empty content.', () => {
-    const component = mount(<TravelOverviewBlock
-      travelOverviewItem={emptytravelOverviewItem}
-    />);
+    const component = mount(
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewBlock
+          travelOverviewItem={emptytravelOverviewItem}
+        />
+      </MemoryRouter>,
+    );
     expect(component.find('.MuiCardMedia-root').length).toBe(0);
   });
 
   it('should render nothing.', () => {
-    const component = mount(<TravelOverviewBlock />);
+    const component = mount(
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewBlock />
+      </MemoryRouter>,
+    );
     expect(component.find('.MuiCardMedia-root').length).toBe(0);
   });
 });

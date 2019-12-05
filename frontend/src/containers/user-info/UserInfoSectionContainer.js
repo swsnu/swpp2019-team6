@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import UserInfoSection from '../../components/user-info/UserInfoSection';
 
@@ -20,6 +21,7 @@ class UserInfoSectionContainer extends Component {
   };
 
   onEditButtonClicked = () => {
+    this.props.history.push(`/user/${this.state.currentUser.nickname}/edit`);
   }
 
   render() {
@@ -45,4 +47,4 @@ class UserInfoSectionContainer extends Component {
   }
 }
 
-export default UserInfoSectionContainer;
+export default withRouter(UserInfoSectionContainer);

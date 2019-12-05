@@ -1,5 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
+
 import TravelOverviewList from './TravelOverviewList';
 
 
@@ -69,10 +71,12 @@ describe('TravelOverviewList', () => {
 
   it('should render. - is_mypage: false', () => {
     travelOverviewList = (
-      <TravelOverviewList
-        travelList={tempTravelList}
-        is_mypage={false}
-      />
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewList
+          travelList={tempTravelList}
+          is_mypage={false}
+        />
+      </MemoryRouter>
     );
     const component = mount(travelOverviewList);
     expect(component.find('button').length).toBe(4);
@@ -80,10 +84,13 @@ describe('TravelOverviewList', () => {
 
   it('should render. - is_mypage: true', () => {
     travelOverviewList = (
-      <TravelOverviewList
-        travelList={tempTravelList}
-        is_mypage
-      />
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewList
+          travelList={tempTravelList}
+          is_mypage
+        />
+      </MemoryRouter>
+
     );
     const component = mount(travelOverviewList);
     expect(component.find('button').length).toBe(17);
@@ -91,14 +98,22 @@ describe('TravelOverviewList', () => {
 
 
   it('should render empty content.', () => {
-    const component = mount(<TravelOverviewList
-      travelList={emptyTravelList}
-    />);
+    const component = mount(
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewList
+          travelList={emptyTravelList}
+        />
+      </MemoryRouter>,
+    );
     expect(component.find('.MuiGrid-item').length).toBe(0);
   });
 
   it('should render nothing.', () => {
-    const component = mount(<TravelOverviewList />);
+    const component = mount(
+      <MemoryRouter initialEntries={['/user/1']}>
+        <TravelOverviewList />
+      </MemoryRouter>,
+    );
     expect(component.find('.MuiGrid-container').length).toBe(0);
   });
 });
