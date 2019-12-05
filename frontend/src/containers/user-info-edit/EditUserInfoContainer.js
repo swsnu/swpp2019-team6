@@ -1,33 +1,45 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import * as actionCreators from '../../store/actions/index';
 
 import EditUserInfo from '../../components/user-info-edit/EditUserInfo';
-
+/*
 const tempUser = {
   id: 1,
   nickname: 'iluvswpp',
   email: 'iluvswpp@snu.ac.kr',
   register_date: '2019.10.10',
-  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a scelerisque purus semper eget.',
+  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est.
+   Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a 
+   scelerisque purus semper eget.',
   num_plans: 4,
   num_likes: 45,
   num_forked: 3,
   user_photo: '/images/13.jpeg',
 };
+*/
+
 
 // somehow have to get current user info
 // from this.params.id
 class EditUserInfoContainer extends Component {
   state = {
-    currentUser: tempUser,
     passwordExpanded: false,
     nicknameExpanded: false,
     messageExpanded: false,
     currentPasswordField: '',
     newPasswordField: '',
     confirmNewPasswordField: '',
-    newNicknameField: tempUser.nickname,
-    newMessageField: tempUser.status_message,
+    newNicknameField: '',
+    newMessageField: '',
+  }
+
+  async componentDidMount() {
+    await this.props.getUser(this.props.match.params.id);
+    this.setState({ newNicknameField: this.props.user.nickname });
+    this.setState({ newMessageField: this.props.user.status_message });
   }
 
   onOpenClicked = (which) => {
@@ -41,9 +53,9 @@ class EditUserInfoContainer extends Component {
       this.setState({ newPasswordField: '' });
       this.setState({ confirmNewPasswordField: '' });
     } else if (which === 'nicknameExpanded') {
-      this.setState({ newNicknameField: tempUser.nickname });
+      this.setState({ newNicknameField: this.props.user.nickname });
     } else if (which === 'messageExpanded') {
-      this.setState({ newMessageField: tempUser.status_message });
+      this.setState({ newMessageField: this.props.user.status_message });
     }
   }
 
@@ -72,12 +84,12 @@ class EditUserInfoContainer extends Component {
   render() {
     return (
       <div>
-        {this.state.currentUser ? (
+        {this.props.user ? (
           <div className="editUserInfo">
             <EditUserInfo
-              email={this.state.currentUser.email}
-              nickname={this.state.currentUser.nickname}
-              message={this.state.currentUser.status_message}
+              email={this.props.user.email}
+              nickname={this.props.user.nickname}
+              message={this.props.user.status_message}
               passwordExpanded={this.state.passwordExpanded}
               nicknameExpanded={this.state.nicknameExpanded}
               messageExpanded={this.state.messageExpanded}
@@ -104,4 +116,17 @@ class EditUserInfoContainer extends Component {
   }
 }
 
-export default EditUserInfoContainer;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: (id) => dispatch(actionCreators.getUser(id)),
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditUserInfoContainer));
