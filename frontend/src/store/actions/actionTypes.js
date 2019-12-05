@@ -16,3 +16,4 @@ export const SIGN_UP = 'SIGN_UP';
 // for travel
 export const CREATE_TRAVEL = 'CREATE_TRAVEL';
 export const GET_TRAVEL = 'GET_TRAVEL';
+export const GET_POPULAR_TRAVELS = 'GET_POPULAR_TRAVELS'

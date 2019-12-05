@@ -11,4 +11,5 @@ export {
 export {
   getTravel,
   createTravel,
+  getPopularTravels,
 } from './travel';

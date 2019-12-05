@@ -70,3 +70,14 @@ export const createTravel = (travel) => {
       );
   };
 };
+
+export const getPopularTravels_ = (travels) => {
+  return { type: actionTypes.GET_POPULAR_TRAVELS, travels: travels }
+}
+
+export const getPopularTravels = () => {
+  return dispatch => {
+      return axios.get('/api/travel/popular/')
+          .then(res => dispatch(getPopularTravels_(res.data)));
+  }
+}
