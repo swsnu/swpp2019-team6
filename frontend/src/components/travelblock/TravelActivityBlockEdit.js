@@ -43,8 +43,12 @@ export default function TravelActivityBlockEdit(props) {
     items, index, handleRemove, handleBlockInfo,
   } = props;
   const {
-    expand, description, startTime, endTime,
+    expand, description, startTime, endTime, point,
   } = items[index].info;
+
+  const handlePoint = (_point) => {
+    handleBlockInfo(index, 'point', _point);
+  };
 
   const handleStartTime = (date) => {
     handleBlockInfo(index, 'startTime', date);
@@ -82,7 +86,7 @@ export default function TravelActivityBlockEdit(props) {
         </MuiPickersUtilsProvider>
         )}
         <Grid item>
-          <GoogleMapSearch searchHandler={props.searchHandler} />
+          <GoogleMapSearch searchHandler={handlePoint} value={point} />
         </Grid>
         <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
         <TravelBlockCloseButton removeHandler={removeHandler} />
