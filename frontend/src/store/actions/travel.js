@@ -51,9 +51,84 @@ export const _createTravel = (travel) => {
   return { type: actionTypes.CREATE_TRAVEL, travel: travel };
 };
 
+const _dateFormat = (datetime) => {
+  const year = datetime.getFullYear();
+  const month = datetime.getMonth() + 1;
+  const date = datetime.getDate();
+  return `${year}-${month}-${date}`;
+};
+
+const _timeFormat = (datetime) => {
+  const hour = datetime.getHours();
+  const minute = datetime.getMinutes();
+  return `${hour}:${minute}`;
+};
+
+const convertItemToPushFormat = (travel) => {
+  const newTravel = {
+    fork_parent: null,
+    head: {
+      day: [],
+      title: '',
+      summary: '',
+      description: '',
+      start_date: '',
+      end_date: '',
+    },
+  };
+  newTravel.head.title = travel.header.title;
+  newTravel.head.summary = travel.header.summary;
+  newTravel.head.description = travel.header.description;
+  newTravel.head.start_date = _dateFormat(travel.header.startDate);
+  newTravel.head.end_date = _dateFormat(travel.header.endDate);
+  const dayBlockIndex = [];
+  for (let i = 0; i < travel.items.length; i++) {
+    if (travel.items[i].id.startsWith('day')) {
+      dayBlockIndex.push(i);
+    }
+  }
+  dayBlockIndex.push(travel.items.length);
+  for (let i = 0; i < dayBlockIndex.length - 1; i++) {
+    const newDayBlock = {
+      blocks: [],
+      title: travel.items[dayBlockIndex[i]].info.title,
+      day: _dateFormat(travel.items[dayBlockIndex[i]].info.datetime),
+      modified: true,
+      parent_day: null,
+    };
+    for (let j = dayBlockIndex[i] + 1; j < dayBlockIndex[i + 1]; j++) {
+      let block_type = '';
+      if (travel.items[j].id.startsWith('transportation')) {
+        block_type = 'TRN';
+      } else if (travel.items[j].id.startsWith('custom')) {
+        block_type = 'CUS';
+      } else if (travel.items[j].id.startsWith('activity')) {
+        block_type = 'ACT';
+      } else if (travel.items[j].id.startsWith('restaurant')) {
+        block_type = 'RST';
+      } else if (travel.items[j].id.startsWith('hotel')) {
+        block_type = 'ACM';
+      }
+      newDayBlock.blocks.push({
+        title: travel.items[j].info.title,
+        description: travel.items[j].info.description,
+        time: _timeFormat(travel.items[j].info.startTime),
+        start_location: travel.items[j].info.startPoint || travel.items[j].info.point,
+        end_location: travel.items[j].info.endPoint,
+        block_type: block_type,
+        modified: true,
+        parent_block: null,
+      });
+    }
+    newTravel.head.day.push(newDayBlock);
+  }
+  return newTravel;
+};
+
 export const createTravel = (travel) => {
   return (dispatch) => {
-    return axios.post('/api/travel/', travel, {
+    const newTravel = convertItemToPushFormat(travel);
+    return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',
       },
