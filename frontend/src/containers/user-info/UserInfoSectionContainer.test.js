@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 import UserInfoSectionContainer from './UserInfoSectionContainer';
 
 jest.mock('../../components/user-info/UserInfoSection', () => {
@@ -21,17 +22,20 @@ jest.mock('../../components/user-info/UserInfoSection', () => {
 });
 
 
-describe('SearchTravelOverviewList', () => {
-  let userTravelOverviewList;
+describe('UserInfoSectionContainer', () => {
+  let userInfoSectionContainer;
 
   beforeEach(() => {
-    userTravelOverviewList = (
-      <UserInfoSectionContainer />
+    userInfoSectionContainer = (
+      <MemoryRouter initialEntries={['/user/1']}>
+        <UserInfoSectionContainer />
+      </MemoryRouter>
+
     );
   });
 
   it('should render.', () => {
-    const component = mount(userTravelOverviewList);
+    const component = mount(userInfoSectionContainer);
     expect(component.find('.userInfoSection').length).toBe(1);
   });
 });

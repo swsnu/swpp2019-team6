@@ -19,25 +19,29 @@ describe('<TravelHeaderBlockEdit />', () => {
   });
 
   it('should change date', () => {
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, 'useState');
-    useStateSpy.mockImplementation((init) => [init, setState]);
-    const component = shallow(<TravelHeaderBlockEdit />);
+    const handlePeriodChange = jest.fn();
+    const setStartDate = jest.fn();
+    const setEndDate = jest.fn();
+    const component = shallow(<TravelHeaderBlockEdit
+      handlePeriodChange={handlePeriodChange}
+      setStartDate={setStartDate}
+      setEndDate={setEndDate}
+    />);
     const wrapperDatePicker = component.find(DatePickerWrapper);
     expect(wrapperDatePicker.length).toBe(2);
     wrapperDatePicker.at(0).simulate('change', { target: { value: '2000-01-01T00:00:00' } });
     wrapperDatePicker.at(1).simulate('change', { target: { value: '2000-01-01T00:00:00' } });
-    expect(setState).toHaveBeenCalledTimes(2);
+    expect(handlePeriodChange).toHaveBeenCalledTimes(2);
+    expect(setStartDate).toHaveBeenCalledTimes(1);
+    expect(setEndDate).toHaveBeenCalledTimes(1);
   });
 
   it('should change title', () => {
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, 'useState');
-    useStateSpy.mockImplementation((init) => [init, setState]);
-    const component = shallow(<TravelHeaderBlockEdit />);
+    const setTravelTitle = jest.fn();
+    const component = shallow(<TravelHeaderBlockEdit setTravelTitle={setTravelTitle} />);
     const InputWrapper = component.find(Input);
     expect(InputWrapper.length).toBe(1);
     InputWrapper.simulate('change', { target: { value: 'TITLE' } });
-    expect(setState).toHaveBeenCalledTimes(1);
+    expect(setTravelTitle).toHaveBeenCalledTimes(1);
   });
 });

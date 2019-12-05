@@ -39,7 +39,7 @@ const UserInfoSection = ({
   return (
     <div>
       <Paper className={classes.userInfoSection}>
-        <Grid xs container spacing={3}>
+        <Grid xs item container spacing={3}>
           {/* For Avartar */}
           <Grid item xs={4}>
             <Avatar className={classes.avatar} alt={user.nickname} src={user.user_photo} />
@@ -48,7 +48,7 @@ const UserInfoSection = ({
           <Grid item xs container direction="column">
             <Grid item container dirction="row" wrap="nowrap">
               <Grid xs={10} item zeroMinWidth>
-                <Typography variant="h5" gutterBottom nowrap>
+                <Typography variant="h5" gutterBottom>
                   @{user.nickname}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">

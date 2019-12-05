@@ -12,3 +12,7 @@ export const LOGOUT = 'auth/LOGOUT';
 // for user
 export const GET_USER = 'GET_USER';
 export const SIGN_UP = 'SIGN_UP';
+
+// for travel
+export const CREATE_TRAVEL = 'CREATE_TRAVEL';
+export const GET_TRAVEL = 'GET_TRAVEL';
