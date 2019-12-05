@@ -2,14 +2,83 @@ import json
 import requests
 from django.conf import settings
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 
-from .models import Query, Place
+from .models import AutoComplete, Query, Place
+
+class PlaceAutoComplete(APIView):
+    def _check_query_cache(self, query):
+        if Query.objects.filter(query=query).exists():
+            return True
+        else:
+            return False
+
+    def parse(self, data, query):
+        if not isinstance(data, dict) or "predictions" not in data:
+            return None
+        predictions = data["predictions"]
+        parse_data = []
+        for idx, prediction in enumerate(predictions):
+            parse_data.append({
+                "search_index": idx,
+                "query": query,
+                "description": prediction.get("description", None),
+                "structured_formatting": prediction.get("structured_formatting", {}),
+                "place_id": prediction.get("place_id", None),
+            })
+        return parse_data
+
+    def cache(self, data, query):
+        new_query = Query.objects.create(query=query)
+        tuples = []
+        for row in data:
+            autoComplete = AutoComplete()
+            autoComplete.search_index = row.get("search_index")
+            autoComplete.query = new_query
+            autoComplete.description = row.get("description")
+            autoComplete.structured_formatting = json.dumps(row.get("structured_formatting"))
+            autoComplete.place_id = row.get("place_id")
+            tuples.append(autoComplete)
+        AutoComplete.objects.bulk_create(tuples)
+
+    def get(self, request, query, *args, **kwargs):
+        if self._check_query_cache(query):
+            print("[CACHED] {}".format(query))
+            query_item = Query.objects.get(query=query)
+            completes = AutoComplete.objects.filter(query=query_item)
+            completes = [{"search_index": complete.search_index,
+                       "query": complete.query.query,
+                       "description": complete.description,
+                       "structured_formatting": json.loads(complete.structured_formatting or '{}'),
+                       "place_id": complete.place_id} for complete in completes]
+            return Response(completes, status=status.HTTP_200_OK)
+        else:
+            url = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
+            params = {
+                "input": query,
+                "key": getattr(settings, 'CREDENTIAL_GOOGLE_MAPS', 'KEY')
+            }
+            response = requests.get(url, params=params)
+            if response.status_code != 200:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            data = response.json()
+            completes = self.parse(data, query)
+            if completes == None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            self.cache(completes, query)
+            return Response(completes, status=status.HTTP_201_CREATED)
+
 
 
 class PlaceSearch(APIView):
+    r"""
+    Search Places given query
+
+    ** currently not used **
+    """
 
     def _check_query_cache(self, query):
         if Query.objects.filter(query=query).exists():
@@ -65,8 +134,9 @@ class PlaceSearch(APIView):
 
     def get(self, request, query, *args, **kwargs):
         if self._check_query_cache(query):
+            print("[CACHED] {}".format(query))
             query_item = Query.objects.get(query=query)
-            places = Place.objects.filter(query=query)
+            places = Place.objects.filter(query=query_item)
             places = [{"search_index": place.search_index,
                        "query": place.query.query,
                        "name": place.name,
