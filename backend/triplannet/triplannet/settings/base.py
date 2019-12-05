@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user.apps.UserConfig',
-    'mapsapi.apps.MapsapiConfig'
+    'mapsapi.apps.MapsapiConfig',
+    'travel.apps.TravelConfig',
 ]
 
 AUTH_USER_MODEL = 'user.User'
