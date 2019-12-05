@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import { withRouter } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { push } from 'connected-react-router';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 
 const tempTravelList = [{
@@ -60,7 +64,12 @@ const is_mypage = true;
 
 class UserTravelOverviewList extends Component {
   state = {
-    travelList: tempTravelList,
+    travelList: [],
+  }
+
+  handleClickCreate = (e) => {
+    console.log('create');
+    this.props.history.push('/travel/create/');
   }
 
   render() {
@@ -77,9 +86,14 @@ class UserTravelOverviewList extends Component {
             Make your first plan for a travel, {this.props.nickname}!
           </Typography>
         )}
+        <Grid container alignItems="center" direction="column" justify="space-around">
+          <Button variant="contained" color="secondary" onClick={this.handleClickCreate}>
+            Create
+          </Button>
+        </Grid>
       </div>
     );
   }
 }
 
-export default UserTravelOverviewList;
+export default withRouter(UserTravelOverviewList);

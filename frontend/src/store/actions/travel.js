@@ -68,7 +68,7 @@ const convertItemToPushFormat = (travel) => {
   const newTravel = {
     fork_parent: null,
     head: {
-      day: [],
+      days: [],
       title: '',
       summary: '',
       description: '',
@@ -91,7 +91,7 @@ const convertItemToPushFormat = (travel) => {
   for (let i = 0; i < dayBlockIndex.length - 1; i++) {
     const newDayBlock = {
       blocks: [],
-      title: travel.items[dayBlockIndex[i]].info.title,
+      title: travel.items[dayBlockIndex[i]].info.title || '.',
       day: _dateFormat(travel.items[dayBlockIndex[i]].info.datetime),
       modified: true,
       parent_day: null,
@@ -110,17 +110,17 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
       }
       newDayBlock.blocks.push({
-        title: travel.items[j].info.title,
-        description: travel.items[j].info.description,
+        title: travel.items[j].info.title || '.',
+        description: travel.items[j].info.description || '.',
         time: _timeFormat(travel.items[j].info.startTime),
-        start_location: travel.items[j].info.startPoint || travel.items[j].info.point,
+        start_location: travel.items[j].info.startPoint || travel.items[j].info.point || '.',
         end_location: travel.items[j].info.endPoint,
         block_type: block_type,
         modified: true,
         parent_block: null,
       });
     }
-    newTravel.head.day.push(newDayBlock);
+    newTravel.head.days.push(newDayBlock);
   }
   return newTravel;
 };
@@ -128,6 +128,7 @@ const convertItemToPushFormat = (travel) => {
 export const createTravel = (travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
+    console.log("post", newTravel);
     return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',
@@ -136,7 +137,7 @@ export const createTravel = (travel) => {
       .then(
         (res) => {
           dispatch(_createTravel(res.data));
-          dispatch(push(`/travel/detail/${res.data.id}/`));
+          dispatch(push(`/travel/${res.data.id}/`));
         },
       ).catch(
         (res) => {

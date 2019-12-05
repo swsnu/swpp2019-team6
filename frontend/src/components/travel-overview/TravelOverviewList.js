@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TravelOverviewList = ({ travelList, is_mypage, history }) => {
   const classes = useStyles();
+  console.log(travelList);
 
   const onCreateButtonClicked = (e) => {
     // console.log('createButtonClicked!');
