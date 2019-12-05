@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import * as actionCreators from '../../store/actions/index';
 
 import EditUserInfo from '../../components/user-info-edit/EditUserInfo';
@@ -12,7 +13,7 @@ const tempUser = {
   email: 'iluvswpp@snu.ac.kr',
   register_date: '2019.10.10',
   status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est.
-   Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a 
+   Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a
    scelerisque purus semper eget.',
   num_plans: 4,
   num_likes: 45,
@@ -34,6 +35,11 @@ class EditUserInfoContainer extends Component {
     confirmNewPasswordField: '',
     newNicknameField: '',
     newMessageField: '',
+    // for validation
+    password_checked: null,
+    nickname_checked: null,
+    password_helperText: '',
+    nickname_helperText: '',
   }
 
   async componentDidMount() {
@@ -61,6 +67,34 @@ class EditUserInfoContainer extends Component {
 
   onInputChanged = (e, which) => {
     this.setState({ [which]: e.target.value });
+    if (which.includes('Password')) {
+      this.setState({ password_checked: null });
+      this.setState((prevState) => {
+        const password_checked = (prevState.confirmNewPasswordField && (prevState.newPasswordField === prevState.confirmNewPasswordField));
+        return {
+          password_helperText: (password_checked ? 'Valid password' : 'Must match password'),
+          password_checked: password_checked,
+        };
+      });
+    } else if (which.includes('Nickname')) {
+      this.setState({ nickname_checked: null });
+      this.setState({ nickname_helperText: '' });
+    }
+  }
+
+  clickCheckNickname = () => {
+    if (!this.state.newNicknameField) {
+      this.setState({ nickname_checked: false });
+      this.setState({ nickname_helperText: 'Enter your nickname' });
+    }
+
+    let nickname_checked = null;
+    axios.get(`/api/user/check/nickname/${this.state.newNicknameField}`)
+      .then((res) => {
+        nickname_checked = !res.data.check;
+        this.setState({ nickname_checked: nickname_checked });
+        this.setState({ nickname_helperText: (nickname_checked ? 'Available Nickname' : 'Nickname already in use. Try another') });
+      });
   }
 
   onPasswordConfirmed = () => {
@@ -104,6 +138,11 @@ class EditUserInfoContainer extends Component {
               onPasswordConfirmed={this.onPasswordConfirmed}
               onNicknameConfirmed={this.onNicknameConfirmed}
               onMessageConfirmed={this.onMessageConfirmed}
+              password_checked={this.state.password_checked}
+              password_helperText={this.state.password_helperText}
+              nickname_checked={this.state.nickname_checked}
+              nickname_helperText={this.state.nickname_helperText}
+              clickCheckNickname={this.clickCheckNickname}
             />
           </div>
         ) : (
