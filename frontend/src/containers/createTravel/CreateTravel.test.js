@@ -75,7 +75,7 @@ describe('<CreateTravel />', () => {
     expect(dayBlock.length).toBe(1);
   });
 
-  it('should clicck createButton and call travel actions', () => {
+  it('should click createButton and call travel actions', () => {
     const component = mount(createTravel);
     const createButton = component.find('#create-travel-button');
     expect(createButton.length).toBe(5);
