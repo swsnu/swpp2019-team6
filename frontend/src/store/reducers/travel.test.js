@@ -17,6 +17,7 @@ describe('Travel Reducer', () => {
       travel: {},
       popularTravels: [],
       recentTravels: [],
+      userTravels: [],
     });
   });
   it('should get travel successfully', () => {
@@ -37,6 +38,7 @@ describe('Travel Reducer', () => {
       popularTravels: [],
       recentTravels: [],
       travel: {},
+      userTravels: [],
     });
   });
   it('should get recent travel successfully', () => {
@@ -48,6 +50,7 @@ describe('Travel Reducer', () => {
       popularTravels: [],
       recentTravels: [],
       travel: {},
+      userTravels: [],
     });
   });
   it('should create travel', () => {

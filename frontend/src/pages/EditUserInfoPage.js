@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import HeaderContainer from '../containers/common/HeaderContainer';
 import EditUserInfoContainer from '../containers/user-info-edit/EditUserInfoContainer';
 
@@ -28,7 +29,7 @@ class EditUserInfoPage extends Component {
             <EditUserInfoContainer id={this.props.match.params.id} />
           </div>
         ) : (
-          <span>{this.props.history.push('/error')}</span>
+          <Redirect to="/error" />
         )}
       </>
     );
