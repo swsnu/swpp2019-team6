@@ -91,6 +91,12 @@ class travel_recent(APIView):
         serializer = TravelSerializer(travels,many=True)        
         return Response(serializer.data)
 
+class user_travel_list(APIView):
+
+    def get(self, request, id, *args, **kwargs):
+        travels = Travel.objects.filter(author_id=id)
+        serializer = TravelSerializer(travels, many=True)
+        return Response(serializer.data)
 
 
 

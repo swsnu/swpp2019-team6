@@ -70,7 +70,8 @@ class EditUserInfoContainer extends Component {
     if (which.includes('Password')) {
       this.setState({ password_checked: null });
       this.setState((prevState) => {
-        const password_checked = (prevState.confirmNewPasswordField && (prevState.newPasswordField === prevState.confirmNewPasswordField));
+        const password_checked = (prevState.confirmNewPasswordField
+          && (prevState.newPasswordField === prevState.confirmNewPasswordField));
         // can insert validation check for password here. modifying let password_checked
         return {
           password_helperText: (password_checked ? 'Valid password' : 'Must match password'),
