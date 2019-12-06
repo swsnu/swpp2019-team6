@@ -1,14 +1,43 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import EditUserInfoContainer from './EditUserInfoContainer';
+
+
+import { getMockStore } from '../../test-utils/mocks';
+import { history } from '../../store/store';
+import * as userActionCreators from '../../store/actions/user';
+
+const stubInitialUser = {
+  user: {
+    id: 1,
+    email: 'test@test.com',
+    nickname: 'test',
+    status_message: 'test message',
+  },
+};
+
+const mockStore = getMockStore(stubInitialUser, {}, {});
 
 describe('EditUserInfoContainer', () => {
   let editUserInfoContainer;
+  let spygetUser;
 
   beforeEach(() => {
     editUserInfoContainer = (
-      <EditUserInfoContainer />
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <EditUserInfoContainer />
+        </ConnectedRouter>
+      </Provider>
     );
+    spygetUser = jest.spyOn(userActionCreators, 'getUser')
+      .mockImplementation(() => { return (dispatch) => {}; });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should render.', () => {

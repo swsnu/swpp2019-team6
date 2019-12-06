@@ -28,7 +28,7 @@ export const getMockStore = (initialUserState, initialAuthState, initialTravelSt
   const mockAuthReducer = getMockAuthReducer(initialAuthState);
   const mockTravelReducer = getMockTravelReducer(initialTravelState);
   const rootReducer = combineReducers({
-    userReducer: mockUserReducer,
+    user: mockUserReducer,
     auth: mockAuthReducer,
     travel: mockTravelReducer,
     router: connectRouter(history),

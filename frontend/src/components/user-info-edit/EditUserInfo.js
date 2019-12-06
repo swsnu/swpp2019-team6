@@ -34,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
 // for closing sections: onOpenClicked, onCloseClicked
 // for changing fields: onInputChanged
 // function: onPasswordConfirmed, onNicknameConfirmed, onMessageConfirmed
+// for validation: password_checked, password_helperText, nickname_checked, nickname_helperText
+// clickCheckNickname
 const EditUserInfo = ({
   email, nickname, message,
   passwordExpanded, nicknameExpanded, messageExpanded,
@@ -42,6 +44,8 @@ const EditUserInfo = ({
   currentPasswordField, newPasswordField,
   confirmNewPasswordField, newNicknameField, newMessageField,
   onInputChanged,
+  password_checked, password_helperText, nickname_checked, nickname_helperText,
+  clickCheckNickname,
 }) => {
   const classes = useStyles();
 
@@ -94,6 +98,7 @@ const EditUserInfo = ({
                 onChange={(e) => onInputChanged(e, 'confirmNewPasswordField')}
                 value={confirmNewPasswordField}
                 className={classes.inputField}
+                helperText={password_helperText}
                 type="password"
               />
             </div>
@@ -105,6 +110,7 @@ const EditUserInfo = ({
             variant="contained"
             className={classes.allMargin}
             onClick={onPasswordConfirmed}
+            disabled={!currentPasswordField || !password_checked}
           >
             Confirm
           </Button>
@@ -143,7 +149,16 @@ const EditUserInfo = ({
               onChange={(e) => onInputChanged(e, 'newNicknameField')}
               value={newNicknameField}
               className={classes.inputField}
+              helperText={nickname_helperText}
             />
+            <Button
+              id="nicknameCheckButton"
+              size="small"
+              variant="contained"
+              onClick={clickCheckNickname}
+            >
+              Check Nickname
+            </Button>
           </div>
           <Button
             id="nicknameConfirmButton"
@@ -152,6 +167,7 @@ const EditUserInfo = ({
             variant="contained"
             className={classes.allMargin}
             onClick={onNicknameConfirmed}
+            disabled={!nickname_checked}
           >
             Confirm
           </Button>

@@ -1,7 +1,13 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { MemoryRouter } from 'react-router';
+import { Provider } from 'react-redux';
+
 import UserInfoSectionContainer from './UserInfoSectionContainer';
+import { getMockStore } from '../../test-utils/mocks';
+import { history } from '../../store/store';
+import * as userActionCreators from '../../store/actions/user';
+
 
 jest.mock('../../components/user-info/UserInfoSection', () => {
   return jest.fn((props) => {
@@ -22,16 +28,35 @@ jest.mock('../../components/user-info/UserInfoSection', () => {
 });
 
 
+const stubInitialUser = {
+  user: {
+    id: 1,
+    email: 'test@test.com',
+    nickname: 'test',
+    status_message: 'test message',
+  },
+};
+
+const mockStore = getMockStore(stubInitialUser, {}, {});
+
 describe('UserInfoSectionContainer', () => {
   let userInfoSectionContainer;
+  let spygetUser;
 
   beforeEach(() => {
     userInfoSectionContainer = (
-      <MemoryRouter initialEntries={['/user/1']}>
-        <UserInfoSectionContainer />
-      </MemoryRouter>
-
+      <Provider store={mockStore}>
+        <MemoryRouter initialEntries={['/user/1']} history={history}>
+          <UserInfoSectionContainer />
+        </MemoryRouter>
+      </Provider>
     );
+    spygetUser = jest.spyOn(userActionCreators, 'getUser')
+      .mockImplementation(() => { return (dispatch) => {}; });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should render.', () => {

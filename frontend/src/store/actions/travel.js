@@ -167,3 +167,14 @@ export const getRecentTravels = () => {
       .then((res) => dispatch(getRecentTravels_(res.data)));
   };
 };
+
+export const getUserTravels_ = (travels) => {
+  return { type: actionTypes.GET_USER_TRAVELS, travels: travels };
+};
+
+export const getUserTravels = (user_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/user/${user_id}/`)
+      .then((res) => dispatch(getUserTravels_(res.data)));
+  };
+};

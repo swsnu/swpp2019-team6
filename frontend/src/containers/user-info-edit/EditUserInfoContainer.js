@@ -1,32 +1,51 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+import * as actionCreators from '../../store/actions/index';
 
 import EditUserInfo from '../../components/user-info-edit/EditUserInfo';
-
+/*
 const tempUser = {
+  id: 1,
   nickname: 'iluvswpp',
   email: 'iluvswpp@snu.ac.kr',
   register_date: '2019.10.10',
-  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a scelerisque purus semper eget.',
+  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est.
+   Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a
+   scelerisque purus semper eget.',
   num_plans: 4,
   num_likes: 45,
   num_forked: 3,
   user_photo: '/images/13.jpeg',
 };
+*/
+
 
 // somehow have to get current user info
-// from this.params.nickname
+// from this.params.id
 class EditUserInfoContainer extends Component {
   state = {
-    currentUser: tempUser,
     passwordExpanded: false,
     nicknameExpanded: false,
     messageExpanded: false,
     currentPasswordField: '',
     newPasswordField: '',
     confirmNewPasswordField: '',
-    newNicknameField: tempUser.nickname,
-    newMessageField: tempUser.status_message,
+    newNicknameField: '',
+    newMessageField: '',
+    // for validation
+    password_checked: null,
+    nickname_checked: null,
+    password_helperText: '',
+    nickname_helperText: '',
+  }
+
+  async componentDidMount() {
+    await this.props.getUser(this.props.match.params.id);
+    this.setState({ newNicknameField: this.props.user.nickname });
+    this.setState({ newMessageField: this.props.user.status_message });
   }
 
   onOpenClicked = (which) => {
@@ -40,43 +59,142 @@ class EditUserInfoContainer extends Component {
       this.setState({ newPasswordField: '' });
       this.setState({ confirmNewPasswordField: '' });
     } else if (which === 'nicknameExpanded') {
-      this.setState({ newNicknameField: tempUser.nickname });
+      this.setState({ newNicknameField: this.props.user.nickname });
     } else if (which === 'messageExpanded') {
-      this.setState({ newMessageField: tempUser.status_message });
+      this.setState({ newMessageField: this.props.user.status_message });
     }
   }
 
   onInputChanged = (e, which) => {
     this.setState({ [which]: e.target.value });
+    if (which.includes('Password')) {
+      this.setState({ password_checked: null });
+      this.setState((prevState) => {
+        const password_checked = (prevState.confirmNewPasswordField
+          && (prevState.newPasswordField === prevState.confirmNewPasswordField));
+        // can insert validation check for password here. modifying let password_checked
+        return {
+          password_helperText: (password_checked ? 'Valid password' : 'Must match password'),
+          password_checked: password_checked,
+        };
+      });
+    } else if (which.includes('Nickname')) {
+      this.setState({ nickname_checked: null });
+      this.setState({ nickname_helperText: '' });
+    }
+  }
+
+  clickCheckNickname = () => {
+    if (!this.state.newNicknameField) {
+      this.setState({ nickname_checked: false });
+      this.setState({ nickname_helperText: 'Enter your nickname' });
+      return;
+    }
+
+    let nickname_checked = null;
+    axios.get(`/api/user/check/nickname/${this.state.newNicknameField}/`)
+      .then((res) => {
+        nickname_checked = !res.data.check;
+        this.setState({ nickname_checked: nickname_checked });
+        this.setState({ nickname_helperText: (nickname_checked ? 'Available Nickname' : 'Nickname already in use. Try another') });
+      });
   }
 
   onPasswordConfirmed = () => {
-    // send currentPasswordField, newPasswordField, confirmNewPasswordField to backend
+    // send currentPasswordField and newPasswordField to backend
     // apply changed user info
-    this.setState({ passwordExpanded: false });
+    axios.put(`/api/user/${this.props.user.id}/`,
+      {
+        current_password: this.state.currentPasswordField,
+        new_password: this.state.newPasswordField,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        (res) => {
+          console.log(res);
+          this.setState({
+            currentPasswordField: '',
+            newPasswordField: '',
+            confirmNewPasswordField: '',
+            password_checked: null,
+            password_helperText: '',
+            passwordExpanded: false,
+          });
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Wrong current password');
+          this.setState({
+            currentPasswordField: '',
+          });
+        },
+      );
   }
 
   onNicknameConfirmed = () => {
     // send newNicknameField to backend
     // apply changed user info
+    axios.put(`/api/user/${this.props.user.id}/`,
+      { nickname: this.state.newNicknameField },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        async (res) => {
+          await this.props.getUser(this.props.match.params.id);
+          this.setState({ newNicknameField: this.props.user.nickname });
+          this.setState({ nickname_checked: null });
+          this.setState({ nickname_helperText: '' });
+        },
+      )
+      .catch(
+        (res) => {
+          alert('cannot change nickname');
+        },
+      );
     this.setState({ nicknameExpanded: false });
   }
 
   onMessageConfirmed = () => {
     // send newMessageField to backend
     // apply changed user info
+    axios.put(`/api/user/${this.props.user.id}/`,
+      { status_message: this.state.newMessageField },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        async (res) => {
+          await this.props.getUser(this.props.match.params.id);
+          this.setState({ newMessageField: this.props.user.status_message });
+        },
+      )
+      .catch(
+        (res) => {
+          alert('cannot change status message');
+        },
+      );
     this.setState({ messageExpanded: false });
   }
 
   render() {
     return (
       <div>
-        {this.state.currentUser ? (
+        {this.props.user ? (
           <div className="editUserInfo">
             <EditUserInfo
-              email={this.state.currentUser.email}
-              nickname={this.state.currentUser.nickname}
-              message={this.state.currentUser.status_message}
+              email={this.props.user.email}
+              nickname={this.props.user.nickname}
+              message={this.props.user.status_message}
               passwordExpanded={this.state.passwordExpanded}
               nicknameExpanded={this.state.nicknameExpanded}
               messageExpanded={this.state.messageExpanded}
@@ -91,6 +209,11 @@ class EditUserInfoContainer extends Component {
               onPasswordConfirmed={this.onPasswordConfirmed}
               onNicknameConfirmed={this.onNicknameConfirmed}
               onMessageConfirmed={this.onMessageConfirmed}
+              password_checked={this.state.password_checked}
+              password_helperText={this.state.password_helperText}
+              nickname_checked={this.state.nickname_checked}
+              nickname_helperText={this.state.nickname_helperText}
+              clickCheckNickname={this.clickCheckNickname}
             />
           </div>
         ) : (
@@ -103,4 +226,17 @@ class EditUserInfoContainer extends Component {
   }
 }
 
-export default EditUserInfoContainer;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: (id) => dispatch(actionCreators.getUser(id)),
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditUserInfoContainer));

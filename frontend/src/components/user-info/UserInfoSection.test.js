@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import UserInfoSection from './UserInfoSection';
 
 const tempUser = {
+  id: 1,
   nickname: 'iluvswpp',
   register_date: '2019.10.10',
   status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a scelerisque purus semper eget.',

@@ -6,6 +6,7 @@ import Header from '../../components/common/Header';
 import * as actionCreators from '../../store/actions/index';
 
 const tempUser = {
+  id: 1,
   email: 'swpp@snu.ac.kr',
   nickname: 'iluvswpp',
   profile: '/images/13.jpeg',
@@ -42,7 +43,7 @@ class HeaderContainer extends Component {
   }
 
   onMyPageClicked = (e) => {
-    this.props.history.push(`/user/${this.state.currentUser.nickname}`);
+    this.props.history.push(`/user/${this.state.currentUser.id}`);
   }
 
   onSearchInputChanged = (e) => {

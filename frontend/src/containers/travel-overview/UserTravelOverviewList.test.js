@@ -27,6 +27,6 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
 describe('UserTravelOverviewList', () => {
   it('should render when no plan', () => {
     const component = shallow(<UserTravelOverviewList.WrappedComponent />);
-    expect(component.find(Typography).at(0).text()).toBe('Make your first plan for a travel, !');
+    expect(component.find(Typography).at(0).text()).toBe('Make your first plan for a travel!');
   });
 });

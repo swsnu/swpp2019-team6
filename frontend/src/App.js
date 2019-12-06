@@ -26,8 +26,8 @@ function App(props) {
           <Route path="/travel/:id/" exact render={() => <TravelDetail />} />
           <Route path="/travel/:id/settings" exact component={TravelSettingsPage} />
           <Route path="/search" exact component={SearchPage} />
-          <Route path="/user/:nickname" exact component={UserInfoPage} />
-          <Route path="/user/:nickname/edit" exact component={EditUserInfoPage} />
+          <Route path="/user/:id" exact component={UserInfoPage} />
+          <Route path="/user/:id/edit" exact component={EditUserInfoPage} />
           <Route render={() => <div id="error"><h1>Not Found</h1></div>} />
         </Switch>
       </div>

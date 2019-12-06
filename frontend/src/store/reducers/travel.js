@@ -4,6 +4,7 @@ const initialState = {
   travel: {},
   popularTravels: [],
   recentTravels: [],
+  userTravels: [],
 };
 const initialAction = {
   type: null,
@@ -19,6 +20,8 @@ const travel = (state = initialState, action = initialAction) => {
       return { ...state, popularTravels: action.travels };
     case actionTypes.GET_RECENT_TRAVELS:
       return { ...state, recentTravels: action.travels };
+    case actionTypes.GET_USER_TRAVELS:
+      return { ...state, userTravels: action.travels };
     default:
       break;
   }
