@@ -51,9 +51,6 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         
         days_data = validated_data.pop('days')
         travelCommit = TravelCommit.objects.create(**validated_data)
-        travel = travelCommit.travel
-        travel.head=travelCommit
-        travel.save()
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
             if travelDaySerializer.is_valid():
@@ -86,14 +83,12 @@ class TravelSerializer(serializers.ModelSerializer):
         
         travel = Travel.objects.create(**validated_data)
         
-        
-        head_data['travel']=travel.id
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
             print('TRAVELCOMMIT_SERIALIZER VALID')
             head = travelCommitSerializer.save()
-            travel.head=head
-            travel.save()
+            travel = Travel.objects.create(head=head,**validated_data)
+            head.travel=travel
             return travel
         else:
             print('TRAVELCOMMIT_SERIALIZER INVALID')
