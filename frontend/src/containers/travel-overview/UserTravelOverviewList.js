@@ -13,7 +13,6 @@ import * as actionCreators from '../../store/actions/index';
 
 // somehow determine whether this page is of current user or not.
 // get user's travel list by using this.props.id
-const is_mypage = true;
 
 class UserTravelOverviewList extends Component {
   componentDidMount() {
@@ -30,7 +29,7 @@ class UserTravelOverviewList extends Component {
       <div>
         <div style={{ marginBottom: 24 }} />
         <div>
-          {is_mypage ? (
+          {this.props.is_mypage ? (
             <Grid container alignItems="center" direction="column" justify="space-around">
               <CreateTravelButton handleClickCreate={this.handleClickCreate} />
             </Grid>
@@ -38,9 +37,12 @@ class UserTravelOverviewList extends Component {
             <span />
           )}
         </div>
-        {this.props.userTravels ? (
+        {this.props.userTravels && this.props.userTravels.length ? (
           <div className="userTravelOverview">
-            <TravelOverviewList travelList={this.props.userTravels} is_mypage={is_mypage} />
+            <TravelOverviewList
+              travelList={this.props.userTravels}
+              is_mypage={this.props.is_mypage}
+            />
             <Divider style={{ margin: 8 }} />
           </div>
         ) : (

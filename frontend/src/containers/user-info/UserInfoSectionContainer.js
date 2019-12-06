@@ -20,7 +20,6 @@ const tempUser = {
 };
 */
 
-const is_mypage = true;
 
 class UserInfoSectionContainer extends Component {
   /*
@@ -45,7 +44,7 @@ class UserInfoSectionContainer extends Component {
           <div className="userInfo">
             <UserInfoSection
               user={this.props.user}
-              is_mypage={is_mypage}
+              is_mypage={this.props.is_mypage}
               onEditButtonClicked={this.onEditButtonClicked}
             />
           </div>
