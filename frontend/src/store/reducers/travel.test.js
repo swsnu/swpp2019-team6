@@ -28,6 +28,28 @@ describe('Travel Reducer', () => {
     });
     expect(newState).toEqual(stubTravelState);
   });
+  it('should get popular travel successfully', () => {
+    const newState = reducer(undefined, {
+      type: actionTypes.GET_POPULAR_TRAVELS,
+      travels: [],
+    });
+    expect(newState).toEqual({
+      popularTravels: [],
+      recentTravels: [],
+      travel: {},
+    });
+  });
+  it('should get recent travel successfully', () => {
+    const newState = reducer(undefined, {
+      type: actionTypes.GET_RECENT_TRAVELS,
+      travels: [],
+    });
+    expect(newState).toEqual({
+      popularTravels: [],
+      recentTravels: [],
+      travel: {},
+    });
+  });
   it('should create travel', () => {
     const newState = reducer(undefined, {
       type: actionTypes.CREATE_TRAVEL,

@@ -11,8 +11,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TravelOverviewList = ({ travelList, is_mypage }) => {
   const classes = useStyles();
-  console.log(travelList);
-
   return (
     <div>
       <div>
