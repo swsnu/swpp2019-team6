@@ -77,5 +77,4 @@ describe('EditUserInfoPage', () => {
     const component = mount(editUserInfoPage);
     expect(component.find('.editUserInfoPage').length).toBe(0);
   });
-
 });
