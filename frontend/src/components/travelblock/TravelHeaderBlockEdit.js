@@ -45,19 +45,16 @@ export default function TravelHeaderBlockEdit(props) {
 
   const handleTitleChange = (event) => {
     props.setHeader({ ...props.header, title: event.target.value });
-    // props.setTravelTitle(event.target.value);
   };
 
   const handleStartDate = (date) => {
-    props.handlePeriodChange(date, props.endDate);
+    props.handlePeriodChange(date, props.header.endDate);
     props.setHeader({ ...props.header, startDate: date });
-    // props.setStartDate(date);
   };
 
   const handleEndDate = (date) => {
-    props.handlePeriodChange(props.startDate, date);
+    props.handlePeriodChange(props.header.startDate, date);
     props.setHeader({ ...props.header, endDate: date });
-    // props.setEndDate(date);
   };
 
   return (

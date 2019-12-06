@@ -91,7 +91,7 @@ const convertItemToPushFormat = (travel) => {
   for (let i = 0; i < dayBlockIndex.length - 1; i++) {
     const newDayBlock = {
       blocks: [],
-      title: travel.items[dayBlockIndex[i]].info.title || '.',
+      title: travel.items[dayBlockIndex[i]].info.title,
       day: _dateFormat(travel.items[dayBlockIndex[i]].info.datetime),
       modified: true,
       parent_day: null,
@@ -110,8 +110,8 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
       }
       newDayBlock.blocks.push({
-        title: travel.items[j].info.title || '.',
-        description: travel.items[j].info.description || '.',
+        title: travel.items[j].info.title,
+        description: travel.items[j].info.description,
         time: _timeFormat(travel.items[j].info.startTime),
         start_location: travel.items[j].info.startPoint || travel.items[j].info.point || '.',
         end_location: travel.items[j].info.endPoint,
@@ -128,7 +128,6 @@ const convertItemToPushFormat = (travel) => {
 export const createTravel = (travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
-    console.log("post", newTravel);
     return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',

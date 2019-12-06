@@ -68,7 +68,6 @@ class UserTravelOverviewList extends Component {
   }
 
   handleClickCreate = (e) => {
-    console.log('create');
     this.props.history.push('/travel/create/');
   }
 

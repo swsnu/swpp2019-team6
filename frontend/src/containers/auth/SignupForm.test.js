@@ -23,7 +23,7 @@ const stubCheckTrue = {
 const stubCheckFalse = {
   check: false,
 };
-const mockStore = getMockStore(stubInitialState);
+const mockStore = getMockStore(stubInitialState, {}, {});
 
 describe('SignupForm Test', () => {
   let signupForm;

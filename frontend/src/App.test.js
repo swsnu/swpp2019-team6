@@ -7,9 +7,7 @@ import { getMockStore } from './test-utils/mocks';
 import { history } from './store/store';
 
 
-const mockStore = getMockStore({
-  state: 'empty',
-});
+const mockStore = getMockStore({}, {}, {});
 
 jest.mock('./pages/LoginPage', () => {
   return jest.fn((props) => {

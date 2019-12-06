@@ -86,12 +86,12 @@ class CreateTravel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      header: {
+      header: this.props.travel.header || {
         startDate: new Date(),
         endDate: new Date(),
         title: '',
       },
-      items: [{
+      items: this.props.travel.items || [{
         id: 'day-0',
         info: {
           datetime: new Date(),
@@ -101,6 +101,12 @@ class CreateTravel extends Component {
       }],
       buttonDraggable: true,
     };
+    // if (props.travel.header) {
+    //   this.state.header = props.travel.header;
+    // }
+    // if (props.travel.items) {
+    //   this.state.items = props.travel.items;
+    // }
     this.setHeader = this.setHeader.bind(this);
     this.setItems = this.setItems.bind(this);
     this.setButtonDraggable = this.setButtonDraggable.bind(this);
@@ -441,7 +447,13 @@ class CreateTravel extends Component {
             )}
           </Droppable>
           <Grid style={getPaddingStyle()} />
-          <Button variant="contained" color="secondary" disabled={this.state.items.length === 0} onClick={this.handleClickCreate}>
+          <Button
+            id="create-travel-button"
+            variant="contained"
+            color="secondary"
+            disabled={this.state.items.length === 0}
+            onClick={this.handleClickCreate}
+          >
             Create
           </Button>
           <Grid style={getPaddingStyle()} />

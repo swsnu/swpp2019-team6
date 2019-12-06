@@ -92,6 +92,65 @@ const stubTravel = {
   ],
 };
 
+const stubRequestTravel = {
+  header: {
+    title: 'TEST',
+    description: 'TEST',
+    summary: 'TEST',
+    startDate: new Date(),
+    endDate: new Date(),
+  },
+  items: [
+    {
+      id: 'day-0',
+      info: {
+        title: 'TEST',
+        datetime: new Date(),
+      },
+    },
+    {
+      id: 'custom-0',
+      info: {
+        title: 'TEST',
+        startTime: new Date(),
+        startPoint: 'TEST',
+      },
+    },
+    {
+      id: 'activity-0',
+      info: {
+        title: 'TEST',
+        startTime: new Date(),
+        startPoint: 'TEST',
+      },
+    },
+    {
+      id: 'restaurant-0',
+      info: {
+        title: 'TEST',
+        startTime: new Date(),
+        startPoint: 'TEST',
+      },
+    },
+    {
+      id: 'hotel-0',
+      info: {
+        title: 'TEST',
+        startTime: new Date(),
+        startPoint: 'TEST',
+      },
+    },
+    {
+      id: 'transportation-0',
+      info: {
+        title: 'TEST',
+        startTime: new Date(),
+        startPoint: 'TEST',
+      },
+    },
+  ],
+};
+
 
 describe('Travel Action', () => {
   afterEach(() => {
@@ -108,7 +167,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.createTravel(stubTravel)).then(() => {
+    store.dispatch(actionCreators.createTravel(stubRequestTravel)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -125,7 +184,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.createTravel(stubTravel)).then(() => {
+    store.dispatch(actionCreators.createTravel(stubRequestTravel)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -161,6 +220,42 @@ describe('Travel Action', () => {
       });
 
     store.dispatch(actionCreators.getTravel(999)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get popular travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getPopularTravels()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get recent travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getRecentTravels()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
