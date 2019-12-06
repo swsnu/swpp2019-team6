@@ -128,6 +128,7 @@ const convertItemToPushFormat = (travel) => {
 export const createTravel = (travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
+    console.log("post", newTravel);
     return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',
