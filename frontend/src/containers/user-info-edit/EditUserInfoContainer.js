@@ -102,7 +102,37 @@ class EditUserInfoContainer extends Component {
   onPasswordConfirmed = () => {
     // send currentPasswordField and newPasswordField to backend
     // apply changed user info
-    this.setState({ passwordExpanded: false });
+    axios.put(`/api/user/${this.props.user.id}/`,
+      {
+        current_password: this.state.currentPasswordField,
+        new_password: this.state.newPasswordField,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        (res) => {
+          console.log(res);
+          this.setState({
+            currentPasswordField: '',
+            newPasswordField: '',
+            confirmNewPasswordField: '',
+            password_checked: null,
+            password_helperText: '',
+            passwordExpanded: false,
+          });
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Wrong current password');
+          this.setState({
+            currentPasswordField: '',
+          });
+        },
+      );
   }
 
   onNicknameConfirmed = () => {
