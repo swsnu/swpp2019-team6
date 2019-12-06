@@ -79,7 +79,7 @@ class travel_popular(APIView):
 
     def get(self, request, *args, **kwargs):
         
-        travels = Travel.objects.all().order_by('-likes')[:min(Travel.objects.count(),10)]
+        travels = Travel.objects.filter(head__isnull=False).order_by('-likes')[:min(Travel.objects.count(),10)]
         serializer = TravelSerializer(travels,many=True)        
         return Response(serializer.data)
 
@@ -87,7 +87,7 @@ class travel_popular(APIView):
 class travel_recent(APIView):
     
     def get(self, request, *args, **kwargs):
-        travels = Travel.objects.all()[:min(Travel.objects.count(),10)]
+        travels = Travel.objects.filter(head__isnull=False)[:min(Travel.objects.count(),10)]
         serializer = TravelSerializer(travels,many=True)        
         return Response(serializer.data)
 
