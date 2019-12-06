@@ -89,7 +89,7 @@ class EditUserInfoContainer extends Component {
     }
 
     let nickname_checked = null;
-    axios.get(`/api/user/check/nickname/${this.state.newNicknameField}`)
+    axios.get(`/api/user/check/nickname/${this.state.newNicknameField}/`)
       .then((res) => {
         nickname_checked = !res.data.check;
         this.setState({ nickname_checked: nickname_checked });
@@ -106,12 +106,50 @@ class EditUserInfoContainer extends Component {
   onNicknameConfirmed = () => {
     // send newNicknameField to backend
     // apply changed user info
+    axios.put(`/api/user/${this.props.user.id}/`,
+      { nickname: this.state.newNicknameField },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        async (res) => {
+          await this.props.getUser(this.props.match.params.id);
+          this.setState({ newNicknameField: this.props.user.nickname });
+          this.setState({ nickname_checked: null });
+          this.setState({ nickname_helperText: '' });
+        },
+      )
+      .catch(
+        (res) => {
+          alert('cannot change nickname');
+        },
+      );
     this.setState({ nicknameExpanded: false });
   }
 
   onMessageConfirmed = () => {
     // send newMessageField to backend
     // apply changed user info
+    axios.put(`/api/user/${this.props.user.id}/`,
+      { status_message: this.state.newMessageField },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        async (res) => {
+          await this.props.getUser(this.props.match.params.id);
+          this.setState({ newMessageField: this.props.user.status_message });
+        },
+      )
+      .catch(
+        (res) => {
+          alert('cannot change status message');
+        },
+      );
     this.setState({ messageExpanded: false });
   }
 

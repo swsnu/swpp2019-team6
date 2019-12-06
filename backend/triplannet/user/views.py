@@ -90,6 +90,7 @@ class UserList(APIView):
     def put(self, request, *args, **kwargs):
         user = User.objects.get(pk=request.user.id)
         user.password = request.data.get("password", user.password)
+        user.nickname = request.data.get("nickname", user.nickname)
         user.status_message = request.data.get("status_message", user.status_message)
         user.save()
         serializer = self.serializer_class(user)

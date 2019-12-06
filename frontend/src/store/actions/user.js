@@ -9,7 +9,7 @@ export const getUser_ = (userInfo) => {
 
 export const getUser = (id) => {
   return (dispatch) => {
-    return axios.get(`/api/user/${id}`)
+    return axios.get(`/api/user/${id}/`)
       .then((res) => dispatch(getUser_(res.data)))
       .catch((res) => dispatch(push('/error')));
   };
