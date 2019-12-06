@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import Typography from '@material-ui/core/Typography';
 import SearchTravelOverviewList from './SearchTravelOverviewList';
 
