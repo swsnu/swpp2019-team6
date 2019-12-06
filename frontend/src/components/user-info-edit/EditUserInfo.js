@@ -110,7 +110,7 @@ const EditUserInfo = ({
             variant="contained"
             className={classes.allMargin}
             onClick={onPasswordConfirmed}
-            disabled={!password_checked}
+            disabled={!currentPasswordField || !password_checked}
           >
             Confirm
           </Button>

@@ -71,6 +71,7 @@ class EditUserInfoContainer extends Component {
       this.setState({ password_checked: null });
       this.setState((prevState) => {
         const password_checked = (prevState.confirmNewPasswordField && (prevState.newPasswordField === prevState.confirmNewPasswordField));
+        // can insert validation check for password here. modifying let password_checked
         return {
           password_helperText: (password_checked ? 'Valid password' : 'Must match password'),
           password_checked: password_checked,
@@ -86,6 +87,7 @@ class EditUserInfoContainer extends Component {
     if (!this.state.newNicknameField) {
       this.setState({ nickname_checked: false });
       this.setState({ nickname_helperText: 'Enter your nickname' });
+      return;
     }
 
     let nickname_checked = null;
@@ -98,7 +100,7 @@ class EditUserInfoContainer extends Component {
   }
 
   onPasswordConfirmed = () => {
-    // send currentPasswordField, newPasswordField, confirmNewPasswordField to backend
+    // send currentPasswordField and newPasswordField to backend
     // apply changed user info
     this.setState({ passwordExpanded: false });
   }
