@@ -21,7 +21,7 @@ import TravelTransportationBlockEdit from '../../components/travelblock/TravelTr
 import TravelCustomBlockEdit from '../../components/travelblock/TravelCustomBlockEdit';
 import TravelActivityBlockEdit from '../../components/travelblock/TravelActivityBlockEdit';
 import TravelDayBlock from '../../components/travelblock/TravelDayBlock';
-
+import TagBlock from '../../components/travelblock/TagBlock';
 
 const getFabStyle = (_top) => ({
   margin: 2,
@@ -90,6 +90,7 @@ class CreateTravel extends Component {
         startDate: new Date(),
         endDate: new Date(),
         title: '',
+        tags: [],
       },
       items: this.props.travel.items || [{
         id: 'day-0',
@@ -109,6 +110,7 @@ class CreateTravel extends Component {
     // }
     this.setHeader = this.setHeader.bind(this);
     this.setItems = this.setItems.bind(this);
+    this.setTags = this.setTags.bind(this);
     this.setButtonDraggable = this.setButtonDraggable.bind(this);
   }
 
@@ -121,6 +123,10 @@ class CreateTravel extends Component {
 
   setHeader = (_header) => {
     this.setState({ header: _header });
+  }
+
+  setTags = (_tags) => {
+    this.setState({ header: {...this.state.header, tags: _tags}})
   }
 
   setItems = (_items) => {
@@ -446,6 +452,7 @@ class CreateTravel extends Component {
               </>
             )}
           </Droppable>
+          <TagBlock tags={this.state.header.tags} setTags={this.setTags} />
           <Grid style={getPaddingStyle()} />
           <Button
             id="create-travel-button"
