@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager
 from django.conf import settings
+from django.dispatch import receiver
 
 import os
 
@@ -29,4 +30,27 @@ class User(AbstractBaseUser):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.profile_photo.path))
         super(User, self).delete(*args, **kargs)
 
+
+
+@receiver(models.signals.pre_save, sender=User)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `User` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+    try:
+        old_profile_photo = User.objects.get(pk=instance.pk).profile_photo
+    except User.DoesNotExist:
+        return False
+
+    if not old_profile_photo:
+        return False
+
+    new_profile_photo = instance.profile_photo
+    if not old_profile_photo == new_profile_photo:
+        if os.path.isfile(old_profile_photo.path):
+            os.remove(old_profile_photo.path)
 # Create your models here.
