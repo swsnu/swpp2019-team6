@@ -3,10 +3,9 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Create your models here.
 
 class Travel(models.Model):
-    
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -24,7 +23,7 @@ class Travel(models.Model):
         related_name = 'head_of_travel',
         null = True,
     )
-    
+
     # fork_parent == None : is_forked - False,
     # fork_parent != None : is_forked - True,
     fork_parent = models.ForeignKey(
@@ -32,7 +31,7 @@ class Travel(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         default = None,
-        
+
     )
     register_time =models.DateTimeField(auto_now_add=True)
     last_modified_time = models.DateTimeField(auto_now=True)
@@ -61,7 +60,7 @@ class TravelCommit(models.Model):
         through = 'TravelDayList'
     )
     register_time = models.DateTimeField(auto_now_add=True)
-    
+
     travel = models.ForeignKey(
         Travel,
         on_delete = models.CASCADE,
@@ -76,7 +75,7 @@ class TravelCommit(models.Model):
     )
     # tags= models.ManyToManyField(
     #     Tag,
-    #     related_name ='travel_committed', 
+    #     related_name ='travel_committed',
     # )
     # photo = models.ImageField(
     #     upload_to = 'travel_photos/',
@@ -99,7 +98,6 @@ class TravelDay(models.Model):
         default = None,
     )
     modified = models.BooleanField(default=True)
-
 
 
 class TravelBlock(models.Model):
@@ -155,3 +153,7 @@ class TravelBlockList(models.Model):
     class Meta:
         ordering = ['TravelDay','TravelBlock','index',]
         unique_together = ['TravelDay','TravelBlock','index']
+
+class Tag(models.Model):
+    word = models.CharField(max_length=50, null=False)
+
