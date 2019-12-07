@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -52,7 +53,6 @@ const EditUserInfo = ({
   onInputChanged,
   password_checked, password_helperText, nickname_checked, nickname_helperText,
   clickCheckNickname,
-  profilePhoto,
   profilePhotoChanged,
   imagePreviewUrl,
   onChangeProfilePhoto,

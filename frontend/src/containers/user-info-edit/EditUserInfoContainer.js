@@ -213,11 +213,9 @@ class EditUserInfoContainer extends Component {
         'content-type': 'multipart/form-data',
       },
     }).then((res) => {
-      alert('success');
       console.log(res.data);
     })
       .catch((err) => {
-        alert('fail');
         console.log(err);
       });
   }
@@ -250,7 +248,6 @@ class EditUserInfoContainer extends Component {
               nickname_checked={this.state.nickname_checked}
               nickname_helperText={this.state.nickname_helperText}
               clickCheckNickname={this.clickCheckNickname}
-              profilePhoto={this.state.profilePhoto}
               onChangeProfilePhoto={this.onChangeProfilePhoto}
               imagePreviewUrl={this.state.imagePreviewUrl}
               profilePhotoChanged={this.state.profilePhotoChanged}
@@ -259,7 +256,7 @@ class EditUserInfoContainer extends Component {
           </div>
         ) : (
           <Typography variant="h4" style={{ marginTop: 8, padding: 16 }}>
-            No user found
+              No user found
           </Typography>
         )}
       </div>
