@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   bigAvatar: {
     width: 200,
     height: 200,
-  }
+  },
 }));
 
 // current user info: email, nickname, message
@@ -56,10 +56,10 @@ const EditUserInfo = ({
   profilePhotoChanged,
   imagePreviewUrl,
   onChangeProfilePhoto,
+  onClickProfilePhotoConfirm,
 }) => {
   const classes = useStyles();
-  const imgsrc = profilePhoto ? imagePreviewUrl : '/images/default_profile_image.png'
-
+  const imgsrc = profilePhoto ? imagePreviewUrl : '/images/default_profile_image.png';
   return (
     <div>
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
@@ -67,17 +67,21 @@ const EditUserInfo = ({
       </Typography>
       <label htmlFor="icon-button-file">
         <IconButton color="primary" className={classes.button} component="span">
-          <Avatar alt="IMAGE NOT FOUND"
+          <Avatar
+            alt="IMAGE NOT FOUND"
             src={imgsrc}
-            className={classes.bigAvatar} />
+            className={classes.bigAvatar}
+          />
         </IconButton>
       </label>
-      <input accept="image/*" id="icon-button-file"
+      <input
+        accept="image/*"
+        id="icon-button-file"
         type="file"
         style={{ visibility: 'hidden' }}
         onChange={onChangeProfilePhoto}
       />
-      <br></br>
+      <br />
       <Button
         id="profilePhotoConfirmButton"
         size="medium"
@@ -85,7 +89,7 @@ const EditUserInfo = ({
         color="primary"
         className={classes.allMargin}
         disabled={!profilePhotoChanged}
-      // onClick={() => onOpenClicked('messageExpanded')}
+        onClick={() => onClickProfilePhotoConfirm()}
       >
         Confirm
       </Button>
@@ -164,17 +168,17 @@ const EditUserInfo = ({
           </Button>
         </>
       ) : (
-          <Button
-            id="passwordChangeButton"
-            size="medium"
-            variant="contained"
-            color="primary"
-            className={classes.allMargin}
-            onClick={() => onOpenClicked('passwordExpanded')}
-          >
+        <Button
+          id="passwordChangeButton"
+          size="medium"
+          variant="contained"
+          color="primary"
+          className={classes.allMargin}
+          onClick={() => onOpenClicked('passwordExpanded')}
+        >
             Change
         </Button>
-        )}
+      )}
       <Divider className={classes.divider} />
 
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
@@ -221,22 +225,22 @@ const EditUserInfo = ({
           </Button>
         </>
       ) : (
-          <>
-            <Typography variant="body1" align="left" className={classes.section}>
-              {nickname}
-            </Typography>
-            <Button
-              id="nicknameChangeButton"
-              size="medium"
-              variant="contained"
-              color="primary"
-              className={classes.allMargin}
-              onClick={() => onOpenClicked('nicknameExpanded')}
-            >
+        <>
+          <Typography variant="body1" align="left" className={classes.section}>
+            {nickname}
+          </Typography>
+          <Button
+            id="nicknameChangeButton"
+            size="medium"
+            variant="contained"
+            color="primary"
+            className={classes.allMargin}
+            onClick={() => onOpenClicked('nicknameExpanded')}
+          >
               Change
           </Button>
-          </>
-        )}
+        </>
+      )}
       <Divider className={classes.divider} />
 
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
@@ -275,22 +279,22 @@ const EditUserInfo = ({
           </Button>
         </>
       ) : (
-          <>
-            <Typography variant="body1" align="left" className={classes.section}>
-              {message}
-            </Typography>
-            <Button
-              id="messageChangeButton"
-              size="medium"
-              variant="contained"
-              color="primary"
-              className={classes.allMargin}
-              onClick={() => onOpenClicked('messageExpanded')}
-            >
+        <>
+          <Typography variant="body1" align="left" className={classes.section}>
+            {message}
+          </Typography>
+          <Button
+            id="messageChangeButton"
+            size="medium"
+            variant="contained"
+            color="primary"
+            className={classes.allMargin}
+            onClick={() => onOpenClicked('messageExpanded')}
+          >
               Change
           </Button>
-          </>
-        )}
+        </>
+      )}
       <Divider className={classes.divider} />
 
     </div>

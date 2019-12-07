@@ -40,9 +40,9 @@ class EditUserInfoContainer extends Component {
     nickname_checked: null,
     password_helperText: '',
     nickname_helperText: '',
-    profilePhoto : null,
-    profilePhotoChanged : false,
-    imagePreviewUrl : null,
+    profilePhoto: null,
+    profilePhotoChanged: false,
+    imagePreviewUrl: null,
   }
 
   async componentDidMount() {
@@ -189,21 +189,36 @@ class EditUserInfoContainer extends Component {
     this.setState({ messageExpanded: false });
   }
 
-  onChangeProfilePhoto = (e) =>{
+  onChangeProfilePhoto = (e) => {
     e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0]
+    const reader = new FileReader();
+    const file = e.target.files[0];
     reader.onloadend = () => {
       this.setState({
         profilePhoto: file,
-        profilePhotoChanged : true,
-        imagePreviewUrl: reader.result
+        profilePhotoChanged: true,
+        imagePreviewUrl: reader.result,
       });
-    }
+    };
 
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(file);
+  }
 
-
+  onClickProfilePhotoConfirm = () => {
+    const form_data = new FormData();
+    form_data.append('profile_photo', this.state.profilePhoto, this.state.profilePhoto.name);
+    axios.put(`/api/user/${this.props.user.id}/profile_photo/`, form_data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    }).then((res) => {
+      alert('success');
+      console.log(res.data);
+    })
+      .catch((err) => {
+        alert('fail');
+        console.log(err);
+      });
   }
 
   render() {
@@ -238,6 +253,7 @@ class EditUserInfoContainer extends Component {
               onChangeProfilePhoto={this.onChangeProfilePhoto}
               imagePreviewUrl={this.state.imagePreviewUrl}
               profilePhotoChanged={this.state.profilePhotoChanged}
+              onClickProfilePhotoConfirm={this.onClickProfilePhotoConfirm}
             />
           </div>
         ) : (
