@@ -52,12 +52,13 @@ const EditUserInfo = ({
   onInputChanged,
   password_checked, password_helperText, nickname_checked, nickname_helperText,
   clickCheckNickname,
-  profilePhoto, 
+  profilePhoto,
+  profilePhotoChanged,
   imagePreviewUrl,
   onChangeProfilePhoto,
 }) => {
   const classes = useStyles();
-  const imgsrc = imagePreviewUrl ? imagePreviewUrl : '/images/default_profile_image.png'
+  const imgsrc = profilePhoto ? imagePreviewUrl : '/images/default_profile_image.png'
 
   return (
     <div>
@@ -76,6 +77,18 @@ const EditUserInfo = ({
         style={{ visibility: 'hidden' }}
         onChange={onChangeProfilePhoto}
       />
+      <br></br>
+      <Button
+        id="profilePhotoConfirmButton"
+        size="medium"
+        variant="contained"
+        color="primary"
+        className={classes.allMargin}
+        disabled={!profilePhotoChanged}
+      // onClick={() => onOpenClicked('messageExpanded')}
+      >
+        Confirm
+      </Button>
       <Divider className={classes.divider} />
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
         Email

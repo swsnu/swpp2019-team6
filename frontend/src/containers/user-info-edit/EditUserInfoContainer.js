@@ -41,6 +41,7 @@ class EditUserInfoContainer extends Component {
     password_helperText: '',
     nickname_helperText: '',
     profilePhoto : null,
+    profilePhotoChanged : false,
     imagePreviewUrl : null,
   }
 
@@ -195,6 +196,7 @@ class EditUserInfoContainer extends Component {
     reader.onloadend = () => {
       this.setState({
         profilePhoto: file,
+        profilePhotoChanged : true,
         imagePreviewUrl: reader.result
       });
     }
@@ -235,7 +237,7 @@ class EditUserInfoContainer extends Component {
               profilePhoto={this.state.profilePhoto}
               onChangeProfilePhoto={this.onChangeProfilePhoto}
               imagePreviewUrl={this.state.imagePreviewUrl}
-
+              profilePhotoChanged={this.state.profilePhotoChanged}
             />
           </div>
         ) : (
