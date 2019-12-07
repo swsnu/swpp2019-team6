@@ -59,7 +59,7 @@ const EditUserInfo = ({
   onClickProfilePhotoConfirm,
 }) => {
   const classes = useStyles();
-  const imgsrc = profilePhoto ? imagePreviewUrl : '/images/default_profile_image.png';
+  const imgsrc = imagePreviewUrl ? imagePreviewUrl : '/images/default_profile_image.png';
   return (
     <div>
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
