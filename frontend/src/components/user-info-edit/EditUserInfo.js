@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -25,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   helperText: {
     marginTop: theme.spacing(1),
   },
+  bigAvatar: {
+    width: 200,
+    height: 200,
+  }
 }));
 
 // current user info: email, nickname, message
@@ -46,11 +52,31 @@ const EditUserInfo = ({
   onInputChanged,
   password_checked, password_helperText, nickname_checked, nickname_helperText,
   clickCheckNickname,
+  profilePhoto, 
+  imagePreviewUrl,
+  onChangeProfilePhoto,
 }) => {
   const classes = useStyles();
+  const imgsrc = imagePreviewUrl ? imagePreviewUrl : '/images/default_profile_image.png'
 
   return (
     <div>
+      <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
+        Profile Photo
+      </Typography>
+      <label htmlFor="icon-button-file">
+        <IconButton color="primary" className={classes.button} component="span">
+          <Avatar alt="IMAGE NOT FOUND"
+            src={imgsrc}
+            className={classes.bigAvatar} />
+        </IconButton>
+      </label>
+      <input accept="image/*" id="icon-button-file"
+        type="file"
+        style={{ visibility: 'hidden' }}
+        onChange={onChangeProfilePhoto}
+      />
+      <Divider className={classes.divider} />
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
         Email
       </Typography>
@@ -125,17 +151,17 @@ const EditUserInfo = ({
           </Button>
         </>
       ) : (
-        <Button
-          id="passwordChangeButton"
-          size="medium"
-          variant="contained"
-          color="primary"
-          className={classes.allMargin}
-          onClick={() => onOpenClicked('passwordExpanded')}
-        >
+          <Button
+            id="passwordChangeButton"
+            size="medium"
+            variant="contained"
+            color="primary"
+            className={classes.allMargin}
+            onClick={() => onOpenClicked('passwordExpanded')}
+          >
             Change
         </Button>
-      )}
+        )}
       <Divider className={classes.divider} />
 
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
@@ -182,22 +208,22 @@ const EditUserInfo = ({
           </Button>
         </>
       ) : (
-        <>
-          <Typography variant="body1" align="left" className={classes.section}>
-            {nickname}
-          </Typography>
-          <Button
-            id="nicknameChangeButton"
-            size="medium"
-            variant="contained"
-            color="primary"
-            className={classes.allMargin}
-            onClick={() => onOpenClicked('nicknameExpanded')}
-          >
-            Change
+          <>
+            <Typography variant="body1" align="left" className={classes.section}>
+              {nickname}
+            </Typography>
+            <Button
+              id="nicknameChangeButton"
+              size="medium"
+              variant="contained"
+              color="primary"
+              className={classes.allMargin}
+              onClick={() => onOpenClicked('nicknameExpanded')}
+            >
+              Change
           </Button>
-        </>
-      )}
+          </>
+        )}
       <Divider className={classes.divider} />
 
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
@@ -236,23 +262,24 @@ const EditUserInfo = ({
           </Button>
         </>
       ) : (
-        <>
-          <Typography variant="body1" align="left" className={classes.section}>
-            {message}
-          </Typography>
-          <Button
-            id="messageChangeButton"
-            size="medium"
-            variant="contained"
-            color="primary"
-            className={classes.allMargin}
-            onClick={() => onOpenClicked('messageExpanded')}
-          >
-            Change
+          <>
+            <Typography variant="body1" align="left" className={classes.section}>
+              {message}
+            </Typography>
+            <Button
+              id="messageChangeButton"
+              size="medium"
+              variant="contained"
+              color="primary"
+              className={classes.allMargin}
+              onClick={() => onOpenClicked('messageExpanded')}
+            >
+              Change
           </Button>
-        </>
-      )}
+          </>
+        )}
       <Divider className={classes.divider} />
+
     </div>
   );
 };

@@ -40,6 +40,8 @@ class EditUserInfoContainer extends Component {
     nickname_checked: null,
     password_helperText: '',
     nickname_helperText: '',
+    profilePhoto : null,
+    imagePreviewUrl : null,
   }
 
   async componentDidMount() {
@@ -186,6 +188,22 @@ class EditUserInfoContainer extends Component {
     this.setState({ messageExpanded: false });
   }
 
+  onChangeProfilePhoto = (e) =>{
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0]
+    reader.onloadend = () => {
+      this.setState({
+        profilePhoto: file,
+        imagePreviewUrl: reader.result
+      });
+    }
+
+    reader.readAsDataURL(file)
+
+
+  }
+
   render() {
     return (
       <div>
@@ -214,6 +232,10 @@ class EditUserInfoContainer extends Component {
               nickname_checked={this.state.nickname_checked}
               nickname_helperText={this.state.nickname_helperText}
               clickCheckNickname={this.clickCheckNickname}
+              profilePhoto={this.state.profilePhoto}
+              onChangeProfilePhoto={this.onChangeProfilePhoto}
+              imagePreviewUrl={this.state.imagePreviewUrl}
+
             />
           </div>
         ) : (
