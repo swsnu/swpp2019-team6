@@ -47,29 +47,9 @@ class EditUserInfoContainer extends Component {
 
   async componentDidMount() {
     await this.props.getUser(this.props.match.params.id);
-
-    axios.get(`/api/user/${this.props.match.params.id}/profile_photo/`)
-      .then(
-        (res) => {
-          alert('get profile photo success');
-
-          const imgUrl = res.data.profile_photo;
-          console.log(imgUrl);
-          this.setState({
-            imagePreviewUrl: imgUrl,
-          });
-        },
-      )
-      .catch(
-        (err) => {
-          alert('get profile photo fail');
-          console.log(err);
-        },
-      );
-
-
     this.setState({ newNicknameField: this.props.user.nickname });
     this.setState({ newMessageField: this.props.user.status_message });
+    this.setState({ imagePreviewUrl: this.props.user.profile_photo });
   }
 
   onOpenClicked = (which) => {

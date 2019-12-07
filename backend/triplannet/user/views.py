@@ -85,7 +85,11 @@ class UserList(APIView):
     parser_classes = (JSONParser, )
 
     def get(self, request, id=-1, *args, **kwargs):
-        user = User.objects.get(pk=id)
+        try:
+            user = User.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        
         serializer = self.serializer_class(user)
         return Response(serializer.data)
 
@@ -116,14 +120,6 @@ class UserProfilePhoto(APIView):
     serializer_class = UserProfilePhotoSerializer
     parser_classes = (MultiPartParser, FormParser)
     
-    def get(self, request, id, *args, **kwargs):
-        try:
-            user = User.objects.get(pk=id)
-        except ObjectDoesNotExist:
-            raise Http404
-        serializer = self.serializer_class(user)
-        return Response(serializer.data)
-
     def put(self, request, id, *args, **kwargs):
         try:
             user = User.objects.get(pk=id)

@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ("id", "email", "password", "nickname", "status_message")
+        fields = ("id", "email", "password", "nickname", "status_message","profile_photo")
 
     password = serializers.CharField(write_only=True)
 
@@ -72,7 +72,4 @@ class UserProfilePhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ['profile_photo']
-
-    # def update(self, instance, validated_data):
-    #     instance.profile_photo = validated_data.get('profile_photo', instance.profile_photo)
-    #     return instance
+        
