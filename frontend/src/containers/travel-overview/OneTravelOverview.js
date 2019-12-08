@@ -30,7 +30,7 @@ class OneTravelOverview extends Component {
   // }
 
   componentDidMount() {
-    this.props.getOneRawTravel(this.props.travelId);
+    // this.props.getOneRawTravel(this.props.travelId);
   }
 
   render() {

@@ -34,7 +34,7 @@ const CollaboratorSetting = ({
         {collaborators.map((collaborator, i) => (
           <ButtonBase
             key={i}
-            onClick={() => { history.push(`/user/${collaborator.nickname}`); }}
+            onClick={() => { history.push(`/user/${collaborator.id}`); }}
             className={classes.leftMargin}
           >
             <Typography variant="body1" align="left" display="inline" color="primary" key={i}>
