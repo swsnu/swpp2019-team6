@@ -14,4 +14,5 @@ export {
   getPopularTravels,
   getRecentTravels,
   getUserTravels,
+  getOneRawTravel,
 } from './travel';
