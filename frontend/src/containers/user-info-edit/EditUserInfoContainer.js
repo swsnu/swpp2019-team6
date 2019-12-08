@@ -40,12 +40,16 @@ class EditUserInfoContainer extends Component {
     nickname_checked: null,
     password_helperText: '',
     nickname_helperText: '',
+    profilePhoto: null,
+    profilePhotoChanged: false,
+    imagePreviewUrl: null,
   }
 
   async componentDidMount() {
     await this.props.getUser(this.props.match.params.id);
     this.setState({ newNicknameField: this.props.user.nickname });
     this.setState({ newMessageField: this.props.user.status_message });
+    this.setState({ imagePreviewUrl: this.props.user.profile_photo });
   }
 
   onOpenClicked = (which) => {
@@ -186,6 +190,36 @@ class EditUserInfoContainer extends Component {
     this.setState({ messageExpanded: false });
   }
 
+  onChangeProfilePhoto = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        profilePhoto: file,
+        profilePhotoChanged: true,
+        imagePreviewUrl: reader.result,
+      });
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  onClickProfilePhotoConfirm = () => {
+    const form_data = new FormData();
+    form_data.append('profile_photo', this.state.profilePhoto, this.state.profilePhoto.name);
+    axios.put(`/api/user/${this.props.user.id}/profile_photo/`, form_data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    }).then((res) => {
+      console.log(res.data);
+    })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   render() {
     return (
       <div>
@@ -214,11 +248,15 @@ class EditUserInfoContainer extends Component {
               nickname_checked={this.state.nickname_checked}
               nickname_helperText={this.state.nickname_helperText}
               clickCheckNickname={this.clickCheckNickname}
+              onChangeProfilePhoto={this.onChangeProfilePhoto}
+              imagePreviewUrl={this.state.imagePreviewUrl}
+              profilePhotoChanged={this.state.profilePhotoChanged}
+              onClickProfilePhotoConfirm={this.onClickProfilePhotoConfirm}
             />
           </div>
         ) : (
           <Typography variant="h4" style={{ marginTop: 8, padding: 16 }}>
-            No user found
+              No user found
           </Typography>
         )}
       </div>

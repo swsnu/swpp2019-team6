@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ("id", "email", "password", "nickname", "status_message")
+        fields = ("id", "email", "password", "nickname", "status_message","profile_photo")
 
     password = serializers.CharField(write_only=True)
 
@@ -68,5 +68,8 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
-
+class UserProfilePhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['profile_photo']
+        

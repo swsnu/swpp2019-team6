@@ -1,16 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework import status, generics
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from django.contrib.auth.hashers import check_password
 import json
 
-from .serializers import JWTSerializer, UserSerializer
+from .serializers import JWTSerializer, UserSerializer, UserProfilePhotoSerializer
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 
@@ -84,7 +85,11 @@ class UserList(APIView):
     parser_classes = (JSONParser, )
 
     def get(self, request, id=-1, *args, **kwargs):
-        user = User.objects.get(pk=id)
+        try:
+            user = User.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        
         serializer = self.serializer_class(user)
         return Response(serializer.data)
 
@@ -109,3 +114,19 @@ class UserSearch(APIView):
                              order_by('email')[0:10]
         serializer = self.serializer_class(users, many=True)
         return Response(serializer.data)
+
+class UserProfilePhoto(APIView):
+    serializer_class = UserProfilePhotoSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    
+    def put(self, request, id, *args, **kwargs):
+        try:
+            user = User.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        serializer = self.serializer_class(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

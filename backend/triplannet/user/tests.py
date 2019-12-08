@@ -1,9 +1,13 @@
 from django.test import TestCase, Client
+from django.test.client import encode_multipart, BOUNDARY, MULTIPART_CONTENT
 from rest_framework import status
 import json
-
+from io import BytesIO
+from PIL import Image
+from django.core.files.base import File
 from .models import User
 
+import tempfile
 
 class UserTestCase(TestCase):
 
@@ -141,3 +145,23 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictContainsSubset({"check":False}, data)
 
+    def test_user_profile_photo_put(self):
+        client = Client()
+        self.register(client, "test@test.io", "tester", "password")
+        token = self.login(client, "test@test.io", "password")
+        
+        def get_temp_image_file():
+            file = BytesIO()
+            image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+            image.save(file, 'png')
+            file.name = 'test.png'
+            file.seek(0)
+            return file 
+
+        img = get_temp_image_file()
+        data = {'profile_photo' : img}
+        response=client.put('/api/user/1/profile_photo/',
+                                content_type=MULTIPART_CONTENT,
+                                HTTP_AUTHORIZATION="JWT {}".format(token),
+                                data=data)
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
