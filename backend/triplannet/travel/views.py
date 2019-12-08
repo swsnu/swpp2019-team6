@@ -128,10 +128,17 @@ class TagList(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class TravelSettings(APIView):
+    
+    serializer_class = TravelSerializer
+
     def put(self, request, id, *args, **kwargs):
         travel = Travel.objects.get(pk=id)
+        # If user doesn't exist...
         if 'added_collaborator' in request.data:
-            added_collaborator = User.objects.get(pk=request.data.added_collaborator)
+            try:
+                added_collaborator = User.objects.get(nickname=request.data.get('added_collaborator'))
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
             travel.collaborators.add(added_collaborator);
         travel.is_public = request.data.get('is_public', travel.is_public)
         travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)

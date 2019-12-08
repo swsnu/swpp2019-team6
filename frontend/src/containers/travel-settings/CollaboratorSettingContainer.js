@@ -19,13 +19,15 @@ const tempCollaborators = [
 ];
 
 class CollaboratorSettingContainer extends Component {
-  // have to retrieve collaborators of travel by using this.props.travelId
-
-
-  state = {
-    nickname_collaborators: [],
-    collaborator_field: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      nickname_collaborators: [],
+      collaborator_field: '',
+    };
+    // how to update child component when the state of this parent component is changed?
   }
+
 
   async componentDidMount() {
     await this.props.getOneRawTravel(this.props.travelId);
@@ -43,7 +45,22 @@ class CollaboratorSettingContainer extends Component {
   }
 
   onAddButtonClicked = (e) => {
-    console.log(this.state.collaborator_field);
+    const data = {
+      added_collaborator: this.state.collaborator_field,
+    };
+    axios.put(`/api/travel/settings/${this.props.travelId}/`, data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        async (res) => {
+          await this.props.getOneRawTravel(this.props.travelId);
+          this.setState({ collaborator_field: '' });
+          window.location.reload(); // easy way, but may not be the React way...
+        },
+      );
   }
 
   onCollaboratorFieldChanged = (e) => {
@@ -66,6 +83,7 @@ class CollaboratorSettingContainer extends Component {
         ) : (
           <span />
         )}
+        {this.state.collaborator_field}
       </div>
     );
   }
