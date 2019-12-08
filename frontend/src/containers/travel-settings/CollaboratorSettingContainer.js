@@ -24,6 +24,7 @@ class CollaboratorSettingContainer extends Component {
 
   state = {
     nickname_collaborators: [],
+    collaborator_field: '',
   }
 
   async componentDidMount() {
@@ -42,6 +43,11 @@ class CollaboratorSettingContainer extends Component {
   }
 
   onAddButtonClicked = (e) => {
+    console.log(this.state.collaborator_field);
+  }
+
+  onCollaboratorFieldChanged = (e) => {
+    this.setState({ collaborator_field: e.target.value });
   }
 
 
@@ -53,6 +59,8 @@ class CollaboratorSettingContainer extends Component {
             <CollaboratorSetting
               collaborators={this.state.nickname_collaborators}
               onAddButtonClicked={this.onAddButtonClicked}
+              collaborator_field={this.state.collaborator_field}
+              onCollaboratorFieldChanged={this.onCollaboratorFieldChanged}
             />
           </div>
         ) : (
