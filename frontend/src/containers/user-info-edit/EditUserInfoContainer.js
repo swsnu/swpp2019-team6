@@ -115,7 +115,7 @@ class EditUserInfoContainer extends Component {
       })
       .then(
         (res) => {
-          console.log(res);
+          alert('Successfully changed your password');
           this.setState({
             currentPasswordField: '',
             newPasswordField: '',
