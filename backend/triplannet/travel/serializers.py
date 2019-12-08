@@ -80,9 +80,7 @@ class TravelSerializer(serializers.ModelSerializer):
         head_data = validated_data.pop('head')
         travelCommit_author=head_data.pop('author')
         head_data['author']=travelCommit_author.id
-        
-        travel = Travel.objects.create(**validated_data)
-        
+                
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
             print('TRAVELCOMMIT_SERIALIZER VALID')
