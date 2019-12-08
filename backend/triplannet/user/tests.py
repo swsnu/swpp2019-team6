@@ -79,7 +79,9 @@ class UserTestCase(TestCase):
         self.register(client, "test@test.aa", "tester", "test")
         token = self.login(client, "test@test.aa", "test")
         data = {
-            "status_message": "hi there?"
+            "current_password": "test",
+            "new_password": "test2",
+            "status_message": "hi there?",
         }
         response = client.put('/api/user/1/', data=data,
                               content_type="application/json",
@@ -87,6 +89,19 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         user_info = json.loads(response.content)
         self.assertEqual(user_info["status_message"], "hi there?")
+
+    def test_put_user_info_failed(self):
+        client = Client()
+        self.register(client, "test@test.aa", "tester", "test")
+        token = self.login(client, "test@test.aa", "test")
+        data = {
+            "current_password": "test2",
+            "new_password": "test3",
+        }
+        response = client.put('/api/user/1/', data=data,
+                              content_type="application/json",
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_search_user(self):
         client = Client()
