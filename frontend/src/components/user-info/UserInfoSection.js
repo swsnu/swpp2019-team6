@@ -42,7 +42,11 @@ const UserInfoSection = ({
         <Grid xs item container spacing={3}>
           {/* For Avartar */}
           <Grid item xs={4}>
-            <Avatar className={classes.avatar} alt={user.nickname} src={user.user_photo} />
+            <Avatar
+              className={classes.avatar}
+              alt="IMAGE NOT FOUND"
+              src={user.profile_photo || '/images/default_profile_image.png'}
+            />
           </Grid>
           {/* For other components */}
           <Grid item xs container direction="column">
