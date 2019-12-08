@@ -26,21 +26,6 @@ class CollaboratorSettingContainer extends Component {
     nickname_collaborators: [],
   }
 
-  // static async getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.thisTravel && nextProps.thisTravel.collaborators) {
-  //     const promises = nextProps.thisTravel.collaborators.map(async (user_id) => {
-  //       const response = await axios.get(`/api/user/${user_id}/`);
-  //       return response;
-  //     });
-  //     const results = await Promise.all(promises);
-  //     const nickname_collaborators = results.map((res) => { return res.data.nickname; });
-  //     console.log(nickname_collaborators);
-  //     return { nickname_collaborators: nickname_collaborators };
-  //   }
-  //   return null;
-  // }
-
-
   async componentDidMount() {
     await this.props.getOneRawTravel(this.props.travelId);
     if (this.props.thisTravel && this.props.thisTravel.collaborators) {
@@ -49,7 +34,9 @@ class CollaboratorSettingContainer extends Component {
         return response;
       });
       const results = await Promise.all(promises);
-      const nickname_collaborators = results.map((res) => { return { id: res.data.id, nickname: res.data.nickname }; });
+      const nickname_collaborators = results.map((res) => {
+        return { id: res.data.id, nickname: res.data.nickname };
+      });
       this.setState({ nickname_collaborators: nickname_collaborators });
     }
   }
