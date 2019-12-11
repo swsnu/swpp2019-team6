@@ -38,6 +38,9 @@ class UserTravelOverviewList extends Component {
         </div>
         {this.props.userTravels && this.props.userTravels.length ? (
           <div className="userTravelOverview">
+            <Typography align="left" color="primary" variant="h5" style={{ marginTop: 8, marginBottom: 8 }}>
+              My Travel Plans
+            </Typography>
             <TravelOverviewList
               travelList={this.props.userTravels}
               is_mypage={this.props.is_mypage}

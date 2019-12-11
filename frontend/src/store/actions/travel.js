@@ -194,3 +194,16 @@ export const getOneRawTravel = (travel_id) => {
       .catch((res) => dispatch(push('/error')));
   };
 };
+
+export const getCollaboratorTravels_ = (travels) => {
+  return { type: actionTypes.GET_COLLABORATOR_TRAVELS, travels: travels };
+};
+
+export const getCollaboratorTravels = (user_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/collaborator/${user_id}/`)
+      .then((res) => {
+        dispatch(getCollaboratorTravels_(res.data));
+      });
+  };
+};

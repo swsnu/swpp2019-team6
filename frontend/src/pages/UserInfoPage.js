@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HeaderContainer from '../containers/common/HeaderContainer';
 import UserInfoSectionContainer from '../containers/user-info/UserInfoSectionContainer';
 import UserTravelOverviewList from '../containers/travel-overview/UserTravelOverviewList';
+import CollaboratorTravelOverviewList from '../containers/travel-overview/CollaboratorTravelOverviewList';
 
 class UserInfoPage extends Component {
   state = {
@@ -28,6 +29,14 @@ class UserInfoPage extends Component {
           id={this.props.match.params.id}
           is_mypage={this.state.is_mypage}
         />
+        {this.state.is_mypage ? (
+          <CollaboratorTravelOverviewList
+            id={this.props.match.params.id}
+            is_mypage={this.state.is_mypage}
+          />
+        ) : (
+          <span />
+        )}
       </div>
     );
   }
