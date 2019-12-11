@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import * as actionCreators from '../../store/actions/index';
 import TravelSetting from '../../components/travel-settings/TravelSetting';
 
@@ -31,7 +32,26 @@ class TravelSettingContainer extends Component {
   }
 
   onApplyButtonClicked = (e) => {
-    console.log(this.props);
+    const data = {
+      is_public: this.state.isPublic,
+      allow_comments: this.state.allowComments,
+    };
+    axios.put(`/api/travel/settings/${this.props.travelId}/`, data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        (res) => {
+          console.log(res);
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot change travel settings');
+        },
+      );
   }
 
   render() {
