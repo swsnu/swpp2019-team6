@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_mysql',
     'rest_framework',
     'user.apps.UserConfig',
     'mapsapi.apps.MapsapiConfig',

@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from .models import *
 from user.serializers import UserSerializer
+from .travelembed import travel_text_embed_vector
 class TravelBlockSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -40,6 +41,10 @@ class TravelDaySerializer(serializers.ModelSerializer):
 class TravelCommitSerializer(serializers.ModelSerializer):
 
     days = TravelDaySerializer(many=True)
+    block_dist = serializers.ListField(
+    child=serializers.IntegerField())
+    #travel_embed_vector = serializers.ListField(
+    #child=serializers.IntegerField())
     # author = UserSerializer()
     class Meta:
         model = TravelCommit
@@ -51,6 +56,8 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         
         days_data = validated_data.pop('days')
         travelCommit = TravelCommit.objects.create(**validated_data)
+        travelCommit.travel_embed_vector=travel_text_embed_vector(travelCommit.title)
+
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
             if travelDaySerializer.is_valid():

@@ -8,6 +8,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Travel, TravelCommit, TravelDayList, Tag
 from .serializers import *
 
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
 class travel(APIView):
 
     serializer_class = TravelSerializer
@@ -27,6 +30,34 @@ class travel(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class travel_recommend(APIView):
+    serializer_class = TravelSerializer
+
+    def get(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except  ObjectDoesNotExist:
+            raise Http404
+        serializer = self.serializer_class(travel)
+        travel=travel.head
+        block_dist=travel.block_dist
+        
+        travel_embed_vector=travel.travel_embed_vector
+        a=Travel.objects.values_list('head__block_dist', flat=True)
+        block_dist_list = Travel.objects.exclude(pk=id).values_list('head__block_dist', flat=True)
+        travel_embed_vector_list = Travel.objects.exclude(pk=id).values_list('head__travel_embed_vector', flat=True)
+        
+        block_sim=cosine_similarity([block_dist], list(block_dist_list))
+        block_sim=block_sim[0]
+        #embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_list))
+        #embed_sim=embed_sim[0]
+        #tot_sim=block_sim+embed_sim
+        tot_sim=block_sim
+        sim_maxinds=tot_sim.argsort()[-3:][::-1]
+        id_list=Travel.objects.exclude(pk=id).values_list('id', flat=True)
+        id_list=list(id_list)
+        sim_id_list=[id_list[i] for i in sim_maxinds]
+        return Response(sim_id_list)
 
 class travel_id(APIView):
     serializer_class = TravelSerializer
