@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import TravelSetting from '../../components/travel-settings/TravelSetting';
-
-const tempIsPublic = true;
-const tempAllowComments = true;
 
 class TravelSettingContainer extends Component {
   // have to retrieve collaborators of travel by using this.props.travelId
 
   state = {
-    isPublic: tempIsPublic,
-    allowComments: tempAllowComments,
+    isPublic: null,
+    allowComments: null,
+  }
+
+  // for updating current state
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.thisTravel.is_public !== prevState.isPublic
+      || nextProps.thisTravel.allow_comments !== prevState.allowComments) {
+      return {
+        isPublic: nextProps.thisTravel.is_public, allowComments: nextProps.thisTravel.allow_comments,
+      };
+    }
+    return null;
   }
 
   handleVisibilityChange = (e) => {
@@ -23,6 +32,7 @@ class TravelSettingContainer extends Component {
   }
 
   onApplyButtonClicked = (e) => {
+    console.log(this.props);
   }
 
   render() {
@@ -40,4 +50,16 @@ class TravelSettingContainer extends Component {
   }
 }
 
-export default TravelSettingContainer;
+
+const mapStateToProps = (state) => {
+  return {
+    thisTravel: state.travel.oneRawTravel,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TravelSettingContainer);
