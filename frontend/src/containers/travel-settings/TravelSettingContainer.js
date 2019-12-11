@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
 import TravelSetting from '../../components/travel-settings/TravelSetting';
 
 class TravelSettingContainer extends Component {
@@ -10,15 +11,13 @@ class TravelSettingContainer extends Component {
     allowComments: null,
   }
 
-  // for updating current state
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.thisTravel.is_public !== prevState.isPublic
-      || nextProps.thisTravel.allow_comments !== prevState.allowComments) {
-      return {
-        isPublic: nextProps.thisTravel.is_public, allowComments: nextProps.thisTravel.allow_comments,
-      };
-    }
-    return null;
+  async componentDidMount() {
+    // may not be a good idea
+    await this.props.getOneRawTravel(this.props.travelId);
+    this.setState({
+      isPublic: this.props.thisTravel.is_public,
+      allowComments: this.props.thisTravel.allow_comments,
+    });
   }
 
   handleVisibilityChange = (e) => {
@@ -59,6 +58,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getOneRawTravel: (travel_id) => dispatch(actionCreators.getOneRawTravel(travel_id)),
   };
 };
 

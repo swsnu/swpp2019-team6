@@ -31,7 +31,6 @@ const TravelSetting = ({
   isPublic, allowComments, handleVisibilityChange, handleAllowCommentsChange, onApplyButtonClicked,
 }) => {
   const classes = useStyles();
-
   return (
     <div>
       <Paper className={classes.settingSection}>
