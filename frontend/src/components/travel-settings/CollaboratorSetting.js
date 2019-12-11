@@ -71,6 +71,7 @@ const CollaboratorSetting = ({
         color="secondary"
         className={classes.allMargin}
         onClick={handleClickOpen}
+        id="addButton"
       >
         Add
       </Button>
@@ -90,10 +91,10 @@ const CollaboratorSetting = ({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button id="cancelButton" onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => { handleClose(); onAddButtonClicked(); }} color="primary">
+          <Button id="confirmButton" onClick={() => { handleClose(); onAddButtonClicked(); }} color="primary">
             Confirm
           </Button>
         </DialogActions>
