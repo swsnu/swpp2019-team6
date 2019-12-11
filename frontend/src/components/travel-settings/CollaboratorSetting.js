@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
 
 // props
 // data: collaborators(list)
-// function: onAddButtonClicked, onCollaboratorFieldChanged
+// function: onAddButtonClicked, onCollaboratorFieldChanged, resetCollaboratorField
 // input field: collaborator_field
 const CollaboratorSetting = ({
-  collaborators, onAddButtonClicked, collaborator_field, onCollaboratorFieldChanged,history,
+  collaborators, onAddButtonClicked, collaborator_field, onCollaboratorFieldChanged, history, resetCollaboratorField,
 }) => {
   const classes = useStyles();
 
@@ -40,6 +40,7 @@ const CollaboratorSetting = ({
 
   const handleClose = () => {
     setOpen(false);
+    resetCollaboratorField();
   };
 
   return (
