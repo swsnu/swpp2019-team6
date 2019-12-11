@@ -101,6 +101,13 @@ class user_travel_list(APIView):
         serializer = TravelSerializer(travels, many=True)
         return Response(serializer.data)
 
+class collaborator_travel_list(APIView):
+    def get(self, request, id, *args, **kwargs):
+        travels = Travel.objects.filter(collaborators__id__icontains=id)
+        serializer = TravelSerializer(travels, many=True)
+        return Response(serializer.data)
+
+
 class TagList(APIView):
 
     def get(self, request, tag, *args, **kwargs):

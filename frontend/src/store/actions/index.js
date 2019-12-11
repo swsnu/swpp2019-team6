@@ -15,4 +15,5 @@ export {
   getRecentTravels,
   getUserTravels,
   getOneRawTravel,
+  getCollaboratorTravels,
 } from './travel';
