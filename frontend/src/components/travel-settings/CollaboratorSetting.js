@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
 // function: onAddButtonClicked, onCollaboratorFieldChanged, resetCollaboratorField
 // input field: collaborator_field
 const CollaboratorSetting = ({
-  collaborators, onAddButtonClicked, collaborator_field, onCollaboratorFieldChanged, history, resetCollaboratorField,
+  collaborators, onAddButtonClicked, collaborator_field,
+  onCollaboratorFieldChanged, history, resetCollaboratorField,
 }) => {
   const classes = useStyles();
 
