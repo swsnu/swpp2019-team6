@@ -15,6 +15,7 @@ const stubInitialState = {
   recentTravels: [],
   userTravels: [],
   oneRawTravel: {},
+  collaboratorTravels: [],
 };
 
 describe('Travel Reducer', () => {
