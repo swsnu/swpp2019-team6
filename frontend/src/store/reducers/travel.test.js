@@ -9,7 +9,6 @@ const stubTravelState = {
   items: 'ITEMS',
 };
 
-
 const stubInitialState = {
   travel: {},
   popularTravels: [],
@@ -19,7 +18,6 @@ const stubInitialState = {
 };
 
 describe('Travel Reducer', () => {
-
   it('should return default state', () => {
     const newState = reducer(undefined, undefined);
     expect(newState).toEqual(stubInitialState);
@@ -31,7 +29,7 @@ describe('Travel Reducer', () => {
       id: stubTravelState.id,
       items: stubTravelState.items,
     });
-    expect(newState).toEqual({...stubTravelState, ...stubInitialState });
+    expect(newState).toEqual({ ...stubTravelState, ...stubInitialState });
   });
   it('should get popular travel successfully', () => {
     const newState = reducer(undefined, {

@@ -178,8 +178,8 @@ export const getUserTravels = (user_id) => {
     return axios.get(`/api/travel/user/${user_id}/`)
       .then((res) => {
         // console.log(res);
-        dispatch(getUserTravels_(res.data))}
-      );
+        dispatch(getUserTravels_(res.data));
+      });
   };
 };
 

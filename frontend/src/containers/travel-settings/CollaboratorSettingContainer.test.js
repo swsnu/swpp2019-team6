@@ -65,7 +65,7 @@ describe('CollaboratorSettingContainer', () => {
     const { location } = window;
     delete window.location;
     window.location = { reload: jest.fn() };
-});
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
