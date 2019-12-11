@@ -128,6 +128,7 @@ const convertItemToPushFormat = (travel) => {
 export const createTravel = (travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
+    console.log(newTravel);
     return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',
@@ -175,6 +176,21 @@ export const getUserTravels_ = (travels) => {
 export const getUserTravels = (user_id) => {
   return (dispatch) => {
     return axios.get(`/api/travel/user/${user_id}/`)
-      .then((res) => dispatch(getUserTravels_(res.data)));
+      .then((res) => {
+        // console.log(res);
+        dispatch(getUserTravels_(res.data));
+      });
+  };
+};
+
+export const getOneRawTravel_ = (travel) => {
+  return { type: actionTypes.GET_ONE_RAW_TRAVEL, travel: travel };
+};
+
+export const getOneRawTravel = (travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/${travel_id}/`)
+      .then((res) => dispatch(getOneRawTravel_(res.data)))
+      .catch((res) => dispatch(push('/error')));
   };
 };

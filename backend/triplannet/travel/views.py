@@ -4,9 +4,13 @@ from rest_framework import status
 
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model
 
 from .models import Travel, TravelCommit, TravelDayList, Tag
 from .serializers import *
+
+User = get_user_model()
+
 
 class travel(APIView):
 
@@ -122,4 +126,27 @@ class TagList(APIView):
             return Response(status=status.HTTP_201_CREATED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class TravelSettings(APIView):
+    
+    serializer_class = TravelSerializer
+
+    def put(self, request, id, *args, **kwargs):
+        travel = Travel.objects.get(pk=id)
+        # If user doesn't exist...
+        if 'added_collaborator' in request.data:
+            try:
+                added_collaborator = User.objects.get(nickname=request.data.get('added_collaborator'))
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            travel.collaborators.add(added_collaborator);
+        travel.is_public = request.data.get('is_public', travel.is_public)
+        travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)
+        travel.save()
+        serializer = self.serializer_class(travel)
+        return Response(serializer.data)
+        
+
+
+
 

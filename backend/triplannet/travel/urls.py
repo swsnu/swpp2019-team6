@@ -10,4 +10,5 @@ urlpatterns = [
     path('recent/',travel_recent.as_view(), name='travel_recent'),
     path('user/<int:id>/', user_travel_list.as_view(), name='user_travel_list'),
     path('tag/<tag>/', TagList.as_view(), name='tag_list'),
+    path('settings/<int:id>/', TravelSettings.as_view(), name='travel_settings'),
 ]
