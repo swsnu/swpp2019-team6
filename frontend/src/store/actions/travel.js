@@ -75,6 +75,7 @@ const convertItemToPushFormat = (travel) => {
       start_date: '',
       end_date: '',
       block_dist: [],
+      travel_embed_vector: [],
     },
   };
   var block_dist = [0,0,0,0,0]
@@ -117,6 +118,7 @@ const convertItemToPushFormat = (travel) => {
         block_dist[4]=block_dist[4]+1
       }
       newTravel.head.block_dist=block_dist
+      newTravel.head.travel_embed_vector=block_dist
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,

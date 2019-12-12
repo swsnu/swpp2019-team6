@@ -30,7 +30,54 @@ class travel(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class travel_recommend(APIView):
+class travel_recommend_byuser(APIView):
+    serializer_class = TravelSerializer
+
+    def get(self, request, user_id, travel_id, *args, **kwargs):
+        print('it is called')
+        try:
+            user = User.objects.get(pk=user_id)
+        except  ObjectDoesNotExist:
+            raise Http404
+
+        try:
+            travel = Travel.objects.get(pk=travel_id)
+        except  ObjectDoesNotExist:
+            raise Http404
+
+        serializer = self.serializer_class(travel)
+
+        user_view=user.views_of_Travel
+        user_view_idlist=list(user_view.values_list('id', flat=True))
+        user_view_idlist=user_view_idlist+[travel_id]
+        
+        block_dist_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__block_dist', flat=True)
+        travel_embed_vector_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__travel_embed_vector', flat=True)
+        
+        block_dist_nonview = Travel.objects.exclude(pk__in=user_view_idlist).values_list('head__block_dist', flat=True)
+        travel_embed_vector_nonview = Travel.objects.exclude(pk__in=user_view_idlist).values_list('head__travel_embed_vector', flat=True)
+        
+        block_dist_view_list=list(block_dist_view)
+        block_dist=list(map(sum,zip(*block_dist_view_list)))
+
+        travel_embed_vector_view_list=list(travel_embed_vector_view)
+        travel_embed_vector=list(map(sum,zip(*travel_embed_vector_view_list)))
+
+        block_sim=cosine_similarity([block_dist],list(block_dist_nonview))
+
+        block_sim=block_sim[0]
+        #embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview)
+        #embed_sim=embed_sim[0]
+        #tot_sim=block_sim+embed_sim
+        tot_sim=block_sim
+        sim_maxinds=tot_sim.argsort()[-3:][::-1]
+        id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
+        id_list=list(id_list)
+        sim_id_list=[id_list[i] for i in sim_maxinds]
+        return Response(sim_id_list)
+
+
+class travel_recommend_bytravel(APIView):
     serializer_class = TravelSerializer
 
     def get(self, request, id, *args, **kwargs):
@@ -95,6 +142,7 @@ class travel_id_travelCommit(APIView):
 
         request.data['author']=request.user.id
         request.data['travel']=travel.id
+        
         serializer = TravelCommitSerializer(data=request.data)
         if serializer.is_valid():
             print('TRAVELCOMMITSERIALIZER VALID')

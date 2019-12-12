@@ -43,8 +43,8 @@ class TravelCommitSerializer(serializers.ModelSerializer):
     days = TravelDaySerializer(many=True)
     block_dist = serializers.ListField(
     child=serializers.IntegerField())
-    #travel_embed_vector = serializers.ListField(
-    #child=serializers.IntegerField())
+    travel_embed_vector = serializers.ListField(
+    child=serializers.IntegerField())
     # author = UserSerializer()
     class Meta:
         model = TravelCommit
@@ -56,7 +56,10 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         
         days_data = validated_data.pop('days')
         travelCommit = TravelCommit.objects.create(**validated_data)
-        travelCommit.travel_embed_vector=travel_text_embed_vector(travelCommit.title)
+        
+        #travelCommit.travel_embed_vector=travel_text_embed_vector(travelCommit.title)
+        print(111)
+        #print(travelCommit.travel_embed_vector)
 
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
@@ -87,7 +90,9 @@ class TravelSerializer(serializers.ModelSerializer):
         head_data = validated_data.pop('head')
         travelCommit_author=head_data.pop('author')
         head_data['author']=travelCommit_author.id
-                
+        a=travel_text_embed_vector(head_data['title'])
+        head_data['travel_embed_vector']=a
+        
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
             print('TRAVELCOMMIT_SERIALIZER VALID')

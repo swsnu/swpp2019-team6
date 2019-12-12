@@ -47,6 +47,12 @@ class Travel(models.Model):
         related_name = 'like_of_Travel',
         blank=True
     )
+    views = models.ManyToManyField(
+        User,
+        related_name = 'views_of_Travel',
+        blank=True
+    )
+
     class Meta:
         ordering = ['-last_modified_time',]
 
