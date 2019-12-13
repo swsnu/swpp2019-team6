@@ -5,7 +5,7 @@ from .models import *
 from user.serializers import UserSerializer
 from .travelembed import TravelEmbed
 
-#travelembed = TravelEmbed()
+travelembed = TravelEmbed()
 
 class TravelBlockSerializer(serializers.ModelSerializer):
 
