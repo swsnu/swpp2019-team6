@@ -9,16 +9,19 @@ const stubTravelState = {
   items: 'ITEMS',
 };
 
+const stubInitialState = {
+  travel: {},
+  popularTravels: [],
+  recentTravels: [],
+  userTravels: [],
+  oneRawTravel: {},
+  collaboratorTravels: [],
+};
 
 describe('Travel Reducer', () => {
   it('should return default state', () => {
     const newState = reducer(undefined, undefined);
-    expect(newState).toEqual({
-      travel: {},
-      popularTravels: [],
-      recentTravels: [],
-      userTravels: [],
-    });
+    expect(newState).toEqual(stubInitialState);
   });
   it('should get travel successfully', () => {
     const newState = reducer(undefined, {
@@ -27,31 +30,21 @@ describe('Travel Reducer', () => {
       id: stubTravelState.id,
       items: stubTravelState.items,
     });
-    expect(newState).toEqual(stubTravelState);
+    expect(newState).toEqual({ ...stubTravelState, ...stubInitialState });
   });
   it('should get popular travel successfully', () => {
     const newState = reducer(undefined, {
       type: actionTypes.GET_POPULAR_TRAVELS,
       travels: [],
     });
-    expect(newState).toEqual({
-      popularTravels: [],
-      recentTravels: [],
-      travel: {},
-      userTravels: [],
-    });
+    expect(newState).toEqual(stubInitialState);
   });
   it('should get recent travel successfully', () => {
     const newState = reducer(undefined, {
       type: actionTypes.GET_RECENT_TRAVELS,
       travels: [],
     });
-    expect(newState).toEqual({
-      popularTravels: [],
-      recentTravels: [],
-      travel: {},
-      userTravels: [],
-    });
+    expect(newState).toEqual(stubInitialState);
   });
   it('should create travel', () => {
     const newState = reducer(undefined, {
@@ -59,6 +52,7 @@ describe('Travel Reducer', () => {
       travel: stubTravelState,
     });
     expect(newState).toEqual({
+      ...stubInitialState,
       travel: stubTravelState.travel,
     });
   });

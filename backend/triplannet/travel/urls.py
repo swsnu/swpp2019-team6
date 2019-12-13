@@ -12,4 +12,6 @@ urlpatterns = [
     path('tag/<tag>/', TagList.as_view(), name='tag_list'),
     path('recommend/<int:id>/', travel_recommend_bytravel.as_view(), name='travel_recommend_bytravel'),
     path('recommend/<int:user_id>/<int:travel_id>/', travel_recommend_byuser.as_view(), name='travel_recommend_byuser'),
+    path('settings/<int:id>/', TravelSettings.as_view(), name='travel_settings'),
+    path('collaborator/<int:id>/', collaborator_travel_list.as_view(), name='collaborator_travel_list'),
 ]

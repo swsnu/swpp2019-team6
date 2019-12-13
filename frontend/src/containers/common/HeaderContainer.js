@@ -44,6 +44,7 @@ class HeaderContainer extends Component {
 
   onMyPageClicked = (e) => {
     this.props.history.push(`/user/${this.state.currentUser.id}`);
+    window.location.reload(); // other user's page to my page -> needs refreshing?
   }
 
   onSearchInputChanged = (e) => {

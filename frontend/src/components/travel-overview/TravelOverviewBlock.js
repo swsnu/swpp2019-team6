@@ -79,7 +79,8 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
                     by {travelOverviewItem.author}
                   </Typography>
                   <Typography display="inline">
-                    {' '}| {travelOverviewItem.likes} likes {' '}
+                    {' '}| {travelOverviewItem.likes.length} likes {' '}
+                    {/* ->likes,length */}
                   </Typography>
                   {is_mypage ? (
                     <span>

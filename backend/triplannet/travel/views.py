@@ -4,12 +4,16 @@ from rest_framework import status
 
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model
 
 from .models import Travel, TravelCommit, TravelDayList, Tag
 from .serializers import *
 
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+
+User = get_user_model()
+
 
 class travel(APIView):
 
@@ -30,6 +34,32 @@ class travel(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class travel_id(APIView):
+    serializer_class = TravelSerializer
+
+    def get(self,request,id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        serializer = self.serializer_class(travel)
+        return Response(serializer.data)
+
+    # def put(self,request,id,*args,**kwargs):
+
+    #     try:
+    #         travel = Travel.objects.get(pk=id)
+    #     except ObjectDoesNotExist:
+    #         raise Http404
+
+    #     serializer = self.serializer_class(travel, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class travel_recommend_byuser(APIView):
     serializer_class = TravelSerializer
 
@@ -106,32 +136,6 @@ class travel_recommend_bytravel(APIView):
         sim_id_list=[id_list[i] for i in sim_maxinds]
         return Response(sim_id_list)
 
-class travel_id(APIView):
-    serializer_class = TravelSerializer
-
-    def get(self,request,id, *args, **kwargs):
-        try:
-            travel = Travel.objects.get(pk=id)
-        except ObjectDoesNotExist:
-            raise Http404
-
-        serializer = self.serializer_class(travel)
-        return Response(serializer.data)
-
-    # def put(self,request,id,*args,**kwargs):
-
-    #     try:
-    #         travel = Travel.objects.get(pk=id)
-    #     except ObjectDoesNotExist:
-    #         raise Http404
-
-    #     serializer = self.serializer_class(travel, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class travel_id_travelCommit(APIView):
 
     def post(self,request,id, *args, **kwargs):
@@ -142,7 +146,6 @@ class travel_id_travelCommit(APIView):
 
         request.data['author']=request.user.id
         request.data['travel']=travel.id
-        
         serializer = TravelCommitSerializer(data=request.data)
         if serializer.is_valid():
             print('TRAVELCOMMITSERIALIZER VALID')
@@ -176,6 +179,13 @@ class user_travel_list(APIView):
         serializer = TravelSerializer(travels, many=True)
         return Response(serializer.data)
 
+class collaborator_travel_list(APIView):
+    def get(self, request, id, *args, **kwargs):
+        travels = Travel.objects.filter(collaborators__id__icontains=id)
+        serializer = TravelSerializer(travels, many=True)
+        return Response(serializer.data)
+
+
 class TagList(APIView):
 
     def get(self, request, tag, *args, **kwargs):
@@ -201,4 +211,23 @@ class TagList(APIView):
             return Response(status=status.HTTP_201_CREATED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class TravelSettings(APIView):
+    
+    serializer_class = TravelSerializer
+
+    def put(self, request, id, *args, **kwargs):
+        travel = Travel.objects.get(pk=id)
+        # If user doesn't exist...
+        if 'added_collaborator' in request.data:
+            try:
+                added_collaborator = User.objects.get(nickname=request.data.get('added_collaborator'))
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            travel.collaborators.add(added_collaborator);
+        travel.is_public = request.data.get('is_public', travel.is_public)
+        travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)
+        travel.save()
+        serializer = self.serializer_class(travel)
+        return Response(serializer.data)
 
