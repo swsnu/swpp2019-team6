@@ -19,8 +19,6 @@ matrix:
     - yarn add eslint-config-airbnb
     - yarn add coveralls
     - cd ../backend
-    - python --version
-    - pip --version
     - pip install -r requirements.txt
     - cd ..
     script: # Script to test your build
