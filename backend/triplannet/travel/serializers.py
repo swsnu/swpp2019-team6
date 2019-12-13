@@ -3,7 +3,10 @@ from rest_framework import serializers
 
 from .models import *
 from user.serializers import UserSerializer
-from .travelembed import travel_text_embed_vector
+from .travelembed import TravelEmbed
+
+travelembed = TravelEmbed()
+
 class TravelBlockSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -74,7 +77,8 @@ class TravelCommitSerializer(serializers.ModelSerializer):
 class TravelSerializer(serializers.ModelSerializer):
 
     head = TravelCommitSerializer()
-    # author = UserSerializer()
+        # author = UserSerializer()
+
     class Meta:
         model = Travel
         # fields = '__all__'
@@ -82,11 +86,11 @@ class TravelSerializer(serializers.ModelSerializer):
         # depth = 1
 
     def create(self, validated_data):
-        
+        global travelembed
         head_data = validated_data.pop('head')
         travelCommit_author=head_data.pop('author')
         head_data['author']=travelCommit_author.id
-        a=travel_text_embed_vector(head_data['title'])
+        a=travelembed.travel_text_embed_vector(head_data['title'])
         head_data['travel_embed_vector']=a
         
         travelCommitSerializer = TravelCommitSerializer(data=head_data)

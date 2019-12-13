@@ -11,6 +11,7 @@ from .serializers import *
 
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import json
 
 User = get_user_model()
 class travel(APIView):
@@ -94,11 +95,13 @@ class travel_recommend_byuser(APIView):
         block_sim=block_sim[0]
         embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
         embed_sim=embed_sim[0]
-        tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
+        tot_sim=block_sim+embed_sim
+        #tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
         sim_maxinds=tot_sim.argsort()[-3:][::-1]
         id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
         id_list=list(id_list)
         sim_id_list=[id_list[i] for i in sim_maxinds]
+
         return Response(sim_id_list)
 
 
@@ -115,7 +118,6 @@ class travel_recommend_bytravel(APIView):
         block_dist=travel.block_dist
         
         travel_embed_vector=travel.travel_embed_vector
-        a=Travel.objects.values_list('head__block_dist', flat=True)
         block_dist_list = Travel.objects.exclude(pk=id).values_list('head__block_dist', flat=True)
         travel_embed_vector_list = Travel.objects.exclude(pk=id).values_list('head__travel_embed_vector', flat=True)
         
@@ -123,7 +125,8 @@ class travel_recommend_bytravel(APIView):
         block_sim=block_sim[0]
         embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_list))
         embed_sim=embed_sim[0]
-        tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
+        tot_sim=block_sim+embed_sim
+        #tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
         sim_maxinds=tot_sim.argsort()[-3:][::-1]
         id_list=Travel.objects.exclude(pk=id).values_list('id', flat=True)
         id_list=list(id_list)
