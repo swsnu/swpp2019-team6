@@ -43,7 +43,7 @@ class TravelCommitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TravelCommit
-        exclude = ['register_time']
+        exclude = ['register_time',]
 
     def validate(self, data):
 
@@ -107,3 +107,8 @@ class TravelSerializer(serializers.ModelSerializer):
         else:
             print('TRAVELCOMMIT_SERIALIZER INVALID')
             print(travelCommitSerializer.errors)
+
+class TravelPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TravelCommit
+        fields = ['photo']
