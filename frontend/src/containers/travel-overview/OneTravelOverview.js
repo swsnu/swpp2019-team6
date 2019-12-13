@@ -29,9 +29,9 @@ class OneTravelOverview extends Component {
   //   travel: tempTravel,
   // }
 
-  componentDidMount() {
-    // this.props.getOneRawTravel(this.props.travelId);
-  }
+  // componentDidMount() {
+  //   // this.props.getOneRawTravel(this.props.travelId);
+  // }
 
   render() {
     return (
@@ -58,10 +58,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getOneRawTravel: (travel_id) => dispatch(actionCreators.getOneRawTravel(travel_id)),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     getOneRawTravel: (travel_id) => dispatch(actionCreators.getOneRawTravel(travel_id)),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OneTravelOverview);
+export default connect(mapStateToProps, null)(OneTravelOverview);
