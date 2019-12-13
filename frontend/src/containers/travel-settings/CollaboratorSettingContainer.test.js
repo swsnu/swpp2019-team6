@@ -62,9 +62,20 @@ describe('CollaboratorSettingContainer', () => {
           resolve(result);
         });
       });
+
     const { location } = window;
     delete window.location;
     window.location = { reload: jest.fn() };
+
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+
+    localStorage.setItem('user', JSON.stringify({
+      id: 1,
+      email: 'test@test.com',
+      nickname: 'test',
+      status_message: 'test message',
+    }));
   });
 
   afterEach(() => {
@@ -81,12 +92,47 @@ describe('CollaboratorSettingContainer', () => {
     const addButton = component.find('#addButton');
     addButton.at(0).simulate('click');
     const nicknameField = component.find('#nickname').find('input');
-    nicknameField.simulate('change', { target: { value: 'test' } });
+    nicknameField.simulate('change', { target: { value: 'test1' } });
     const cancelButton = component.find('#cancelButton');
     cancelButton.at(0).simulate('click');
     addButton.at(0).simulate('click');
+    nicknameField.simulate('change', { target: { value: 'test1' } });
+    const confirmButton = component.find('#confirmButton');
+    confirmButton.at(0).simulate('click');
+    expect(spyAxiosPut).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not allow adding himself or herself as a collaborator', () => {
+    const component = mount(collaboratorSettingContainer);
+    const addButton = component.find('#addButton');
+    addButton.at(0).simulate('click');
+    const nicknameField = component.find('#nickname').find('input');
     nicknameField.simulate('change', { target: { value: 'test' } });
     const confirmButton = component.find('#confirmButton');
     confirmButton.at(0).simulate('click');
+    expect(spyAxiosPut).toHaveBeenCalledTimes(0);
+  });
+
+  it('should reject request when the server is down', () => {
+    spyAxiosPut = jest.spyOn(axios, 'put')
+      .mockImplementation((url, data, headers) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 404,
+            data: {
+              id: 2,
+            },
+          };
+          reject(result);
+        });
+      });
+    const component = mount(collaboratorSettingContainer);
+    const addButton = component.find('#addButton');
+    addButton.at(0).simulate('click');
+    const nicknameField = component.find('#nickname').find('input');
+    nicknameField.simulate('change', { target: { value: 'test1' } });
+    const confirmButton = component.find('#confirmButton');
+    confirmButton.at(0).simulate('click');
+    expect(spyAxiosPut).toHaveBeenCalledTimes(1);
   });
 });

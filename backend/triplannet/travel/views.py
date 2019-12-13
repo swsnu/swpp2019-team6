@@ -22,7 +22,7 @@ class travel(APIView):
         try:
             request.data['head']['author']=request.user.id
         except KeyError:
-            pass
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             print('TRAVELSERIALIZER VALID')
@@ -124,6 +124,20 @@ class travel_recommend_bytravel(APIView):
         sim_id_list=[id_list[i] for i in sim_maxinds]
         return Response(sim_id_list)
 
+    def delete(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # Creating a new travelCommit seems to be not implemented,
+        # so this doens't support deleting travel commits.
+        # travelCommits = TravelCommit.objects.filter(travel__id=4)
+        # print(travelCommits)
+        travel.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
 class travel_id_travelCommit(APIView):
 
     def post(self,request,id, *args, **kwargs):
@@ -213,6 +227,13 @@ class TravelSettings(APIView):
             except User.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             travel.collaborators.add(added_collaborator);
+        if 'deleted_collaborator' in request.data:
+            try:
+                deleted_collaborator = User.objects.get(id=request.data.get('deleted_collaborator'))
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            if (travel.collaborators.filter(pk=deleted_collaborator.id).exists()):
+                travel.collaborators.remove(deleted_collaborator);
         travel.is_public = request.data.get('is_public', travel.is_public)
         travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)
         travel.save()

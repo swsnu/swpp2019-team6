@@ -130,3 +130,18 @@ class UserProfilePhoto(APIView):
             return Response(serializer.data)
     
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserSearchByNickname(APIView):
+
+    serializer_class = UserSerializer
+    parser_classes = (JSONParser, )
+
+    def get(self, request, query, *args, **kwargs):
+        try:
+            user = User.objects.get(nickname=query)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        serializer = self.serializer_class(user)
+        return Response(serializer.data)
+

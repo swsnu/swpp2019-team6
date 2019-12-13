@@ -24,6 +24,7 @@ class CollaboratorSettingContainer extends Component {
   state = {
     nickname_collaborators: [],
     collaborator_field: '',
+    currentUser: JSON.parse(localStorage.getItem('user')),
   }
 
   async componentDidMount() {
@@ -42,6 +43,10 @@ class CollaboratorSettingContainer extends Component {
   }
 
   onAddButtonClicked = (e) => {
+    if (this.state.currentUser.nickname === this.state.collaborator_field) {
+      alert('You cannot add yourself as a collaborator!');
+      return;
+    }
     const data = {
       added_collaborator: this.state.collaborator_field,
     };

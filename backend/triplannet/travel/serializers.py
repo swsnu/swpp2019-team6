@@ -48,12 +48,22 @@ class TravelCommitSerializer(serializers.ModelSerializer):
     child=serializers.IntegerField())
     travel_embed_vector = serializers.ListField(
     child=serializers.IntegerField())
-    # author = UserSerializer()
     class Meta:
         model = TravelCommit
         exclude = ['register_time']
         write_only_fields = ('block_dist','travel_embed_vector',)
-        # depth = 1
+
+    def validate(self, data):
+
+        if data['start_date'] > data['end_date']:
+            raise serializers.ValidationError("Start date must be earlier than End date")
+        return data
+    
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        author= User.objects.get(pk=ret['author'])
+        ret['author']=UserSerializer(author).data
+        return ret
 
     def create(self, validated_data):
         
@@ -77,13 +87,17 @@ class TravelCommitSerializer(serializers.ModelSerializer):
 class TravelSerializer(serializers.ModelSerializer):
 
     head = TravelCommitSerializer()
-        # author = UserSerializer()
-
     class Meta:
         model = Travel
         # fields = '__all__'
         exclude = ['register_time','last_modified_time']
         # depth = 1
+
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        author = User.objects.get(pk=ret['author'])
+        ret['author']=UserSerializer(author).data
+        return ret
 
     def create(self, validated_data):
         global travelembed
@@ -99,6 +113,7 @@ class TravelSerializer(serializers.ModelSerializer):
             head = travelCommitSerializer.save()
             travel = Travel.objects.create(head=head,**validated_data)
             head.travel=travel
+            head.save()
             return travel
         else:
             print('TRAVELCOMMIT_SERIALIZER INVALID')

@@ -217,3 +217,53 @@ export const getCollaboratorTravels = (user_id) => {
       });
   };
 };
+
+export const quitCollaborator_ = (user_id, travel_id) => {
+  return { type: actionTypes.QUIT_COLLABORATOR, user_id: user_id, travel_id: travel_id };
+};
+
+export const quitCollaborator = (user_id, travel_id) => {
+  return (dispatch) => {
+    const data = {
+      deleted_collaborator: user_id,
+    };
+    return axios.put(`/api/travel/settings/${travel_id}/`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(
+        (res) => {
+          dispatch(quitCollaborator_(user_id, travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot remove this collaborator');
+        },
+      );
+  };
+};
+
+export const deleteTravel_ = (travel_id) => {
+  return {
+    type: actionTypes.DELETE_TRAVEL,
+    travel_id: travel_id,
+  };
+};
+
+export const deleteTravel = (travel_id) => {
+  return (dispatch) => {
+    return axios.delete(`/api/travel/${travel_id}/`)
+      .then(
+        (res) => {
+          dispatch(deleteTravel_(travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot remove this travel');
+        },
+      );
+  };
+};
