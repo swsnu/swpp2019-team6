@@ -52,7 +52,19 @@ class HeaderContainer extends Component {
   }
 
   onSearchButtonClicked = (e) => {
-    this.props.history.push(`/search?tag=${this.state.searchText}`);
+    if (this.state.searchText.startsWith('@')) {
+      axios.get(`/api/user/search_by_nickname/${this.state.searchText.substring(1)}`)
+        .then((res) => {
+          const user_id = res.data.id;
+          this.props.history.push(`/user/${user_id}`);
+          window.location.reload(); // user page to another user's page -> needs refreshing?
+        })
+        .catch((res) => {
+          alert('No user found!');
+        })
+    } else {
+      this.props.history.push(`/search?tag=${this.state.searchText}`);
+    }
   }
 
 
