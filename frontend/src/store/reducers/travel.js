@@ -30,6 +30,12 @@ const travel = (state = initialState, action = initialAction) => {
       return { ...state, oneRawTravel: action.travel };
     case actionTypes.GET_COLLABORATOR_TRAVELS:
       return { ...state, collaboratorTravels: action.travels };
+    case actionTypes.QUIT_COLLABORATOR: {
+      const modified = state.collaboratorTravels.filter((travel_) => {
+        return travel_.id !== action.travel_id;
+      });
+      return { ...state, collaboratorTravels: modified };
+    }
     default:
       break;
   }

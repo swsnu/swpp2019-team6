@@ -147,6 +147,13 @@ class TravelSettings(APIView):
             except User.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             travel.collaborators.add(added_collaborator);
+        if 'deleted_collaborator' in request.data:
+            try:
+                deleted_collaborator = User.objects.get(id=request.data.get('deleted_collaborator'))
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            if (travel.collaborators.filter(pk=deleted_collaborator.id).exists()):
+                travel.collaborators.remove(deleted_collaborator);
         travel.is_public = request.data.get('is_public', travel.is_public)
         travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)
         travel.save()

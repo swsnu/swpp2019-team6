@@ -207,7 +207,7 @@ const TravelOverviewBlock = ({
                     <Button onClick={handleDeleteClose} color="primary">
                       Cancel
                     </Button>
-                    <Button onClick={() => { handleDeleteClose(); onDeleteClicked(); }} color="primary" autoFocus>
+                    <Button onClick={() => { handleDeleteClose(); onDeleteClicked(travelOverviewItem.id); }} color="primary" autoFocus>
                       Confirm
                     </Button>
                   </DialogActions>
@@ -257,7 +257,7 @@ const TravelOverviewBlock = ({
                     <Button onClick={handleQuitClose} color="primary">
                       Cancel
                     </Button>
-                    <Button onClick={() => { handleQuitClose(); onQuitClicked(); }} color="primary" autoFocus>
+                    <Button onClick={() => { handleQuitClose(); onQuitClicked(travelOverviewItem.id); }} color="primary" autoFocus>
                       Confirm
                     </Button>
                   </DialogActions>

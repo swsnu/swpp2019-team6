@@ -23,8 +23,9 @@ class UserTravelOverviewList extends Component {
     this.props.history.push('/travel/create/');
   }
 
-  onDeleteClicked = (e) => {
+  onDeleteClicked = (travel_id) => {
     console.log('onDeleteClicked!');
+    console.log(travel_id);
   }
 
   render() {
