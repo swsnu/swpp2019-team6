@@ -11,6 +11,10 @@ class CollaboratorTravelOverviewList extends Component {
     this.props.onGetCollaboratorTravels(this.props.id);
   }
 
+  onQuitClicked = (e) => {
+    console.log('onQuitClicked!');
+  }
+
   render() {
     return (
       <div>
@@ -23,6 +27,7 @@ class CollaboratorTravelOverviewList extends Component {
               travelList={this.props.collaboratorTravels}
               is_mypage={this.props.is_mypage}
               for_collaborator
+              onQuitClicked={this.onQuitClicked}
             />
             <Divider style={{ margin: 8 }} />
           </div>

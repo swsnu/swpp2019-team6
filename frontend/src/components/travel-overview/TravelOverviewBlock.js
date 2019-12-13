@@ -43,8 +43,10 @@ const useStyles = makeStyles((theme) => ({
 // .is_public, .allow_comment, .is_forked, .collaborators)
 // is_mypage: should detailed option be shown?
 // for_collaborator: travel lists for collaborator
+// onDeleteClicked: for author
+// onQuitClicked: for collaborators
 const TravelOverviewBlock = ({
-  travelOverviewItem, is_mypage, history, for_collaborator,
+  travelOverviewItem, is_mypage, history, for_collaborator, onDeleteClicked, onQuitClicked,
 }) => {
   const classes = useStyles();
 
@@ -153,7 +155,12 @@ const TravelOverviewBlock = ({
                   </Button>
                 </Grid>
                 <Grid item xs={4}>
-                  <Button variant="outlined" color="secondary" fullWidth>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    fullWidth
+                    onClick={onDeleteClicked}
+                  >
                   Delete
                   </Button>
                 </Grid>
@@ -175,7 +182,12 @@ const TravelOverviewBlock = ({
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <Button variant="outlined" color="secondary" fullWidth>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    fullWidth
+                    onClick={onQuitClicked}
+                  >
                   Quit
                   </Button>
                 </Grid>

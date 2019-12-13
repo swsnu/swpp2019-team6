@@ -9,7 +9,9 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const TravelOverviewList = ({ travelList, is_mypage, for_collaborator }) => {
+const TravelOverviewList = ({
+  travelList, is_mypage, for_collaborator, onDeleteClicked, onQuitClicked,
+}) => {
   const classes = useStyles();
   return (
     <div>
@@ -23,6 +25,8 @@ const TravelOverviewList = ({ travelList, is_mypage, for_collaborator }) => {
                   travelOverviewItem={travelOverviewItem}
                   is_mypage={is_mypage}
                   for_collaborator={for_collaborator}
+                  onDeleteClicked={onDeleteClicked}
+                  onQuitClicked={onQuitClicked}
                 />
               </Grid>
             ))}

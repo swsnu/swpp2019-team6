@@ -23,6 +23,10 @@ class UserTravelOverviewList extends Component {
     this.props.history.push('/travel/create/');
   }
 
+  onDeleteClicked = (e) => {
+    console.log('onDeleteClicked!');
+  }
+
   render() {
     return (
       <div>
@@ -44,6 +48,7 @@ class UserTravelOverviewList extends Component {
             <TravelOverviewList
               travelList={this.props.userTravels}
               is_mypage={this.props.is_mypage}
+              onDeleteClicked={this.onDeleteClicked}
             />
             <Divider style={{ margin: 8 }} />
           </div>
