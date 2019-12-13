@@ -76,7 +76,7 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
                     {`${travelOverviewItem.head.start_date} ~ ${travelOverviewItem.head.end_date}`}
                   </Typography>
                   <Typography variant="subtitle2" color="primary" display="inline">
-                    by {travelOverviewItem.author}
+                    by {travelOverviewItem.author.nickname}
                   </Typography>
                   <Typography display="inline">
                     {' '}| {travelOverviewItem.likes.length} likes {' '}

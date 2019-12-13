@@ -21,7 +21,7 @@ class Travel(models.Model):
         'travel.TravelCommit',
         on_delete = models.SET_NULL,
         related_name = 'head_of_travel',
-        null = True,
+        null = True,  
     )
 
     # fork_parent == None : is_forked - False,
