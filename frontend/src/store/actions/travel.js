@@ -148,10 +148,6 @@ export const createTravel = (travel) => {
         (res) => {
           dispatch(_createTravel(res.data));
           dispatch(push(`/travel/${res.data.id}/`));
-          axios.put()
-            .then(
-              ()
-            )
         },
       ).catch(
         (res) => {
