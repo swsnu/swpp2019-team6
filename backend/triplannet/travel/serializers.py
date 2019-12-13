@@ -52,7 +52,7 @@ class TravelCommitSerializer(serializers.ModelSerializer):
     class Meta:
         model = TravelCommit
         exclude = ['register_time']
-
+        write_only_fields = ('block_dist','travel_embed_vector',)
         # depth = 1
 
     def create(self, validated_data):
