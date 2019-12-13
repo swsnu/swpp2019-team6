@@ -61,7 +61,7 @@ class HeaderContainer extends Component {
         })
         .catch((res) => {
           alert('No user found!');
-        })
+        });
     } else {
       this.props.history.push(`/search?tag=${this.state.searchText}`);
     }
