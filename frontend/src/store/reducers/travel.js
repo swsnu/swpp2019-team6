@@ -36,6 +36,12 @@ const travel = (state = initialState, action = initialAction) => {
       });
       return { ...state, collaboratorTravels: modified };
     }
+    case actionTypes.DELETE_TRAVEL: {
+      const modified = state.userTravels.filter((travel_) => {
+        return travel_.id !== action.travel_id;
+      });
+      return { ...state, userTravels: modified };
+    }
     default:
       break;
   }

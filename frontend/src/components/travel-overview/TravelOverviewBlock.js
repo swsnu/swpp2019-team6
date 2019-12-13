@@ -137,8 +137,8 @@ const TravelOverviewBlock = ({
                       ) : (
                         <span />
                       )}
-                      {travelOverviewItem.collaborators.length > 1 ? (
-                        <Tooltip title={`${travelOverviewItem.collaborators.length - 1} collaborators`}>
+                      {travelOverviewItem.collaborators.length > 0 ? (
+                        <Tooltip title={travelOverviewItem.collaborators.length !== 1 ? (`${travelOverviewItem.collaborators.length} collaborators`) : ('1 collaborator')}>
                           <CollaboratorsIcon className={classes.icons} />
                         </Tooltip>
                       ) : (

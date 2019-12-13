@@ -234,3 +234,26 @@ export const quitCollaborator = (user_id, travel_id) => {
       );
   };
 };
+
+export const deleteTravel_ = (travel_id) => {
+  return {
+    type: actionTypes.DELETE_TRAVEL,
+    travel_id: travel_id,
+  };
+};
+
+export const deleteTravel = (travel_id) => {
+  return (dispatch) => {
+    return axios.delete(`/api/travel/${travel_id}/`)
+      .then(
+        (res) => {
+          dispatch(deleteTravel_(travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot remove this travel');
+        },
+      );
+  };
+};

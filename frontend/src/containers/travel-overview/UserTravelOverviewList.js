@@ -26,6 +26,7 @@ class UserTravelOverviewList extends Component {
   onDeleteClicked = (travel_id) => {
     console.log('onDeleteClicked!');
     console.log(travel_id);
+    this.props.onDeleteTravel(travel_id);
   }
 
   render() {
@@ -66,7 +67,9 @@ class UserTravelOverviewList extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetUserTravels: (user_id) => dispatch(actionCreators.getUserTravels(user_id)),
-
+    onDeleteTravel: (travel_id) => {
+      dispatch(actionCreators.deleteTravel(travel_id));
+    },
   };
 };
 
