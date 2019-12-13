@@ -16,6 +16,11 @@ import CollaboratorsIcon from '@material-ui/icons/People';
 import ForkedIcon from '@material-ui/icons/GetApp';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -42,13 +47,38 @@ const useStyles = makeStyles((theme) => ({
 // travelOverviewItem(.title .author .summary .period .likes .photo
 // .is_public, .allow_comment, .is_forked, .collaborators)
 // is_mypage: should detailed option be shown?
-const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
+// for_collaborator: travel lists for collaborator
+// onDeleteClicked: for author
+// onQuitClicked: for collaborators
+const TravelOverviewBlock = ({
+  travelOverviewItem, is_mypage, history, for_collaborator, onDeleteClicked, onQuitClicked,
+}) => {
   const classes = useStyles();
 
   // Have to change onCardClicked to make a link to its detail page
   const onCardClicked = (e) => {
     history.push(`/travel/${travelOverviewItem.id}`);
   };
+
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [quitOpen, setQuitOpen] = React.useState(false);
+
+  const handleClickDeleteOpen = () => {
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
+
+  const handleClickQuitOpen = () => {
+    setQuitOpen(true);
+  };
+
+  const handleQuitClose = () => {
+    setQuitOpen(false);
+  };
+
 
   return (
     <div>
@@ -107,8 +137,8 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
                       ) : (
                         <span />
                       )}
-                      {travelOverviewItem.collaborators.length > 1 ? (
-                        <Tooltip title={`${travelOverviewItem.collaborators.length - 1} collaborators`}>
+                      {travelOverviewItem.collaborators.length > 0 ? (
+                        <Tooltip title={travelOverviewItem.collaborators.length !== 1 ? (`${travelOverviewItem.collaborators.length} collaborators`) : ('1 collaborator')}>
                           <CollaboratorsIcon className={classes.icons} />
                         </Tooltip>
                       ) : (
@@ -126,34 +156,113 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
             </Card>
           </CardActionArea>
           <div>
-            {is_mypage ? (
-              <Grid container justify="space-between">
-                <Grid item xs={4}>
-                  <Button
-                    variant="outlined"
-                    color="default"
-                    fullWidth
-                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
-                  >
+            {/* for author */}
+            {(is_mypage && !for_collaborator) ? (
+              <div>
+                <Grid container justify="space-between">
+                  <Grid item xs={4}>
+                    <Button
+                      variant="outlined"
+                      color="default"
+                      fullWidth
+                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                    >
                   Edit
-                  </Button>
-                </Grid>
-                <Grid item xs={4}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
-                  >
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
+                    >
                   Settings
-                  </Button>
-                </Grid>
-                <Grid item xs={4}>
-                  <Button variant="outlined" color="secondary" fullWidth>
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      fullWidth
+                      onClick={handleClickDeleteOpen}
+                    >
                   Delete
-                  </Button>
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
+                <Dialog
+                  open={deleteOpen}
+                  onClose={handleDeleteClose}
+                  aria-labelledby="alert-dialog-title_delete"
+                  aria-describedby="alert-dialog-description_delete"
+                >
+                  <DialogTitle id="alert-dialog-title_delete">Delete this travel plan?</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description_delete">
+                      All data will be removed permanently.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleDeleteClose} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={() => { handleDeleteClose(); onDeleteClicked(travelOverviewItem.id); }} color="primary" autoFocus>
+                      Confirm
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            ) : (<span />)}
+          </div>
+          <div>
+            {/* for collaborator */}
+            {(is_mypage && for_collaborator) ? (
+              <div>
+                <Grid container justify="space-between">
+                  <Grid item xs={6}>
+                    <Button
+                      variant="outlined"
+                      color="default"
+                      fullWidth
+                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                    >
+                  Edit
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      fullWidth
+                      onClick={handleClickQuitOpen}
+                    >
+                  Quit
+                    </Button>
+                  </Grid>
+                </Grid>
+                <Dialog
+                  open={quitOpen}
+                  onClose={handleQuitClose}
+                  aria-labelledby="alert-dialog-title_quit"
+                  aria-describedby="alert-dialog-description_quit"
+                >
+                  <DialogTitle id="alert-dialog-title_quit">Quit from this travel plan?</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description_delete">
+                      You will be removed from the collaborators list of this plan.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleQuitClose} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={() => { handleQuitClose(); onQuitClicked(travelOverviewItem.id); }} color="primary" autoFocus>
+                      Confirm
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             ) : (<span />)}
           </div>
         </div>

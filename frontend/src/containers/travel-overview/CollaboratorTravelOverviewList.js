@@ -11,6 +11,12 @@ class CollaboratorTravelOverviewList extends Component {
     this.props.onGetCollaboratorTravels(this.props.id);
   }
 
+  onQuitClicked = (travel_id) => {
+    console.log('onQuitClicked!');
+    console.log(travel_id);
+    this.props.onQuitCollaborator(this.props.id, travel_id);
+  }
+
   render() {
     return (
       <div>
@@ -22,6 +28,8 @@ class CollaboratorTravelOverviewList extends Component {
             <TravelOverviewList
               travelList={this.props.collaboratorTravels}
               is_mypage={this.props.is_mypage}
+              for_collaborator
+              onQuitClicked={this.onQuitClicked}
             />
             <Divider style={{ margin: 8 }} />
           </div>
@@ -36,6 +44,9 @@ class CollaboratorTravelOverviewList extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetCollaboratorTravels: (user_id) => dispatch(actionCreators.getCollaboratorTravels(user_id)),
+    onQuitCollaborator: (user_id, travel_id) => {
+      dispatch(actionCreators.quitCollaborator(user_id, travel_id));
+    },
   };
 };
 
