@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const TravelOverviewList = ({ travelList, is_mypage }) => {
+const TravelOverviewList = ({ travelList, is_mypage, for_collaborator }) => {
   const classes = useStyles();
   return (
     <div>
@@ -22,6 +22,7 @@ const TravelOverviewList = ({ travelList, is_mypage }) => {
                   key={i}
                   travelOverviewItem={travelOverviewItem}
                   is_mypage={is_mypage}
+                  for_collaborator={for_collaborator}
                 />
               </Grid>
             ))}

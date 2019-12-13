@@ -22,6 +22,7 @@ class CollaboratorTravelOverviewList extends Component {
             <TravelOverviewList
               travelList={this.props.collaboratorTravels}
               is_mypage={this.props.is_mypage}
+              for_collaborator
             />
             <Divider style={{ margin: 8 }} />
           </div>

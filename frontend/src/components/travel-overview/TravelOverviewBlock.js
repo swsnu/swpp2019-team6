@@ -42,7 +42,10 @@ const useStyles = makeStyles((theme) => ({
 // travelOverviewItem(.title .author .summary .period .likes .photo
 // .is_public, .allow_comment, .is_forked, .collaborators)
 // is_mypage: should detailed option be shown?
-const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
+// for_collaborator: travel lists for collaborator
+const TravelOverviewBlock = ({
+  travelOverviewItem, is_mypage, history, for_collaborator,
+}) => {
   const classes = useStyles();
 
   // Have to change onCardClicked to make a link to its detail page
@@ -126,7 +129,8 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
             </Card>
           </CardActionArea>
           <div>
-            {is_mypage ? (
+            {/* for author */}
+            {(is_mypage && !for_collaborator) ? (
               <Grid container justify="space-between">
                 <Grid item xs={4}>
                   <Button
@@ -151,6 +155,28 @@ const TravelOverviewBlock = ({ travelOverviewItem, is_mypage, history }) => {
                 <Grid item xs={4}>
                   <Button variant="outlined" color="secondary" fullWidth>
                   Delete
+                  </Button>
+                </Grid>
+              </Grid>
+            ) : (<span />)}
+          </div>
+          <div>
+            {/* for collaborator */}
+            {(is_mypage && for_collaborator) ? (
+              <Grid container justify="space-between">
+                <Grid item xs={6}>
+                  <Button
+                    variant="outlined"
+                    color="default"
+                    fullWidth
+                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                  >
+                  Edit
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button variant="outlined" color="secondary" fullWidth>
+                  Quit
                   </Button>
                 </Grid>
               </Grid>
