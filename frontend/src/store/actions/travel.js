@@ -125,7 +125,7 @@ const convertItemToPushFormat = (travel) => {
   return newTravel;
 };
 
-export const createTravel = (travel) => {
+export const createTravel = (travel, form_data) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
     console.log(newTravel);
@@ -137,10 +137,21 @@ export const createTravel = (travel) => {
       .then(
         (res) => {
           dispatch(_createTravel(res.data));
+          if (form_data) {
+            axios.put(`/api/travel/travelCommit/${res.data.head.id}/photo/`, form_data, {
+              headers: {
+                'content-type': 'multipart/form-data',
+              },
+            }).then((res2) => {
+              console.log(res2.data);
+            }).catch((err2) => {
+              console.log(err2);
+            });
+          }
           dispatch(push(`/travel/${res.data.id}/`));
         },
       ).catch(
-        (res) => {
+        (err) => {
           dispatch(push('/error'));
         },
       );

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { styled } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -15,6 +13,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+import CardMedia from '@material-ui/core/CardMedia';
+
 import * as actionCreators from '../../store/actions/index';
 import TravelHeaderBlockEdit from '../../components/travelblock/TravelHeaderBlockEdit';
 import TravelTransportationBlockEdit from '../../components/travelblock/TravelTransportationBlockEdit';
@@ -22,6 +22,12 @@ import TravelCustomBlockEdit from '../../components/travelblock/TravelCustomBloc
 import TravelActivityBlockEdit from '../../components/travelblock/TravelActivityBlockEdit';
 import TravelDayBlock from '../../components/travelblock/TravelDayBlock';
 
+
+const getCardMediaStyle = () => ({
+  objectFit: 'cover',
+  width: 320,
+  height: 250,
+});
 
 const getFabStyle = (_top) => ({
   margin: 2,
@@ -100,6 +106,9 @@ class CreateTravel extends Component {
         },
       }],
       buttonDraggable: true,
+      travelPhoto: null,
+      imagePreviewUrl: null,
+
     };
     // if (props.travel.header) {
     //   this.state.header = props.travel.header;
@@ -113,10 +122,17 @@ class CreateTravel extends Component {
   }
 
   handleClickCreate = (e) => {
-    this.props.createTravel({
-      header: this.state.header,
-      items: this.state.items,
-    });
+    const form_data = new FormData();
+    if (this.state.travelPhoto) {
+      form_data.append('photo', this.state.travelPhoto, this.state.travelPhoto.name);
+    }
+    this.props.createTravel(
+      {
+        header: this.state.header,
+        items: this.state.items,
+      },
+      form_data,
+    );
   }
 
   setHeader = (_header) => {
@@ -143,6 +159,20 @@ class CreateTravel extends Component {
   // };
   // const [items, setItems] = useState(props.items || [initItem]);
   // const [travelTitle, setTravelTitle] = React.useState('Travel Title');
+
+  onChangeTravelPhoto = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        travelPhoto: file,
+        imagePreviewUrl: reader.result,
+      });
+    };
+
+    reader.readAsDataURL(file);
+  }
 
   render() {
     const getMaxItemIndex = () => {
@@ -312,9 +342,35 @@ class CreateTravel extends Component {
 
     // let skip = !items[0].info.expand;
     // console.log("state", this.state);
-
+    const photoArea = this.state.imagePreviewUrl
+      ? (
+        <Button variant="outlined" component="span">
+          <CardMedia
+            style={getCardMediaStyle()}
+            image={this.state.imagePreviewUrl}
+            title="Travel Photo"
+          />
+        </Button>
+      ) : (
+        <Button variant="outlined" component="span" size="large">
+          Add a New Photo
+        </Button>
+      );
     return (
+
       <Grid container alignItems="center" direction="column" justify="space-around">
+        <Grid container alignItems="center" direction="column" justify="space-around">
+          <label htmlFor="button-file">
+            {photoArea}
+          </label>
+          <input
+            accept="image/*"
+            id="button-file"
+            type="file"
+            style={{ visibility: 'hidden' }}
+            onChange={this.onChangeTravelPhoto}
+          />
+        </Grid>
         <Grid container alignItems="center" direction="column" justify="space-around">
           <TravelHeaderBlockEdit
             header={this.state.header}
@@ -488,11 +544,11 @@ class CreateTravel extends Component {
                           </Box>
                         </Fab>
                         {!this.state.buttonDraggable && (
-                          <Fab style={getFabStyle('40%')}>
-                            <Grid item>
-                              <RestaurantIcon />
-                            </Grid>
-                          </Fab>
+                        <Fab style={getFabStyle('40%')}>
+                          <Grid item>
+                            <RestaurantIcon />
+                          </Grid>
+                        </Fab>
                         )}
                       </>
                     );
@@ -520,11 +576,11 @@ class CreateTravel extends Component {
                           </Box>
                         </Fab>
                         {!this.state.buttonDraggable && (
-                          <Fab style={getFabStyle('50%')}>
-                            <Grid item>
-                              <DriveEtaIcon />
-                            </Grid>
-                          </Fab>
+                        <Fab style={getFabStyle('50%')}>
+                          <Grid item>
+                            <DriveEtaIcon />
+                          </Grid>
+                        </Fab>
                         )}
                       </>
                     );
@@ -551,11 +607,11 @@ class CreateTravel extends Component {
                           </Box>
                         </Fab>
                         {!this.state.buttonDraggable && (
-                          <Fab style={getFabStyle('60%')}>
-                            <Grid item>
-                              <AccessibilityNewIcon />
-                            </Grid>
-                          </Fab>
+                        <Fab style={getFabStyle('60%')}>
+                          <Grid item>
+                            <AccessibilityNewIcon />
+                          </Grid>
+                        </Fab>
                         )}
                       </>
                     );
@@ -582,11 +638,11 @@ class CreateTravel extends Component {
                           </Box>
                         </Fab>
                         {!this.state.buttonDraggable && (
-                          <Fab style={getFabStyle('70%')}>
-                            <Grid item>
-                              <HotelIcon />
-                            </Grid>
-                          </Fab>
+                        <Fab style={getFabStyle('70%')}>
+                          <Grid item>
+                            <HotelIcon />
+                          </Grid>
+                        </Fab>
                         )}
                       </>
                     );
@@ -613,11 +669,11 @@ class CreateTravel extends Component {
                           </Box>
                         </Fab>
                         {!this.state.buttonDraggable && (
-                          <Fab style={getFabStyle('80%')}>
-                            <Grid item>
-                              <ContactSupportIcon />
-                            </Grid>
-                          </Fab>
+                        <Fab style={getFabStyle('80%')}>
+                          <Grid item>
+                            <ContactSupportIcon />
+                          </Grid>
+                        </Fab>
                         )}
                       </>
                     );
@@ -642,7 +698,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createTravel: (travel) => dispatch(actionCreators.createTravel(travel)),
+    createTravel: (travel, form_data) => dispatch(actionCreators.createTravel(travel, form_data)),
   };
 };
 
