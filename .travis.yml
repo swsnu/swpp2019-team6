@@ -1,4 +1,10 @@
 # project_root/.travis.yml
+
+python:
+  - 3.6
+node_js:
+  - 10 
+
 matrix:
   include:
   - language: node_js # Your language e.g. node_js, python
