@@ -1,12 +1,11 @@
 # project_root/.travis.yml
 matrix:
   include:
-  - language: python # Your language e.g. node_js, python
+  - language: node_js # Your language e.g. node_js, python
     node_js:
     - '10' # node_js version
     python:
     - '3.6'    
-    dist : trusty
     addons:
         sonarcloud:
             organization: "swsnu"
