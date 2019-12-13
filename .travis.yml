@@ -1,7 +1,7 @@
 # project_root/.travis.yml
 matrix:
   include:
-  - language: node_js # Your language e.g. node_js, python
+  - language: python # Your language e.g. node_js, python
     node_js:
     - '10' # node_js version
     python:
