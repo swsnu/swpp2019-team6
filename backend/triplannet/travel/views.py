@@ -63,14 +63,8 @@ class travel_recommend_byuser(APIView):
     serializer_class = TravelSerializer
 
     def get(self, request, user_id, travel_id, *args, **kwargs):
-        print('it is called')
         try:
             user = User.objects.get(pk=user_id)
-        except  ObjectDoesNotExist:
-            raise Http404
-
-        try:
-            travel = Travel.objects.get(pk=travel_id)
         except  ObjectDoesNotExist:
             raise Http404
 
@@ -96,7 +90,6 @@ class travel_recommend_byuser(APIView):
         embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
         embed_sim=embed_sim[0]
         tot_sim=block_sim+embed_sim
-        #tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
         sim_maxinds=tot_sim.argsort()[-3:][::-1]
         id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
         id_list=list(id_list)
@@ -113,7 +106,6 @@ class travel_recommend_bytravel(APIView):
             travel = Travel.objects.get(pk=id)
         except  ObjectDoesNotExist:
             raise Http404
-        serializer = self.serializer_class(travel)
         travel=travel.head
         block_dist=travel.block_dist
         
@@ -126,7 +118,6 @@ class travel_recommend_bytravel(APIView):
         embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_list))
         embed_sim=embed_sim[0]
         tot_sim=block_sim+embed_sim
-        #tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
         sim_maxinds=tot_sim.argsort()[-3:][::-1]
         id_list=Travel.objects.exclude(pk=id).values_list('id', flat=True)
         id_list=list(id_list)
