@@ -20,7 +20,7 @@ class travel(APIView):
         try:
             request.data['head']['author']=request.user.id
         except KeyError:
-            pass
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             print('TRAVELSERIALIZER VALID')
