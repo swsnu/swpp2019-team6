@@ -11,11 +11,11 @@ const temptravelOverviewItem = {
   id: 1,
   title: 'Ultricies lacus sed turpis tincidunt',
   author: {
-    id : 1,
-    email : 'test@test.io',
-    nickname : 'test',
-    status_message : 'status',
-    profile_photo : '/media/user/1/profile.png'
+    id: 1,
+    email: 'test@test.io',
+    nickname: 'test',
+    status_message: 'status',
+    profile_photo: '/media/user/1/profile.png',
   },
   likes: [2, 3, 4],
   is_public: true,
@@ -34,11 +34,11 @@ const temptravelOverviewItem2 = {
   id: 2,
   title: 'Ultricies lacus sed turpis tincidunt',
   author: {
-    id : 1,
-    email : 'test@test.io',
-    nickname : 'test',
-    status_message : 'status',
-    profile_photo : '/media/user/1/profile.png'
+    id: 1,
+    email: 'test@test.io',
+    nickname: 'test',
+    status_message: 'status',
+    profile_photo: '/media/user/1/profile.png',
   },
   likes: [],
   is_public: false,
