@@ -16,6 +16,11 @@ import CollaboratorsIcon from '@material-ui/icons/People';
 import ForkedIcon from '@material-ui/icons/GetApp';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -54,6 +59,26 @@ const TravelOverviewBlock = ({
   const onCardClicked = (e) => {
     history.push(`/travel/${travelOverviewItem.id}`);
   };
+
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [quitOpen, setQuitOpen] = React.useState(false);
+
+  const handleClickDeleteOpen = () => {
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
+
+  const handleClickQuitOpen = () => {
+    setQuitOpen(true);
+  };
+
+  const handleQuitClose = () => {
+    setQuitOpen(false);
+  };
+
 
   return (
     <div>
@@ -133,65 +158,111 @@ const TravelOverviewBlock = ({
           <div>
             {/* for author */}
             {(is_mypage && !for_collaborator) ? (
-              <Grid container justify="space-between">
-                <Grid item xs={4}>
-                  <Button
-                    variant="outlined"
-                    color="default"
-                    fullWidth
-                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
-                  >
+              <div>
+                <Grid container justify="space-between">
+                  <Grid item xs={4}>
+                    <Button
+                      variant="outlined"
+                      color="default"
+                      fullWidth
+                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                    >
                   Edit
-                  </Button>
-                </Grid>
-                <Grid item xs={4}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
-                  >
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
+                    >
                   Settings
-                  </Button>
-                </Grid>
-                <Grid item xs={4}>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    onClick={onDeleteClicked}
-                  >
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      fullWidth
+                      onClick={handleClickDeleteOpen}
+                    >
                   Delete
-                  </Button>
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
+                <Dialog
+                  open={deleteOpen}
+                  onClose={handleDeleteClose}
+                  aria-labelledby="alert-dialog-title_delete"
+                  aria-describedby="alert-dialog-description_delete"
+                >
+                  <DialogTitle id="alert-dialog-title_delete">Delete this travel plan?</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description_delete">
+                      All data will be removed permanently.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleDeleteClose} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={() => { handleDeleteClose(); onDeleteClicked(); }} color="primary" autoFocus>
+                      Confirm
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             ) : (<span />)}
           </div>
           <div>
             {/* for collaborator */}
             {(is_mypage && for_collaborator) ? (
-              <Grid container justify="space-between">
-                <Grid item xs={6}>
-                  <Button
-                    variant="outlined"
-                    color="default"
-                    fullWidth
-                    onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
-                  >
+              <div>
+                <Grid container justify="space-between">
+                  <Grid item xs={6}>
+                    <Button
+                      variant="outlined"
+                      color="default"
+                      fullWidth
+                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                    >
                   Edit
-                  </Button>
-                </Grid>
-                <Grid item xs={6}>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    onClick={onQuitClicked}
-                  >
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      fullWidth
+                      onClick={handleClickQuitOpen}
+                    >
                   Quit
-                  </Button>
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
+                <Dialog
+                  open={quitOpen}
+                  onClose={handleQuitClose}
+                  aria-labelledby="alert-dialog-title_quit"
+                  aria-describedby="alert-dialog-description_quit"
+                >
+                  <DialogTitle id="alert-dialog-title_quit">Quit from this travel plan?</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description_delete">
+                      You will be removed from the collaborators list of this plan.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleQuitClose} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={() => { handleQuitClose(); onQuitClicked(); }} color="primary" autoFocus>
+                      Confirm
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             ) : (<span />)}
           </div>
         </div>
