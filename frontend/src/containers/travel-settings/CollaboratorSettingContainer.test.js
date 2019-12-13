@@ -62,9 +62,13 @@ describe('CollaboratorSettingContainer', () => {
           resolve(result);
         });
       });
+
     const { location } = window;
     delete window.location;
     window.location = { reload: jest.fn() };
+
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+
 
     localStorage.setItem('user', JSON.stringify({
       id: 1,

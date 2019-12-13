@@ -24,8 +24,8 @@ class UserTravelOverviewList extends Component {
   }
 
   onDeleteClicked = (travel_id) => {
-    console.log('onDeleteClicked!');
-    console.log(travel_id);
+    // console.log('onDeleteClicked!');
+    // console.log(travel_id);
     this.props.onDeleteTravel(travel_id);
   }
 
@@ -36,7 +36,7 @@ class UserTravelOverviewList extends Component {
         <div>
           {this.props.is_mypage ? (
             <Grid container alignItems="center" direction="column" justify="space-around">
-              <CreateTravelButton handleClickCreate={this.handleClickCreate} />
+              <CreateTravelButton id="createTravelButton" handleClickCreate={this.handleClickCreate} />
             </Grid>
           ) : (
             <span />
@@ -55,7 +55,7 @@ class UserTravelOverviewList extends Component {
             <Divider style={{ margin: 8 }} />
           </div>
         ) : (
-          <Typography align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>
+          <Typography id="makeYourFirstPlan" align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>
             Make your first plan for a travel!
           </Typography>
         )}
