@@ -13,8 +13,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 User = get_user_model()
-
-
 class travel(APIView):
 
     serializer_class = TravelSerializer
@@ -226,4 +224,5 @@ class TravelSettings(APIView):
         travel.save()
         serializer = self.serializer_class(travel)
         return Response(serializer.data)
+
 

@@ -56,10 +56,6 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         
         days_data = validated_data.pop('days')
         travelCommit = TravelCommit.objects.create(**validated_data)
-        
-        #travelCommit.travel_embed_vector=travel_text_embed_vector(travelCommit.title)
-        print(111)
-        #print(travelCommit.travel_embed_vector)
 
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
