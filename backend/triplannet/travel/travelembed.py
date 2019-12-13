@@ -9,7 +9,6 @@ import os
 
 def travel_text_embed_vector(text):
     module_url = "/home/jdh/swpp-team6-project/swpp2019-team6/backend/triplannet/travel/encoder"
-    #module_url = "./encoder"
     embed=hub.load(module_url)
     travel_embed=embed([text])
     travel_embed=100000*np.array(travel_embed)[0]

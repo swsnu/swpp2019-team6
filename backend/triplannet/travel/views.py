@@ -75,8 +75,6 @@ class travel_recommend_byuser(APIView):
         except  ObjectDoesNotExist:
             raise Http404
 
-        serializer = self.serializer_class(travel)
-
         user_view=user.views_of_Travel
         user_view_idlist=list(user_view.values_list('id', flat=True))
         user_view_idlist=user_view_idlist+[travel_id]
@@ -96,10 +94,9 @@ class travel_recommend_byuser(APIView):
         block_sim=cosine_similarity([block_dist],list(block_dist_nonview))
 
         block_sim=block_sim[0]
-        #embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview)
-        #embed_sim=embed_sim[0]
-        #tot_sim=block_sim+embed_sim
-        tot_sim=block_sim
+        embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
+        embed_sim=embed_sim[0]
+        tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
         sim_maxinds=tot_sim.argsort()[-3:][::-1]
         id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
         id_list=list(id_list)
@@ -126,10 +123,9 @@ class travel_recommend_bytravel(APIView):
         
         block_sim=cosine_similarity([block_dist], list(block_dist_list))
         block_sim=block_sim[0]
-        #embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_list))
-        #embed_sim=embed_sim[0]
-        #tot_sim=block_sim+embed_sim
-        tot_sim=block_sim
+        embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_list))
+        embed_sim=embed_sim[0]
+        tot_sim=[sum(x) for x in zip(block_sim, embed_sim)]
         sim_maxinds=tot_sim.argsort()[-3:][::-1]
         id_list=Travel.objects.exclude(pk=id).values_list('id', flat=True)
         id_list=list(id_list)
