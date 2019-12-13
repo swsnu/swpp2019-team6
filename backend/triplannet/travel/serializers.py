@@ -5,7 +5,7 @@ from .models import *
 from user.serializers import UserSerializer
 from .travelembed import TravelEmbed
 
-travelembed = TravelEmbed()
+#travelembed = TravelEmbed()
 
 class TravelBlockSerializer(serializers.ModelSerializer):
 
@@ -106,6 +106,7 @@ class TravelSerializer(serializers.ModelSerializer):
         head_data['author']=travelCommit_author.id
         a=travelembed.travel_text_embed_vector(head_data['title'])
         head_data['travel_embed_vector']=a
+        #head_data['travel_embed_vector']=[1 for i in range(512)]
         
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
