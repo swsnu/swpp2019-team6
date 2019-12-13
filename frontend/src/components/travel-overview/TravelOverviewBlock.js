@@ -106,7 +106,7 @@ const TravelOverviewBlock = ({
                     {`${travelOverviewItem.head.start_date} ~ ${travelOverviewItem.head.end_date}`}
                   </Typography>
                   <Typography variant="subtitle2" color="primary" display="inline">
-                    by {travelOverviewItem.author.nickname}
+                    by {travelOverviewItem.author ? travelOverviewItem.author.nickname : null}
                   </Typography>
                   <Typography display="inline">
                     {' '}| {travelOverviewItem.likes.length} likes {' '}
