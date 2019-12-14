@@ -104,7 +104,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
               </Grid>
             </Grid>
           </Paper>
-          <Paper className={classes.infoTravelSection2}>
+          <div className={classes.infoTravelSection2}>
             <Typography variant="h5">
               Description
             </Typography>
@@ -112,7 +112,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
               {travel.head.description}
               description comes here
             </Typography>
-          </Paper>
+          </div>
         </div>
       ) : (
         <span />

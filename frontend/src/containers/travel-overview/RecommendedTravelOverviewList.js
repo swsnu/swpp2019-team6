@@ -9,7 +9,6 @@ import * as actionCreators from '../../store/actions/index';
 
 const tempTravelList = [{
   id: 1,
-  title: 'Ultricies lacus sed turpis tincidunt',
   author: {
     id: 1,
     email: 'test@test.io',
@@ -23,6 +22,7 @@ const tempTravelList = [{
   fork_parent: true,
   collaborators: [2, 3, 4],
   head: {
+    title: 'Ultricies lacus sed turpis tincidunt',
     summary: 'Pharetra magna ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
     start_date: '2019.03.04',
     end_date: '2019.03.08',
@@ -31,7 +31,6 @@ const tempTravelList = [{
 },
 {
   id: 2,
-  title: 'Ultricies lacus sed turpis tincidunt',
   author: {
     id: 1,
     email: 'test@test.io',
@@ -45,6 +44,7 @@ const tempTravelList = [{
   fork_parent: null,
   collaborators: [],
   head: {
+    title: 'Ultricies lacus sed turpis tincidunt',
     summary: 'Pharetra magna ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
     start_date: '2019.03.04',
     end_date: '2019.03.08',
@@ -53,7 +53,6 @@ const tempTravelList = [{
 },
 {
   id: 3,
-  title: 'lacus sed turpis tincidunt',
   author: {
     id: 1,
     email: 'test@test.io',
@@ -67,6 +66,7 @@ const tempTravelList = [{
   fork_parent: null,
   collaborators: [],
   head: {
+    title: 'lacus sed turpis tincidunt',
     summary: 'ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
     start_date: '2019.03.04',
     end_date: '2019.03.08',

@@ -3,6 +3,7 @@ import HeaderContainer from '../containers/common/HeaderContainer';
 import TravelDetail from '../containers/travelDetail/TravelDetail';
 import InfoTravelDetailContainer from '../containers/travelDetail/InfoTravelDetailContainer';
 import RecommendedTravelOverviewList from '../containers/travel-overview/RecommendedTravelOverviewList';
+import CommentsLikeContainer from '../containers/travelDetail/CommentsLikeContainer';
 
 class TravelDetailPage extends Component {
   render() {
@@ -12,6 +13,7 @@ class TravelDetailPage extends Component {
         <InfoTravelDetailContainer />
         <TravelDetail />
         <RecommendedTravelOverviewList />
+        <CommentsLikeContainer />
       </div>
     );
   }
