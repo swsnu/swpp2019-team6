@@ -28,7 +28,8 @@ class travel(APIView):
             print('TRAVELSERIALIZER VALID')
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-
+        else:
+            print(serializer.errors)
         print('TRAVELSERIALIZER INVALID')
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -46,19 +47,36 @@ class travel_id(APIView):
         serializer = self.serializer_class(travel)
         return Response(serializer.data)
 
-    # def put(self,request,id,*args,**kwargs):
+    def put(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
 
-    #     try:
-    #         travel = Travel.objects.get(pk=id)
-    #     except ObjectDoesNotExist:
-    #         raise Http404
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = TravelCommitSerializer(data=request.data)
+        if serializer.is_valid():
+            travel.head = serializer.save()
+            travel.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    #     serializer = self.serializer_class(travel, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
+    def delete(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Creating a new travelCommit seems to be not implemented,
+        # so this doens't support deleting travel commits.
+        # travelCommits = TravelCommit.objects.filter(travel__id=4)
+        # print(travelCommits)
+        travel.delete()
+        return Response(status=status.HTTP_200_OK)
+
 class travel_recommend_byuser(APIView):
     serializer_class = TravelSerializer
 
@@ -71,13 +89,13 @@ class travel_recommend_byuser(APIView):
         user_view=user.views_of_Travel
         user_view_idlist=list(user_view.values_list('id', flat=True))
         user_view_idlist=user_view_idlist+[travel_id]
-        
+
         block_dist_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__block_dist', flat=True)
         travel_embed_vector_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__travel_embed_vector', flat=True)
-        
+
         block_dist_nonview = Travel.objects.exclude(pk__in=user_view_idlist).values_list('head__block_dist', flat=True)
         travel_embed_vector_nonview = Travel.objects.exclude(pk__in=user_view_idlist).values_list('head__travel_embed_vector', flat=True)
-        
+
         block_dist_view_list=list(block_dist_view)
         block_dist=list(map(sum,zip(*block_dist_view_list)))
 
@@ -108,11 +126,11 @@ class travel_recommend_bytravel(APIView):
             raise Http404
         travel=travel.head
         block_dist=travel.block_dist
-        
+
         travel_embed_vector=travel.travel_embed_vector
         block_dist_list = Travel.objects.exclude(pk=id).values_list('head__block_dist', flat=True)
         travel_embed_vector_list = Travel.objects.exclude(pk=id).values_list('head__travel_embed_vector', flat=True)
-        
+
         block_sim=cosine_similarity([block_dist], list(block_dist_list))
         block_sim=block_sim[0]
         embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_list))
@@ -123,19 +141,6 @@ class travel_recommend_bytravel(APIView):
         id_list=list(id_list)
         sim_id_list=[id_list[i] for i in sim_maxinds]
         return Response(sim_id_list)
-
-    def delete(self, request, id, *args, **kwargs):
-        try:
-            travel = Travel.objects.get(pk=id)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        # Creating a new travelCommit seems to be not implemented,
-        # so this doens't support deleting travel commits.
-        # travelCommits = TravelCommit.objects.filter(travel__id=4)
-        # print(travelCommits)
-        travel.delete()
-        return Response(status=status.HTTP_200_OK)
 
 
 class travel_id_travelCommit(APIView):
@@ -215,7 +220,7 @@ class TagList(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class TravelSettings(APIView):
-    
+
     serializer_class = TravelSerializer
 
     def put(self, request, id, *args, **kwargs):
@@ -239,5 +244,11 @@ class TravelSettings(APIView):
         travel.save()
         serializer = self.serializer_class(travel)
         return Response(serializer.data)
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> d255785537d7f5569bbc8a893e21d26d332e606a
 
 
