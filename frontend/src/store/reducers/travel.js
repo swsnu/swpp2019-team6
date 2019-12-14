@@ -17,9 +17,11 @@ const travel = (state = initialState, action = initialAction) => {
   switch (action.type) {
     case actionTypes.GET_TRAVEL:
       return {
-        ...state, header: action.header, items: action.items, id: action.id,
+        ...state, header: action.header, items: action.items, tags: action.tags, id: action.id,
       };
     case actionTypes.CREATE_TRAVEL:
+      return { ...state, travel: action.item };
+    case actionTypes.EDIT_TRAVEL:
       return { ...state, travel: action.item };
     case actionTypes.GET_POPULAR_TRAVELS:
       return { ...state, popularTravels: action.travels };

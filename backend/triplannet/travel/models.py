@@ -22,7 +22,7 @@ class Travel(models.Model):
         'travel.TravelCommit',
         on_delete = models.SET_NULL,
         related_name = 'head_of_travel',
-        null = True,  
+        null = True,
     )
 
     # fork_parent == None : is_forked - False,
@@ -56,9 +56,13 @@ class Travel(models.Model):
     class Meta:
         ordering = ['-last_modified_time',]
 
+class Tag(models.Model):
+    word = models.CharField(max_length=50, primary_key=True)
+
 class temp(models.Model):
     block = ListTextField(base_field=models.IntegerField(), size=5)
     vector = ListTextField(base_field=models.IntegerField(), size=5)
+
 class TravelCommit(models.Model):
     title = models.CharField(max_length=100)
     summary = models.TextField(blank=True)
@@ -85,10 +89,10 @@ class TravelCommit(models.Model):
         related_name = 'author_of_TravelCommit',
         # collaborators only
     )
-    # tags= models.ManyToManyField(
-    #     Tag,
-    #     related_name ='travel_committed',
-    # )
+    tags= models.ManyToManyField(
+        Tag,
+        related_name ='travel_tags',
+    )
     # photo = models.ImageField(
     #     upload_to = 'travel_photos/',
     #     height_field=500,
@@ -166,6 +170,4 @@ class TravelBlockList(models.Model):
         ordering = ['TravelDay','TravelBlock','index',]
         unique_together = ['TravelDay','TravelBlock','index']
 
-class Tag(models.Model):
-    word = models.CharField(max_length=50, null=False)
 

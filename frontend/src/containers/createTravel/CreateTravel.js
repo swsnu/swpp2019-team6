@@ -86,12 +86,12 @@ class CreateTravel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      header: this.props.travel.header || {
+      header: this.props.header || {
         startDate: new Date(),
         endDate: new Date(),
         title: '',
       },
-      items: this.props.travel.items || [{
+      items: this.props.items || [{
         id: 'day-0',
         info: {
           datetime: new Date(),
@@ -99,7 +99,7 @@ class CreateTravel extends Component {
           expand: true,
         },
       }],
-      tags: [],
+      tags: this.props.tags || [],
       buttonDraggable: true,
     };
     // if (props.travel.header) {
@@ -114,12 +114,42 @@ class CreateTravel extends Component {
     this.setButtonDraggable = this.setButtonDraggable.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.mode === 'edit') {
+      this.props.getTravel(this.props.match.params.id, true);
+      // console.log(this.props);
+      // this.setHeader(this.props.header);
+      // this.setTags(this.props.tags);
+      // this.setItems(this.props.items);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.items && this.props.items !== prevProps.items) {
+      this.setItems(this.props.items);
+    }
+    if (this.props.header && this.props.header !== prevProps.header) {
+      this.setHeader(this.props.header);
+    }
+    if (this.props.tags && this.props.tags !== prevProps.tags) {
+      this.setTags(this.props.tags);
+    }
+  }
+
   handleClickCreate = (e) => {
-    this.props.createTravel({
-      header: this.state.header,
-      items: this.state.items,
-      tags: this.state.tags,
-    });
+    if (this.props.mode === 'edit') {
+      this.props.editTravel(this.props.id, {
+        header: this.state.header,
+        items: this.state.items,
+        tags: this.state.tags,
+      });
+    } else {
+      this.props.createTravel({
+        header: this.state.header,
+        items: this.state.items,
+        tags: this.state.tags,
+      });
+    }
   }
 
   setHeader = (_header) => {
@@ -281,32 +311,26 @@ class CreateTravel extends Component {
         id: '',
         info: {
           title: '',
-          startTime: new Date('2030-01-01T09:00:00'),
-          endTime: new Date('2030-01-01T09:00:00'),
           description: '',
+          time: new Date('2030-01-01T09:00:00'),
+          point: '',
           expand: false,
         },
       };
       if (result.draggableId === 'transportation') {
         newItem.id = `transportation-${maxId}`;
-        newItem.info.startPoint = '';
-        newItem.info.endPoint = '';
         pushItems.push(newItem);
       } else if (result.draggableId === 'activity') {
         newItem.id = `activity-${maxId}`;
-        newItem.info.point = '';
         pushItems.push(newItem);
       } else if (result.draggableId === 'hotel') {
         newItem.id = `hotel-${maxId}`;
-        newItem.info.point = '';
         pushItems.push(newItem);
       } else if (result.draggableId === 'restaurant') {
         newItem.id = `restaurant-${maxId}`;
-        newItem.info.point = '';
         pushItems.push(newItem);
       } else if (result.draggableId === 'custom') {
         newItem.id = `custom-${maxId}`;
-        newItem.info.title = '';
         pushItems.push(newItem);
       } else {
         sourceIndex = result.source.index;
@@ -320,8 +344,7 @@ class CreateTravel extends Component {
       this.setItems(newItems);
     };
 
-    // let skip = !items[0].info.expand;
-    // console.log("state", this.state);
+    console.log("items", this.state.items);
 
     return (
       <Grid container alignItems="center" direction="column" justify="space-around">
@@ -406,7 +429,8 @@ class CreateTravel extends Component {
                               )}
                             { item.id.startsWith('transportation')
                               && (
-                              <TravelTransportationBlockEdit
+                              <TravelActivityBlockEdit
+                                title="transportation"
                                 items={this.state.items}
                                 setItems={this.setItems}
                                 index={index + 1}
@@ -456,7 +480,7 @@ class CreateTravel extends Component {
               </>
             )}
           </Droppable>
-          <TagBlock tags={this.state.header.tags} setTags={this.setTags} />
+          <TagBlock tags={this.state.tags} setTags={this.setTags} />
           <Grid style={getPaddingStyle()} />
           <Button
             id="create-travel-button"
@@ -465,7 +489,7 @@ class CreateTravel extends Component {
             disabled={this.state.items.length === 0}
             onClick={this.handleClickCreate}
           >
-            Create
+            {this.props.mode === 'create' ? 'Create' : 'Edit'}
           </Button>
           <Grid style={getPaddingStyle()} />
           <Droppable droppableId="droppableButton" direction="horizontal">
@@ -646,7 +670,9 @@ class CreateTravel extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    travel: state.travel.travel,
+    header: state.travel.header,
+    items: state.travel.items,
+    tags: state.travel.tags,
     id: state.travel.id,
   };
 };
@@ -654,6 +680,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createTravel: (travel) => dispatch(actionCreators.createTravel(travel)),
+    editTravel: (id, travel) => dispatch(actionCreators.editTravel(id, travel)),
+    getTravel: (id, isEdit) => dispatch(actionCreators.getTravel(id, isEdit)),
   };
 };
 

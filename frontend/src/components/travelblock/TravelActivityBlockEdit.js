@@ -43,11 +43,15 @@ export default function TravelActivityBlockEdit(props) {
     items, index, handleRemove, handleBlockInfo,
   } = props;
   const {
-    expand, description, startTime, endTime, point, title,
+    expand, description, startTime, endTime, point, title, time,
   } = items[index].info;
 
   const handlePoint = (_point) => {
     handleBlockInfo(index, 'point', _point);
+  };
+
+  const handleTime = (date) => {
+    handleBlockInfo(index, 'time', date);
   };
 
   const handleStartTime = (date) => {
@@ -83,8 +87,8 @@ export default function TravelActivityBlockEdit(props) {
           <Grid container direction="row" justify="space-around" alignItems="center">
             <TimePickerWrapper
               label="Start Time"
-              value={startTime}
-              onChange={handleStartTime}
+              value={time}
+              onChange={handleTime}
             />
           </Grid>
         </MuiPickersUtilsProvider>
@@ -109,14 +113,14 @@ export default function TravelActivityBlockEdit(props) {
               <Grid container direction="row">
                 <TimePickerWrapper
                   label="Start Time"
-                  value={startTime}
-                  onChange={handleStartTime}
+                  value={time}
+                  onChange={handleTime}
                 />
-                <TimePickerWrapper
+                {/* <TimePickerWrapper
                   label="End Time"
                   value={endTime}
                   onChange={handleEndTime}
-                />
+                /> */}
               </Grid>
             </Grid>
           </MuiPickersUtilsProvider>
