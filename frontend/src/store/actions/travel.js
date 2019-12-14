@@ -10,6 +10,7 @@ export const _getTravel = (travel, isEdit) => {
     description: travel.head.description,
     startDate: new Date(travel.head.start_date),
     endDate: new Date(travel.head.end_date),
+    photo: travel.head.photo,
   };
   const items = [];
   for (let i = 0; i < travel.head.days.length; i++) {
