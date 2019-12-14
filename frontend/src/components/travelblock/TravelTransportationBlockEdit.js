@@ -38,7 +38,8 @@ const useCardStyles = makeStyles((theme) => ({
 const useTextStyles = makeStyles((theme) => ({
   textField: {
     margin: 0,
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+    marginButtom: theme.spacing(1),
     width: 500,
   },
 }));
@@ -51,7 +52,7 @@ export default function TravelUnitBlockEdit(props) {
     items, index, handleRemove, handleBlockInfo,
   } = props;
   const {
-    expand, description, startTime, endTime, startPoint, endPoint,
+    expand, title, description, startTime, endTime, startPoint, endPoint,
   } = items[index].info;
 
   const handleStartPoint = (point) => {
@@ -82,17 +83,33 @@ export default function TravelUnitBlockEdit(props) {
     handleBlockInfo(index, 'description', e.target.value);
   };
 
+  const handleTitle = (e) => {
+    handleBlockInfo(index, 'title', e.target.value);
+  };
+
   return (
     <Card className={cardClasses.card}>
       <CardActions disableSpacing>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid container direction="row" className={cardClasses.header}>
-            <TimePickerWrapper
-              label="Start Time"
-              value={startTime}
-              onChange={handleStartTime}
-            />
-            <GoogleMapSearch value={startPoint} searchHandler={handleStartPoint} />
+          <Grid contianer direction="col">
+            <Grid container>
+              <TextField
+                id="standard-multiline-flexible"
+                label="Title"
+                rowsMax="4"
+                value={title}
+                onChange={handleTitle}
+                className={textClasses.textField}
+              />
+            </Grid>
+            <Grid container direction="row" className={cardClasses.header}>
+              <TimePickerWrapper
+                label="Start Time"
+                value={startTime}
+                onChange={handleStartTime}
+              />
+              <GoogleMapSearch value={startPoint} searchHandler={handleStartPoint} />
+            </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
         <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
@@ -107,7 +124,7 @@ export default function TravelUnitBlockEdit(props) {
                 value={endTime}
                 onChange={handleEndTime}
               />
-              <GoogleMapSearch searchHandler={props.searchHandler} />
+              <GoogleMapSearch value={endPoint} searchHandler={props.searchHandler} />
             </Grid>
           </MuiPickersUtilsProvider>
           <TextField

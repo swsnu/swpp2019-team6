@@ -10,6 +10,7 @@ export const _getTravel = (travel) => {
     description: travel.head.description,
     startDate: travel.head.start_date,
     endDate: travel.head.end_date,
+    tags: travel.head.tags,
   };
   const items = [];
   for (let i = 0; i < travel.head.days.length; i++) {
@@ -74,11 +75,17 @@ const convertItemToPushFormat = (travel) => {
       description: '',
       start_date: '',
       end_date: '',
+	    tags: [],	
+	    block_dist: [],	
+	    travel_embed_vector: [],
     },
   };
+  // eslint-disable-next-line no-var	
+	var block_dist = [0, 0, 0, 0, 0];
   newTravel.head.title = travel.header.title;
   newTravel.head.summary = travel.header.summary;
   newTravel.head.description = travel.header.description;
+  newTravel.head.tags = travel.tags;
   newTravel.head.start_date = _dateFormat(travel.header.startDate);
   newTravel.head.end_date = _dateFormat(travel.header.endDate);
   const dayBlockIndex = [];
@@ -100,15 +107,22 @@ const convertItemToPushFormat = (travel) => {
       let block_type = '';
       if (travel.items[j].id.startsWith('transportation')) {
         block_type = 'TRN';
+        block_dist[0] += 1;
       } else if (travel.items[j].id.startsWith('custom')) {
         block_type = 'CUS';
+        block_dist[1] += 1;
       } else if (travel.items[j].id.startsWith('activity')) {
         block_type = 'ACT';
+        block_dist[2] += 1;
       } else if (travel.items[j].id.startsWith('restaurant')) {
         block_type = 'RST';
+        block_dist[3] += 1;
       } else if (travel.items[j].id.startsWith('hotel')) {
         block_type = 'ACM';
+        block_dist[4] += 1;
       }
+      newTravel.head.block_dist = block_dist;	
+	    newTravel.head.travel_embed_vector = Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,

@@ -103,7 +103,7 @@ describe('<TravelActivityBlockEdit />', () => {
       handleBlockInfo={handleBlockInfo}
     />);
     const wrapperTextField = component.find(TextField);
-    wrapperTextField.simulate('change', { target: { value: 'TEST' } });
+    wrapperTextField.at(0).simulate('change', { target: { value: 'TEST' } });
     expect(handleBlockInfo).toHaveBeenCalledTimes(1);
   });
 });
