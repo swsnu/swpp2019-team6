@@ -29,6 +29,11 @@ jest.mock('./pages/CreateTravel', () => {
     return (<div className="createTravel" />);
   });
 });
+jest.mock('./pages/EditTravel', () => {
+  return jest.fn((props) => {
+    return (<div className="editTravel" />);
+  });
+});
 jest.mock('./pages/TravelDetail', () => {
   return jest.fn((props) => {
     return (<div className="travelDetail" />);
@@ -89,6 +94,12 @@ describe('App', () => {
     history.push('/travel/create');
     const component = mount(app);
     expect(component.find('.createTravel').length).toBe(1);
+  });
+
+  it('should render edit travel', () => {
+    history.push('/travel/0/edit');
+    const component = mount(app);
+    expect(component.find('.editTravel').length).toBe(1);
   });
 
   it('should render travel detail', () => {

@@ -11,6 +11,7 @@ export {
 export {
   getTravel,
   createTravel,
+  editTravel,
   getPopularTravels,
   getRecentTravels,
   getUserTravels,
@@ -18,4 +19,6 @@ export {
   getCollaboratorTravels,
   quitCollaborator,
   deleteTravel,
+  getRecommendedTravels,
+  likeTravel,
 } from './travel';

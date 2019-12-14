@@ -43,11 +43,15 @@ export default function TravelActivityBlockEdit(props) {
     items, index, handleRemove, handleBlockInfo,
   } = props;
   const {
-    expand, description, startTime, endTime, point,
+    expand, description, startTime, endTime, point, title, time,
   } = items[index].info;
 
   const handlePoint = (_point) => {
     handleBlockInfo(index, 'point', _point);
+  };
+
+  const handleTime = (date) => {
+    handleBlockInfo(index, 'time', date);
   };
 
   const handleStartTime = (date) => {
@@ -70,6 +74,10 @@ export default function TravelActivityBlockEdit(props) {
     handleBlockInfo(index, 'description', e.target.value);
   };
 
+  const handleTitle = (e) => {
+    handleBlockInfo(index, 'title', e.target.value);
+  };
+
   return (
     <Card className={cardClasses.card}>
       <CardActions disableSpacing>
@@ -79,14 +87,21 @@ export default function TravelActivityBlockEdit(props) {
           <Grid container direction="row" justify="space-around" alignItems="center">
             <TimePickerWrapper
               label="Start Time"
-              value={startTime}
-              onChange={handleStartTime}
+              value={time}
+              onChange={handleTime}
             />
           </Grid>
         </MuiPickersUtilsProvider>
         )}
         <Grid item>
-          <GoogleMapSearch searchHandler={handlePoint} value={point} />
+          <TextField
+            id="standard-multiline-flexible"
+            label="Title"
+            rowsMax="4"
+            value={title}
+            onChange={handleTitle}
+            className={textClasses.textField}
+          />
         </Grid>
         <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
         <TravelBlockCloseButton removeHandler={removeHandler} />
@@ -98,17 +113,20 @@ export default function TravelActivityBlockEdit(props) {
               <Grid container direction="row">
                 <TimePickerWrapper
                   label="Start Time"
-                  value={startTime}
-                  onChange={handleStartTime}
+                  value={time}
+                  onChange={handleTime}
                 />
-                <TimePickerWrapper
+                {/* <TimePickerWrapper
                   label="End Time"
                   value={endTime}
                   onChange={handleEndTime}
-                />
+                /> */}
               </Grid>
             </Grid>
           </MuiPickersUtilsProvider>
+          <Grid item>
+            <GoogleMapSearch searchHandler={handlePoint} value={point} />
+          </Grid>
           <TextField
             id="standard-multiline-flexible"
             label="Description"

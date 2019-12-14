@@ -12,17 +12,17 @@ class TravelBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = TravelBlock
         fields = '__all__'
-    
+
     def create(self,validated_data):
          return TravelBlock.objects.create(**validated_data)
 
 class TravelDaySerializer(serializers.ModelSerializer):
-    
+
     blocks = TravelBlockSerializer(many=True)
     class Meta:
         model = TravelDay
         fields = '__all__'
-    
+
     def create(self,validated_data):
         blocks_data = validated_data.pop('blocks')
         travelDay = TravelDay.objects.create(**validated_data)
@@ -59,7 +59,7 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         if data['start_date'] > data['end_date']:
             raise serializers.ValidationError("Start date must be earlier than End date")
         return data
-    
+
     def to_representation(self, obj):
         ret = super().to_representation(obj)
         author= User.objects.get(pk=ret['author'])
@@ -67,9 +67,12 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         return ret
 
     def create(self, validated_data):
-        
+
+
         days_data = validated_data.pop('days')
+        tags = validated_data.pop('tags')
         travelCommit = TravelCommit.objects.create(**validated_data)
+        travelCommit.tags.add(*tags)
 
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
@@ -84,7 +87,7 @@ class TravelCommitSerializer(serializers.ModelSerializer):
                 print(travelDaySerializer.errors)
 
         return travelCommit
-    
+
 class TravelSerializer(serializers.ModelSerializer):
 
     head = TravelCommitSerializer()
@@ -104,11 +107,18 @@ class TravelSerializer(serializers.ModelSerializer):
         global travelembed
         head_data = validated_data.pop('head')
         travelCommit_author=head_data.pop('author')
+
+        travelCommit_tags = head_data.pop('tags')
+        tags = [tag.word for tag in travelCommit_tags]
+        #print(travelCommit_tags)
+        head_data['tags'] = tags
+        print(head_data['tags'])
+
         head_data['author']=travelCommit_author.id
         a=travelembed.travel_text_embed_vector(head_data['title'])
         head_data['travel_embed_vector']=a
         #head_data['travel_embed_vector']=[1 for i in range(512)]
-        
+
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
             print('TRAVELCOMMIT_SERIALIZER VALID')
@@ -121,7 +131,9 @@ class TravelSerializer(serializers.ModelSerializer):
             print('TRAVELCOMMIT_SERIALIZER INVALID')
             print(travelCommitSerializer.errors)
 
+
 class TravelPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TravelCommit
         fields = ['photo']
+
