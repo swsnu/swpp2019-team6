@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django_mysql.models import ListCharField, ListTextField
 
 User = get_user_model()
 
@@ -46,11 +47,21 @@ class Travel(models.Model):
         related_name = 'like_of_Travel',
         blank=True
     )
+    views = models.ManyToManyField(
+        User,
+        related_name = 'views_of_Travel',
+        blank=True
+    )
+
     class Meta:
         ordering = ['-last_modified_time',]
 
 class Tag(models.Model):
     word = models.CharField(max_length=50, primary_key=True)
+
+class temp(models.Model):
+    block = ListTextField(base_field=models.IntegerField(), size=5)
+    vector = ListTextField(base_field=models.IntegerField(), size=5)
 
 class TravelCommit(models.Model):
     title = models.CharField(max_length=100)
@@ -58,6 +69,8 @@ class TravelCommit(models.Model):
     description = models.TextField(blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
+    block_dist = ListTextField(base_field=models.IntegerField(), size=5, default=[1])
+    travel_embed_vector = ListTextField(base_field=models.IntegerField(), size=512, default=[1])
     days = models.ManyToManyField(
         'travel.TravelDay',
         through = 'TravelDayList'
