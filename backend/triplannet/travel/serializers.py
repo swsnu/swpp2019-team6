@@ -62,7 +62,6 @@ class TravelCommitSerializer(serializers.ModelSerializer):
 
         days_data = validated_data.pop('days')
         tags = validated_data.pop('tags')
-        print(tags)
         travelCommit = TravelCommit.objects.create(**validated_data)
         travelCommit.tags.add(*tags)
         print(travelCommit)

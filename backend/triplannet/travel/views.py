@@ -26,7 +26,8 @@ class travel(APIView):
             print('TRAVELSERIALIZER VALID')
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-
+        else:
+            print(serializer.errors)
         print('TRAVELSERIALIZER INVALID')
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -44,19 +45,22 @@ class travel_id(APIView):
         serializer = self.serializer_class(travel)
         return Response(serializer.data)
 
-    # def put(self,request,id,*args,**kwargs):
+    def put(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
 
-    #     try:
-    #         travel = Travel.objects.get(pk=id)
-    #     except ObjectDoesNotExist:
-    #         raise Http404
-
-    #     serializer = self.serializer_class(travel, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = TravelCommitSerializer(data=request.data)
+        if serializer.is_valid():
+            travel.head = serializer.save()
+            travel.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, *args, **kwargs):
         try:
@@ -149,7 +153,7 @@ class TagList(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class TravelSettings(APIView):
-    
+
     serializer_class = TravelSerializer
 
     def put(self, request, id, *args, **kwargs):
@@ -173,7 +177,7 @@ class TravelSettings(APIView):
         travel.save()
         serializer = self.serializer_class(travel)
         return Response(serializer.data)
-        
+
 
 
 
