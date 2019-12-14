@@ -43,7 +43,7 @@ export default function TravelActivityBlockEdit(props) {
     items, index, handleRemove, handleBlockInfo,
   } = props;
   const {
-    expand, description, startTime, endTime, point,
+    expand, description, startTime, endTime, point, title,
   } = items[index].info;
 
   const handlePoint = (_point) => {
@@ -70,6 +70,10 @@ export default function TravelActivityBlockEdit(props) {
     handleBlockInfo(index, 'description', e.target.value);
   };
 
+  const handleTitle = (e) => {
+    handleBlockInfo(index, 'title', e.target.value);
+  };
+
   return (
     <Card className={cardClasses.card}>
       <CardActions disableSpacing>
@@ -86,7 +90,14 @@ export default function TravelActivityBlockEdit(props) {
         </MuiPickersUtilsProvider>
         )}
         <Grid item>
-          <GoogleMapSearch searchHandler={handlePoint} value={point} />
+          <TextField
+            id="standard-multiline-flexible"
+            label="Title"
+            rowsMax="4"
+            value={title}
+            onChange={handleTitle}
+            className={textClasses.textField}
+          />
         </Grid>
         <TravelBlockExpandButton expand={expand} clickExpandHandler={clickExpandHandler} />
         <TravelBlockCloseButton removeHandler={removeHandler} />
@@ -109,6 +120,9 @@ export default function TravelActivityBlockEdit(props) {
               </Grid>
             </Grid>
           </MuiPickersUtilsProvider>
+          <Grid item>
+            <GoogleMapSearch searchHandler={handlePoint} value={point} />
+          </Grid>
           <TextField
             id="standard-multiline-flexible"
             label="Description"

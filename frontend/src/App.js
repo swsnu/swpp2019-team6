@@ -23,7 +23,7 @@ function App(props) {
           <Route path="/sign_up" exact render={() => <SignupPage />} />
           <Route path="/main" exact render={() => <MainPage />} />
           <Route path="/travel/create" exact render={() => <CreateTravel />} />
-          <Route path="/travel/:id/" exact render={() => <TravelDetail />} />
+          <Route path="/travel/:id/" exact render={() => <TravelDetail history={props.history} />} />
           <Route path="/travel/:id/settings" exact component={TravelSettingsPage} />
           <Route path="/search" exact component={SearchPage} />
           <Route path="/user/:id" exact component={UserInfoPage} />
