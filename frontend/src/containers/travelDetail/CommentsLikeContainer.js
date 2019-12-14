@@ -31,26 +31,43 @@ const tempComments = [
   {
     user: {
       id: 4,
-      nickname: 'test',
+      nickname: 'apple13',
     },
-    content: 'hello from here!',
-    register_time: '2019.12.10. 10:00',
+    content: 'I like this plan! You must have enjoyed it.',
+    register_time: '2019.12.10. 17:54',
   },
   {
     user: {
       id: 6,
-      nickname: 'test32',
+      nickname: 'pineapple14',
     },
-    content: 'asg ag ag!',
-    register_time: '2019.11.30. 20:00',
+    content: 'Could you tell me how much you spent? ',
+    register_time: '2019.12.11. 00:02',
   },
 ];
 
 class CommentsLikeContainer extends Component {
+  state = {
+    commentField: '',
+  }
+
   componentDidMount() {
     // this.props.getComments(this.props.match.params.id);
-    console.log(this.props.match.params.id);
-    console.log(this.props.thisTravel);
+    // console.log(this.props.match.params.id);
+    // console.log(this.props.thisTravel);
+  }
+
+  onLikeButtonClicked = (user_id, travel_id) => {
+    console.log(`user ${user_id} likes travel ${travel_id}!`);
+    // this.props.likeTravel(user_id, travel_id);
+  }
+
+  onCommentFieldChanged = (e) => {
+    this.setState({ commentField: e.target.value });
+  }
+
+  onCommentConfirmClicked = (e) => {
+    console.log(`Confirmed: ${this.state.commentField}`);
   }
 
   render() {
@@ -60,9 +77,13 @@ class CommentsLikeContainer extends Component {
           <div className="commentsLike">
             <CommentsLike
               // travel={this.props.thisTravel}
-              travel={tempTravel}
+              travel={this.props.thisTravel}
               // comments={this.props.thisComments}
               comments={tempComments}
+              onLikeButtonClicked={this.onLikeButtonClicked}
+              commentField={this.state.CommentField}
+              onCommentFieldChanged={this.onCommentFieldChanged}
+              onCommentConfirmClicked={this.onCommentConfirmClicked}
             />
           </div>
         ) : (
@@ -82,6 +103,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    likeTravel: (user_id, travel_id) => dispatch(actionCreators.likeTravel(user_id, travel_id)),
   };
 };
 

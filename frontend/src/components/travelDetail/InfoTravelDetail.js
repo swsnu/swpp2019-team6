@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
   const classes = useStyles();
+  const thisUser = JSON.parse(localStorage.getItem('user'));
 
   const onAuthorClicked = (user_id) => {
     history.push(`/user/${user_id}`);
@@ -96,7 +97,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    onForkButtonClicked(travel.author.id, travel.id);
+                    onForkButtonClicked(thisUser.id, travel.id);
                   }}
                 >
                   Fork

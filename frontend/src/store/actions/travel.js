@@ -248,6 +248,26 @@ export const quitCollaborator = (user_id, travel_id) => {
   };
 };
 
+export const likeTravel_ = (user_id, travel_id) => {
+  return { type: actionTypes.LIKE_TRAVEL, user_id: user_id, travel_id: travel_id };
+};
+
+export const likeTravel = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.put(`/api/travel/like/${travel_id}/`)
+      .then(
+        (res) => {
+          dispatch(likeTravel_(user_id, travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot update travel like count');
+        },
+      );
+  };
+};
+
 export const deleteTravel_ = (travel_id) => {
   return {
     type: actionTypes.DELETE_TRAVEL,

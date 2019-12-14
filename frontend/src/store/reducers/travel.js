@@ -45,6 +45,13 @@ const travel = (state = initialState, action = initialAction) => {
     }
     case actionTypes.GET_RECOMMENDED_TRAVELS:
       return { ...state, recommendedTravels: action.travels };
+    case actionTypes.LIKE_TRAVEL: {
+      const modified = {
+        ...state.oneRawTravel,
+        likes: state.oneRawTravel.likes.add(action.user_id),
+      };
+      return { ...state, oneRawTravel: modified };
+    }
     default:
       break;
   }
