@@ -47,11 +47,8 @@ export const _getTravel = (travel, isEdit) => {
       }
       if (isEdit) {
         const time = new Date();
-        console.log(travel.head.days[i].blocks[j].time);
         time.setHours(Number(travel.head.days[i].blocks[j].time.split(':')[0]),
           Number(travel.head.days[i].blocks[j].time.split(':')[1]));
-        console.log('time', time);
-        // time.setMinute(Number(travel.head.days[i].blocks[j].time.split(':')[1]));
         travelItemBlock = {
           id: `${block_type}-${j}`,
           info: {

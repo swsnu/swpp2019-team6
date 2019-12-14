@@ -52,12 +52,13 @@ const mapStateToProps = (state) => {
   return {
     header: state.travel.header,
     items: state.travel.items,
+    tags: state.travel.tags,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getTravel: (id) => dispatch(actionCreators.getTravel(id)),
+    getTravel: (id) => dispatch(actionCreators.getTravel(id, false)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TravelDetail));

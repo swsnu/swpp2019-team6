@@ -69,13 +69,6 @@ export default function TagBlock(props) {
     };
   }, [input]);
 
-  // React.useEffect(() => {
-  //   setInput('');
-  // }, [props.tags]);
-
-  React.useEffect(() => console.log('value changed!'), [props.tags]);
-
-  console.log("tags", props.tags, props);
   return (
     <div className={classes.root}>
       <Autocomplete
