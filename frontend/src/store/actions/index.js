@@ -11,6 +11,7 @@ export {
 export {
   getTravel,
   createTravel,
+  editTravel,
   getPopularTravels,
   getRecentTravels,
   getUserTravels,

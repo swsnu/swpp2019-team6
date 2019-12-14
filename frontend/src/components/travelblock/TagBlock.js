@@ -69,18 +69,24 @@ export default function TagBlock(props) {
     };
   }, [input]);
 
+  // React.useEffect(() => {
+  //   setInput('');
+  // }, [props.tags]);
+
+  React.useEffect(() => console.log('value changed!'), [props.tags]);
+
+  console.log("tags", props.tags, props);
   return (
     <div className={classes.root}>
       <Autocomplete
         multiple
         id="tags-standard"
         options={options}
-        defaultValue={[]}
+        searchText={props.tags}
         renderTags={(value, getTagProps) => {
-          console.log(value);
-          props.setTags(value);
+          // props.setTags(value);
           return (
-            value.map((option, index) => (
+            props.tags.map((option, index) => (
               <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} />
             ))
           );
