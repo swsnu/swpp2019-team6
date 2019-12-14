@@ -221,6 +221,18 @@ export const editTravel = (id, travel) => {
   };
 };
 
+export const getRecommendedTravels_ = (travels) => {
+  return { type: actionTypes.GET_RECOMMENDED_TRAVELS, travels: travels };
+};
+export const getRecommendedTravels = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/recommend/${user_id}/${travel_id}/`)
+      .then((res) => {
+        dispatch(getRecommendedTravels_(res.data));
+      });
+  };
+};
+
 export const getPopularTravels_ = (travels) => {
   return { type: actionTypes.GET_POPULAR_TRAVELS, travels: travels };
 };
@@ -304,6 +316,25 @@ export const quitCollaborator = (user_id, travel_id) => {
       .catch(
         (res) => {
           alert('Cannot remove this collaborator');
+        },
+      );
+  };
+};
+
+export const likeTravel_ = (user_id, travel_id) => {
+  return { type: actionTypes.LIKE_TRAVEL, user_id: user_id, travel_id: travel_id };
+};
+export const likeTravel = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.put(`/api/travel/like/${travel_id}/`)
+      .then(
+        (res) => {
+          dispatch(likeTravel_(user_id, travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot update travel like count');
         },
       );
   };
