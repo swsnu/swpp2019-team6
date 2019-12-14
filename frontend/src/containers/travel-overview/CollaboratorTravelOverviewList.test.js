@@ -1,13 +1,15 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import RecentTravelOverviewList from './RecentTravelOverviewList';
+import axios from 'axios';
 import { getMockStore } from '../../test-utils/mocks';
 import * as travelActionCreators from '../../store/actions/travel';
 
+import CollaboratorTravelOverviewList from './CollaboratorTravelOverviewList';
+
 
 const stubTravelState = {
-  recentTravels: [{
+  collaboratorTravels: [{
     title: 'test',
     id: 1,
   }],
@@ -36,19 +38,19 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
 });
 
 
-describe('RecentTravelOverviewList', () => {
-  let recentTravelOverviewList;
-  let spyGetRecentTravels;
-
+describe('CollaboratorTravelOverviewList', () => {
+  let collaboratorTravelOverviewList;
+  let spyGetCollaboratorTravels;
 
   beforeEach(() => {
-    recentTravelOverviewList = (
+    collaboratorTravelOverviewList = (
       <Provider store={mockStore}>
-        <RecentTravelOverviewList />
+        <CollaboratorTravelOverviewList />
       </Provider>
+
     );
 
-    spyGetRecentTravels = jest.spyOn(travelActionCreators, 'getRecentTravels')
+    spyGetCollaboratorTravels = jest.spyOn(travelActionCreators, 'getCollaboratorTravels')
       .mockImplementation(() => { return (dispatch) => {}; });
   });
 
@@ -57,16 +59,16 @@ describe('RecentTravelOverviewList', () => {
   });
 
   it('should render.', () => {
-    const component = mount(recentTravelOverviewList);
+    const component = mount(collaboratorTravelOverviewList);
     expect(component.find('.travelOverviewList').length).toBe(1);
   });
 
   it('should render empty contents.', () => {
     const component = mount(
       <Provider store={getMockStore({}, {}, {})}>
-        <RecentTravelOverviewList />
+        <CollaboratorTravelOverviewList />
       </Provider>,
     );
-    expect(component.find('.travelOverviewList').length).toBe(1);
+    expect(component.find('.travelOverviewList').length).toBe(0);
   });
 });

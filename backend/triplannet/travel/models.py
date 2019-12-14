@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django_mysql.models import ListCharField, ListTextField
 
 User = get_user_model()
 
-# Create your models here.
 
 class Travel(models.Model):
-    
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -22,9 +22,9 @@ class Travel(models.Model):
         'travel.TravelCommit',
         on_delete = models.SET_NULL,
         related_name = 'head_of_travel',
-        null = True,
+        null = True,  
     )
-    
+
     # fork_parent == None : is_forked - False,
     # fork_parent != None : is_forked - True,
     fork_parent = models.ForeignKey(
@@ -32,7 +32,7 @@ class Travel(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         default = None,
-        
+
     )
     register_time =models.DateTimeField(auto_now_add=True)
     last_modified_time = models.DateTimeField(auto_now=True)
@@ -47,21 +47,32 @@ class Travel(models.Model):
         related_name = 'like_of_Travel',
         blank=True
     )
+    views = models.ManyToManyField(
+        User,
+        related_name = 'views_of_Travel',
+        blank=True
+    )
+
     class Meta:
         ordering = ['-last_modified_time',]
 
+class temp(models.Model):
+    block = ListTextField(base_field=models.IntegerField(), size=5)
+    vector = ListTextField(base_field=models.IntegerField(), size=5)
 class TravelCommit(models.Model):
     title = models.CharField(max_length=100)
     summary = models.TextField(blank=True)
     description = models.TextField(blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
+    block_dist = ListTextField(base_field=models.IntegerField(), size=5, default=[1])
+    travel_embed_vector = ListTextField(base_field=models.IntegerField(), size=512, default=[1])
     days = models.ManyToManyField(
         'travel.TravelDay',
         through = 'TravelDayList'
     )
     register_time = models.DateTimeField(auto_now_add=True)
-    
+
     travel = models.ForeignKey(
         Travel,
         on_delete = models.CASCADE,
@@ -76,7 +87,7 @@ class TravelCommit(models.Model):
     )
     # tags= models.ManyToManyField(
     #     Tag,
-    #     related_name ='travel_committed', 
+    #     related_name ='travel_committed',
     # )
     # photo = models.ImageField(
     #     upload_to = 'travel_photos/',
@@ -99,7 +110,6 @@ class TravelDay(models.Model):
         default = None,
     )
     modified = models.BooleanField(default=True)
-
 
 
 class TravelBlock(models.Model):
@@ -155,3 +165,7 @@ class TravelBlockList(models.Model):
     class Meta:
         ordering = ['TravelDay','TravelBlock','index',]
         unique_together = ['TravelDay','TravelBlock','index']
+
+class Tag(models.Model):
+    word = models.CharField(max_length=50, null=False)
+

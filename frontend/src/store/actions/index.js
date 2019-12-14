@@ -14,4 +14,8 @@ export {
   getPopularTravels,
   getRecentTravels,
   getUserTravels,
+  getOneRawTravel,
+  getCollaboratorTravels,
+  quitCollaborator,
+  deleteTravel,
 } from './travel';

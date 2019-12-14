@@ -23,6 +23,12 @@ class UserTravelOverviewList extends Component {
     this.props.history.push('/travel/create/');
   }
 
+  onDeleteClicked = (travel_id) => {
+    // console.log('onDeleteClicked!');
+    // console.log(travel_id);
+    this.props.onDeleteTravel(travel_id);
+  }
+
   render() {
     return (
       <div>
@@ -30,7 +36,7 @@ class UserTravelOverviewList extends Component {
         <div>
           {this.props.is_mypage ? (
             <Grid container alignItems="center" direction="column" justify="space-around">
-              <CreateTravelButton handleClickCreate={this.handleClickCreate} />
+              <CreateTravelButton id="createTravelButton" handleClickCreate={this.handleClickCreate} />
             </Grid>
           ) : (
             <span />
@@ -38,14 +44,18 @@ class UserTravelOverviewList extends Component {
         </div>
         {this.props.userTravels && this.props.userTravels.length ? (
           <div className="userTravelOverview">
+            <Typography align="left" color="primary" variant="h5" style={{ marginTop: 8, marginBottom: 8 }}>
+              My Travel Plans
+            </Typography>
             <TravelOverviewList
               travelList={this.props.userTravels}
               is_mypage={this.props.is_mypage}
+              onDeleteClicked={this.onDeleteClicked}
             />
             <Divider style={{ margin: 8 }} />
           </div>
         ) : (
-          <Typography align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>
+          <Typography id="makeYourFirstPlan" align="center" color="textSecondary" variant="h5" style={{ marginTop: 24 }}>
             Make your first plan for a travel!
           </Typography>
         )}
@@ -57,7 +67,9 @@ class UserTravelOverviewList extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetUserTravels: (user_id) => dispatch(actionCreators.getUserTravels(user_id)),
-
+    onDeleteTravel: (travel_id) => {
+      dispatch(actionCreators.deleteTravel(travel_id));
+    },
   };
 };
 

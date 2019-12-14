@@ -1,9 +1,12 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -24,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   helperText: {
     marginTop: theme.spacing(1),
+  },
+  bigAvatar: {
+    width: 200,
+    height: 200,
   },
 }));
 
@@ -46,11 +53,47 @@ const EditUserInfo = ({
   onInputChanged,
   password_checked, password_helperText, nickname_checked, nickname_helperText,
   clickCheckNickname,
+  profilePhotoChanged,
+  imagePreviewUrl,
+  onChangeProfilePhoto,
+  onClickProfilePhotoConfirm,
 }) => {
   const classes = useStyles();
-
+  const imgsrc = imagePreviewUrl || '/images/default_profile_image.png';
   return (
     <div>
+      <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
+        Profile Photo
+      </Typography>
+      <label htmlFor="icon-button-file">
+        <IconButton color="primary" className={classes.button} component="span">
+          <Avatar
+            alt="IMAGE NOT FOUND"
+            src={imgsrc}
+            className={classes.bigAvatar}
+          />
+        </IconButton>
+      </label>
+      <input
+        accept="image/*"
+        id="icon-button-file"
+        type="file"
+        style={{ visibility: 'hidden' }}
+        onChange={onChangeProfilePhoto}
+      />
+      <br />
+      <Button
+        id="profilePhotoConfirmButton"
+        size="medium"
+        variant="contained"
+        color="primary"
+        className={classes.allMargin}
+        disabled={!profilePhotoChanged}
+        onClick={() => onClickProfilePhotoConfirm()}
+      >
+        Confirm
+      </Button>
+      <Divider className={classes.divider} />
       <Typography variant="h5" align="left" color="textPrimary" className={classes.section}>
         Email
       </Typography>
@@ -194,7 +237,7 @@ const EditUserInfo = ({
             className={classes.allMargin}
             onClick={() => onOpenClicked('nicknameExpanded')}
           >
-            Change
+              Change
           </Button>
         </>
       )}
@@ -248,11 +291,12 @@ const EditUserInfo = ({
             className={classes.allMargin}
             onClick={() => onOpenClicked('messageExpanded')}
           >
-            Change
+              Change
           </Button>
         </>
       )}
       <Divider className={classes.divider} />
+
     </div>
   );
 };

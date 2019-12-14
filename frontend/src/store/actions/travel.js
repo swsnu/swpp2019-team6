@@ -76,8 +76,12 @@ const convertItemToPushFormat = (travel) => {
       start_date: '',
       end_date: '',
       tags: [],
+      block_dist: [],
+      travel_embed_vector: [],
     },
   };
+  // eslint-disable-next-line no-var
+  var block_dist = [0, 0, 0, 0, 0];
   newTravel.head.title = travel.header.title;
   newTravel.head.summary = travel.header.summary;
   newTravel.head.description = travel.header.description;
@@ -103,15 +107,22 @@ const convertItemToPushFormat = (travel) => {
       let block_type = '';
       if (travel.items[j].id.startsWith('transportation')) {
         block_type = 'TRN';
+        block_dist[0] += 1;
       } else if (travel.items[j].id.startsWith('custom')) {
         block_type = 'CUS';
+        block_dist[1] += 1;
       } else if (travel.items[j].id.startsWith('activity')) {
         block_type = 'ACT';
+        block_dist[2] += 1;
       } else if (travel.items[j].id.startsWith('restaurant')) {
         block_type = 'RST';
+        block_dist[3] += 1;
       } else if (travel.items[j].id.startsWith('hotel')) {
         block_type = 'ACM';
+        block_dist[4] += 1;
       }
+      newTravel.head.block_dist = block_dist;
+      newTravel.head.travel_embed_vector = Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,
@@ -131,6 +142,7 @@ const convertItemToPushFormat = (travel) => {
 export const createTravel = (travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
+    console.log(newTravel);
     return axios.post('/api/travel/', newTravel, {
       headers: {
         'Content-Type': 'application/json',
@@ -178,6 +190,84 @@ export const getUserTravels_ = (travels) => {
 export const getUserTravels = (user_id) => {
   return (dispatch) => {
     return axios.get(`/api/travel/user/${user_id}/`)
-      .then((res) => dispatch(getUserTravels_(res.data)));
+      .then((res) => {
+        // console.log(res);
+        dispatch(getUserTravels_(res.data));
+      });
+  };
+};
+
+export const getOneRawTravel_ = (travel) => {
+  return { type: actionTypes.GET_ONE_RAW_TRAVEL, travel: travel };
+};
+
+export const getOneRawTravel = (travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/${travel_id}/`)
+      .then((res) => dispatch(getOneRawTravel_(res.data)))
+      .catch((res) => dispatch(push('/error')));
+  };
+};
+
+export const getCollaboratorTravels_ = (travels) => {
+  return { type: actionTypes.GET_COLLABORATOR_TRAVELS, travels: travels };
+};
+
+export const getCollaboratorTravels = (user_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/collaborator/${user_id}/`)
+      .then((res) => {
+        dispatch(getCollaboratorTravels_(res.data));
+      });
+  };
+};
+
+export const quitCollaborator_ = (user_id, travel_id) => {
+  return { type: actionTypes.QUIT_COLLABORATOR, user_id: user_id, travel_id: travel_id };
+};
+
+export const quitCollaborator = (user_id, travel_id) => {
+  return (dispatch) => {
+    const data = {
+      deleted_collaborator: user_id,
+    };
+    return axios.put(`/api/travel/settings/${travel_id}/`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(
+        (res) => {
+          dispatch(quitCollaborator_(user_id, travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot remove this collaborator');
+        },
+      );
+  };
+};
+
+export const deleteTravel_ = (travel_id) => {
+  return {
+    type: actionTypes.DELETE_TRAVEL,
+    travel_id: travel_id,
+  };
+};
+
+export const deleteTravel = (travel_id) => {
+  return (dispatch) => {
+    return axios.delete(`/api/travel/${travel_id}/`)
+      .then(
+        (res) => {
+          dispatch(deleteTravel_(travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot remove this travel');
+        },
+      );
   };
 };

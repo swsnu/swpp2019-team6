@@ -134,7 +134,7 @@ const Header = ({
         {/* right side: user profile, dropdown menu for mypage, logout */}
         <Grid item xs container spacing={1} direction="row" justify="center" alignItems="center" wrap="nowrap">
           <Grid item>
-            <Avatar alt={user.nickname} src={user.profile} className={classes.avatar} />
+            <Avatar alt={user.nickname} src={user.profile_photo || '/images/default_profile_image.png'} className={classes.avatar} />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1" className={classes.userNickname}>

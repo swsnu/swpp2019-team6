@@ -1,6 +1,19 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
 import PopularTravelOverviewList from './PopularTravelOverviewList';
+import { getMockStore } from '../../test-utils/mocks';
+import * as travelActionCreators from '../../store/actions/travel';
+
+const stubTravelState = {
+  popularTravels: [{
+    title: 'test',
+    id: 1,
+  }],
+};
+
+const mockStore = getMockStore({}, {}, stubTravelState);
+
 
 jest.mock('../../components/travel-overview/TravelOverviewList', () => {
   return jest.fn((props) => {
@@ -25,15 +38,34 @@ jest.mock('../../components/travel-overview/TravelOverviewList', () => {
 
 describe('PopularTravelOverviewList', () => {
   let popularTravelOverviewList;
+  let spyGetPopularTravels;
 
   beforeEach(() => {
     popularTravelOverviewList = (
-      <PopularTravelOverviewList />
+      <Provider store={mockStore}>
+        <PopularTravelOverviewList />
+      </Provider>
     );
+
+    spyGetPopularTravels = jest.spyOn(travelActionCreators, 'getPopularTravels')
+      .mockImplementation(() => { return (dispatch) => {}; });
   });
 
-  xit('should render.', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should render.', () => {
     const component = mount(popularTravelOverviewList);
+    expect(component.find('.travelOverviewList').length).toBe(1);
+  });
+
+  it('should render empty contents.', () => {
+    const component = mount(
+      <Provider store={getMockStore({}, {}, {})}>
+        <PopularTravelOverviewList />
+      </Provider>,
+    );
     expect(component.find('.travelOverviewList').length).toBe(1);
   });
 });

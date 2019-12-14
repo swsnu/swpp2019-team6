@@ -2,6 +2,15 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
+
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
@@ -16,11 +25,24 @@ const useStyles = makeStyles((theme) => ({
 
 // props
 // data: collaborators(list)
-// function: onAddButtonClicked
+// function: onAddButtonClicked, onCollaboratorFieldChanged, resetCollaboratorField
+// input field: collaborator_field
 const CollaboratorSetting = ({
-  collaborators, onAddButtonClicked, history,
+  collaborators, onAddButtonClicked, collaborator_field,
+  onCollaboratorFieldChanged, history, resetCollaboratorField,
 }) => {
   const classes = useStyles();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    resetCollaboratorField();
+  };
 
   return (
     <div>
@@ -34,7 +56,7 @@ const CollaboratorSetting = ({
         {collaborators.map((collaborator, i) => (
           <ButtonBase
             key={i}
-            onClick={() => { history.push(`/user/${collaborator.nickname}`); }}
+            onClick={() => { history.push(`/user/${collaborator.id}`); }}
             className={classes.leftMargin}
           >
             <Typography variant="body1" align="left" display="inline" color="primary" key={i}>
@@ -48,10 +70,35 @@ const CollaboratorSetting = ({
         variant="contained"
         color="secondary"
         className={classes.allMargin}
-        onClick={onAddButtonClicked}
+        onClick={handleClickOpen}
+        id="addButton"
       >
         Add
       </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Add New Collaborators</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter a user&apos;s nickname you want to add as a new collaborator.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="nickname"
+            label="Nickname"
+            value={collaborator_field}
+            onChange={onCollaboratorFieldChanged}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button id="cancelButton" onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button id="confirmButton" onClick={() => { handleClose(); onAddButtonClicked(); }} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
