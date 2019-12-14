@@ -276,7 +276,12 @@ export const getOneRawTravel_ = (travel) => {
 export const getOneRawTravel = (travel_id) => {
   return (dispatch) => {
     return axios.get(`/api/travel/${travel_id}/`)
-      .then((res) => dispatch(getOneRawTravel_(res.data)))
+      .then((res) => {
+        axios.put(`/api/travel/view/${travel_id}/`)
+          .then((res2) => {          
+          });
+        dispatch(getOneRawTravel_(res.data));
+      })
       .catch((res) => dispatch(push('/error')));
   };
 };
@@ -290,6 +295,19 @@ export const getCollaboratorTravels = (user_id) => {
     return axios.get(`/api/travel/collaborator/${user_id}/`)
       .then((res) => {
         dispatch(getCollaboratorTravels_(res.data));
+      });
+  };
+};
+
+export const getRecommendedTravels_ = (travels) => {
+  return { type: actionTypes.GET_RECOMMENDED_TRAVELS, travels: travels };
+};
+
+export const getRecommendedTravels = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/recommend/${user_id}/${travel_id}/`)
+      .then((res) => {
+        dispatch(getRecommendedTravels_(res.data));
       });
   };
 };
@@ -324,6 +342,7 @@ export const quitCollaborator = (user_id, travel_id) => {
 export const likeTravel_ = (user_id, travel_id) => {
   return { type: actionTypes.LIKE_TRAVEL, user_id: user_id, travel_id: travel_id };
 };
+
 export const likeTravel = (user_id, travel_id) => {
   return (dispatch) => {
     return axios.put(`/api/travel/like/${travel_id}/`)
