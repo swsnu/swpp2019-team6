@@ -117,8 +117,8 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
         block_dist[4] += 1;
       }
-      newTravel.head.block_dist=block_dist;
-      newTravel.head.travel_embed_vector=Array(512).fill(1);
+      newTravel.head.block_dist = block_dist;
+      newTravel.head.travel_embed_vector = Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,
@@ -202,10 +202,9 @@ export const getOneRawTravel = (travel_id) => {
     return axios.get(`/api/travel/${travel_id}/`)
       .then((res) => {
         axios.put(`/api/travel/view/${travel_id}/`)
-          .then((res) => {
-            
-          })
-        dispatch(getOneRawTravel_(res.data))
+          .then((res2) => {
+          });
+        dispatch(getOneRawTravel_(res.data));
       })
       .catch((res) => dispatch(push('/error')));
   };
