@@ -10,6 +10,7 @@ export const _getTravel = (travel) => {
     description: travel.head.description,
     startDate: travel.head.start_date,
     endDate: travel.head.end_date,
+    tags: travel.head.tags,
   };
   const items = [];
   for (let i = 0; i < travel.head.days.length; i++) {
@@ -74,6 +75,7 @@ const convertItemToPushFormat = (travel) => {
       description: '',
       start_date: '',
       end_date: '',
+      tags: [],
       block_dist: [],
       travel_embed_vector: [],
     },
@@ -83,6 +85,7 @@ const convertItemToPushFormat = (travel) => {
   newTravel.head.title = travel.header.title;
   newTravel.head.summary = travel.header.summary;
   newTravel.head.description = travel.header.description;
+  newTravel.head.tags = travel.tags;
   newTravel.head.start_date = _dateFormat(travel.header.startDate);
   newTravel.head.end_date = _dateFormat(travel.header.endDate);
   const dayBlockIndex = [];
