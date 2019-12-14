@@ -1,8 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from django_mysql.models import ListCharField, ListTextField
 
+import os
+
 User = get_user_model()
+
+
+def travelCommit_directory_path(instance, filename):
+    return 'travelCommit/{}/{}'.format(instance.id, filename)
 
 
 class Travel(models.Model):
@@ -89,15 +96,20 @@ class TravelCommit(models.Model):
         related_name = 'author_of_TravelCommit',
         # collaborators only
     )
+
+    photo = models.ImageField(
+       upload_to=travelCommit_directory_path,blank=True, null=True
+    )
+
+    # Override delete
+    def delete(self, *args, **kargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
+        super(TravelCommit, self).delete(*args, **kargs)
     tags= models.ManyToManyField(
         Tag,
         related_name ='travel_tags',
     )
-    # photo = models.ImageField(
-    #     upload_to = 'travel_photos/',
-    #     height_field=500,
-    #     width_field=500,
-    # )
+
 
 class TravelDay(models.Model):
     title = models.CharField(max_length=100,blank=True)

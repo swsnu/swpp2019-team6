@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
+
 from .models import *
 from user.serializers import UserSerializer
 from .travelembed import TravelEmbed
 
 travelembed = TravelEmbed()
-
 
 class TravelBlockSerializer(serializers.ModelSerializer):
 
@@ -53,6 +53,7 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         exclude = ['register_time']
         write_only_fields = ('block_dist','travel_embed_vector',)
 
+
     def validate(self, data):
 
         if data['start_date'] > data['end_date']:
@@ -67,10 +68,12 @@ class TravelCommitSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
+
         days_data = validated_data.pop('days')
         tags = validated_data.pop('tags')
         travelCommit = TravelCommit.objects.create(**validated_data)
         travelCommit.tags.add(*tags)
+
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
             if travelDaySerializer.is_valid():
@@ -104,6 +107,7 @@ class TravelSerializer(serializers.ModelSerializer):
         global travelembed
         head_data = validated_data.pop('head')
         travelCommit_author=head_data.pop('author')
+
         travelCommit_tags = head_data.pop('tags')
         tags = [tag.word for tag in travelCommit_tags]
         #print(travelCommit_tags)
@@ -126,3 +130,10 @@ class TravelSerializer(serializers.ModelSerializer):
         else:
             print('TRAVELCOMMIT_SERIALIZER INVALID')
             print(travelCommitSerializer.errors)
+
+
+class TravelPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TravelCommit
+        fields = ['photo']
+

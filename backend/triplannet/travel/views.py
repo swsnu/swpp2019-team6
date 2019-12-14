@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
@@ -258,14 +259,14 @@ class TravelSettings(APIView):
                 added_collaborator = User.objects.get(nickname=request.data.get('added_collaborator'))
             except User.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
-            travel.collaborators.add(added_collaborator);
+            travel.collaborators.add(added_collaborator)
         if 'deleted_collaborator' in request.data:
             try:
                 deleted_collaborator = User.objects.get(id=request.data.get('deleted_collaborator'))
             except User.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             if (travel.collaborators.filter(pk=deleted_collaborator.id).exists()):
-                travel.collaborators.remove(deleted_collaborator);
+                travel.collaborators.remove(deleted_collaborator)
         travel.is_public = request.data.get('is_public', travel.is_public)
         travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)
         travel.save()
@@ -277,5 +278,23 @@ class TravelSettings(APIView):
 
 =======
 >>>>>>> d255785537d7f5569bbc8a893e21d26d332e606a
+
+        
+class travelCommitPhoto(APIView):
+    serializer_class = TravelPhotoSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    
+    def put(self, request, id, *args, **kwargs):
+        try:
+            travelCommit = TravelCommit.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        serializer = self.serializer_class(travelCommit, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 

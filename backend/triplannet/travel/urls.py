@@ -5,6 +5,7 @@ urlpatterns = [
     path('', travel.as_view(), name='travel'),
     path('<int:id>/',travel_id.as_view()),
     path('<int:id>/travelCommit/', travel_id_travelCommit.as_view()),
+    path('travelCommit/<int:id>/photo/', travelCommitPhoto.as_view()),
     path('popular/',travel_popular.as_view(), name='travel_popular'),
     path('recent/',travel_recent.as_view(), name='travel_recent'),
     path('user/<int:id>/', user_travel_list.as_view(), name='user_travel_list'),
@@ -16,3 +17,4 @@ urlpatterns = [
     path('view/<int:id>/',travel_view_update.as_view()),
     path('like/<int:id>/',travel_like_update.as_view()),
 ]
+
