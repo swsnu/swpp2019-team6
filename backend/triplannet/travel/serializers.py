@@ -137,3 +137,21 @@ class TravelPhotoSerializer(serializers.ModelSerializer):
         model = TravelCommit
         fields = ['photo']
 
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        author= User.objects.get(pk=ret['author'])
+        ret['author']=UserSerializer(author).data
+        return ret
+    
+    def create(self, validated_data):
+        return Comment.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.content = validated_data.get('content', instance.content)
+        instance.save()
+        return instance

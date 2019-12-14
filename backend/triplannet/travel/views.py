@@ -289,5 +289,65 @@ class travelCommitPhoto(APIView):
     
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class comments(APIView):
+    
+    def get(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
 
+        if not travel.is_public and request.user.id != travel.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+        comments = travel.comments.all()
+        serializer = CommentSerializer(comments,many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        if not travel.is_public and request.user.id != travel.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, tid, cid, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        comment.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request, tid, cid, *args, **kwrags):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    

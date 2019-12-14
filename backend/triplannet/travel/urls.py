@@ -16,5 +16,7 @@ urlpatterns = [
     path('collaborator/<int:id>/', collaborator_travel_list.as_view(), name='collaborator_travel_list'),
     path('view/<int:id>/',travel_view_update.as_view()),
     path('like/<int:id>/',travel_like_update.as_view()),
+    path('<int:id>/comment/', comments.as_view()),
+    path('<int:tid>/comment/<int:cid>/', comments.as_view()),
 ]
 
