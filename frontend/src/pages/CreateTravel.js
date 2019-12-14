@@ -7,7 +7,7 @@ class CreateTravelPage extends Component {
     return (
       <div className="CreateTravel">
         <HeaderContainer />
-        <CreateTravel />
+        <CreateTravel mode="create" />
       </div>
     );
   }
