@@ -271,14 +271,7 @@ class TravelSettings(APIView):
         travel.allow_comments = request.data.get('allow_comments', travel.allow_comments)
         travel.save()
         serializer = self.serializer_class(travel)
-        return Response(serializer.data)
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> d255785537d7f5569bbc8a893e21d26d332e606a
-
+        return Response(serializer.data)        
         
 class travelCommitPhoto(APIView):
     serializer_class = TravelPhotoSerializer
