@@ -25,7 +25,7 @@ function sleep(delay = 0) {
 
 export default function TagBlock(props) {
   const classes = useStyles();
-  const [options, setOptions] = React.useState(['test', 'test1']);
+  const [options, setOptions] = React.useState([]);
   const [input, setInput] = React.useState();
 
   const handleChange = (event) => {
@@ -77,7 +77,8 @@ export default function TagBlock(props) {
         options={options}
         defaultValue={[]}
         renderTags={(value, getTagProps) => {
-          // console.log(value);
+          console.log(value);
+          props.setTags(value);
           return (
             value.map((option, index) => (
               <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} />

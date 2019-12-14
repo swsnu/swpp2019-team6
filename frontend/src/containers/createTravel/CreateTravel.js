@@ -90,7 +90,6 @@ class CreateTravel extends Component {
         startDate: new Date(),
         endDate: new Date(),
         title: '',
-        tags: [],
       },
       items: this.props.travel.items || [{
         id: 'day-0',
@@ -100,6 +99,7 @@ class CreateTravel extends Component {
           expand: true,
         },
       }],
+      tags: [],
       buttonDraggable: true,
     };
     // if (props.travel.header) {
@@ -118,6 +118,7 @@ class CreateTravel extends Component {
     this.props.createTravel({
       header: this.state.header,
       items: this.state.items,
+      tags: this.state.tags,
     });
   }
 
@@ -126,7 +127,9 @@ class CreateTravel extends Component {
   }
 
   setTags = (_tags) => {
-    this.setState({ header: {...this.state.header, tags: _tags}})
+    if (_tags !== this.state.tags) {
+      this.setState({ tags: _tags });
+    }
   }
 
   setItems = (_items) => {
@@ -277,6 +280,7 @@ class CreateTravel extends Component {
       const newItem = {
         id: '',
         info: {
+          title: '',
           startTime: new Date('2030-01-01T09:00:00'),
           endTime: new Date('2030-01-01T09:00:00'),
           description: '',
