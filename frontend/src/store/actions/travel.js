@@ -75,13 +75,13 @@ const convertItemToPushFormat = (travel) => {
       description: '',
       start_date: '',
       end_date: '',
-	    tags: [],	
-	    block_dist: [],	
-	    travel_embed_vector: [],
+      tags: [],
+      block_dist: [],
+      travel_embed_vector: [],
     },
   };
-  // eslint-disable-next-line no-var	
-	var block_dist = [0, 0, 0, 0, 0];
+  // eslint-disable-next-line no-var
+  var block_dist = [0, 0, 0, 0, 0];
   newTravel.head.title = travel.header.title;
   newTravel.head.summary = travel.header.summary;
   newTravel.head.description = travel.header.description;
@@ -121,8 +121,8 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
         block_dist[4] += 1;
       }
-      newTravel.head.block_dist = block_dist;	
-	    newTravel.head.travel_embed_vector = Array(512).fill(1);
+      newTravel.head.block_dist = block_dist;
+      newTravel.head.travel_embed_vector = Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,
