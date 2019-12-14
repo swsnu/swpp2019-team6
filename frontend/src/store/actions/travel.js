@@ -10,6 +10,7 @@ export const _getTravel = (travel) => {
     description: travel.head.description,
     startDate: travel.head.start_date,
     endDate: travel.head.end_date,
+    tags: travel.head.tags,
   };
   const items = [];
   for (let i = 0; i < travel.head.days.length; i++) {
@@ -74,14 +75,17 @@ const convertItemToPushFormat = (travel) => {
       description: '',
       start_date: '',
       end_date: '',
+      tags: [],
       block_dist: [],
       travel_embed_vector: [],
     },
   };
+  // eslint-disable-next-line no-var
   var block_dist = [0, 0, 0, 0, 0];
   newTravel.head.title = travel.header.title;
   newTravel.head.summary = travel.header.summary;
   newTravel.head.description = travel.header.description;
+  newTravel.head.tags = travel.tags;
   newTravel.head.start_date = _dateFormat(travel.header.startDate);
   newTravel.head.end_date = _dateFormat(travel.header.endDate);
   const dayBlockIndex = [];
@@ -117,8 +121,8 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
         block_dist[4] += 1;
       }
-      newTravel.head.block_dist = block_dist;
-      newTravel.head.travel_embed_vector = Array(512).fill(1);
+      newTravel.head.block_dist=block_dist;
+      newTravel.head.travel_embed_vector=Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,
@@ -202,7 +206,7 @@ export const getOneRawTravel = (travel_id) => {
     return axios.get(`/api/travel/${travel_id}/`)
       .then((res) => {
         axios.put(`/api/travel/view/${travel_id}/`)
-          .then((res2) => {
+          .then((res2) => {          
           });
         dispatch(getOneRawTravel_(res.data));
       })
@@ -219,6 +223,19 @@ export const getCollaboratorTravels = (user_id) => {
     return axios.get(`/api/travel/collaborator/${user_id}/`)
       .then((res) => {
         dispatch(getCollaboratorTravels_(res.data));
+      });
+  };
+};
+
+export const getRecommendedTravels_ = (travels) => {
+  return { type: actionTypes.GET_RECOMMENDED_TRAVELS, travels: travels };
+};
+
+export const getRecommendedTravels = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/recommend/${user_id}/${travel_id}/`)
+      .then((res) => {
+        dispatch(getRecommendedTravels_(res.data));
       });
   };
 };
@@ -245,6 +262,26 @@ export const quitCollaborator = (user_id, travel_id) => {
       .catch(
         (res) => {
           alert('Cannot remove this collaborator');
+        },
+      );
+  };
+};
+
+export const likeTravel_ = (user_id, travel_id) => {
+  return { type: actionTypes.LIKE_TRAVEL, user_id: user_id, travel_id: travel_id };
+};
+
+export const likeTravel = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.put(`/api/travel/like/${travel_id}/`)
+      .then(
+        (res) => {
+          dispatch(likeTravel_(user_id, travel_id));
+        },
+      )
+      .catch(
+        (res) => {
+          alert('Cannot update travel like count');
         },
       );
   };

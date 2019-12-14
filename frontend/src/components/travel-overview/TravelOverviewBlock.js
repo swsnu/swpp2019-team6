@@ -57,7 +57,12 @@ const TravelOverviewBlock = ({
 
   // Have to change onCardClicked to make a link to its detail page
   const onCardClicked = (e) => {
-    history.push(`/travel/${travelOverviewItem.id}`);
+    if (history.location.pathname.startsWith('/travel/')) {
+      history.push(`/travel/${travelOverviewItem.id}`);
+      window.location.reload(); // other travel plan page to my page -> needs refreshing?
+    } else {
+      history.push(`/travel/${travelOverviewItem.id}`);
+    }
   };
 
   const [deleteOpen, setDeleteOpen] = React.useState(false);
