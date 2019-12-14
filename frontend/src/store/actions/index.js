@@ -18,4 +18,5 @@ export {
   getCollaboratorTravels,
   quitCollaborator,
   deleteTravel,
+  getRecommendedTravels,
 } from './travel';

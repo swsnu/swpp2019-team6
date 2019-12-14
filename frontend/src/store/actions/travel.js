@@ -208,6 +208,19 @@ export const getCollaboratorTravels = (user_id) => {
   };
 };
 
+export const getRecommendedTravels_ = (travels) => {
+  return { type: actionTypes.GET_RECOMMENDED_TRAVELS, travels: travels };
+};
+
+export const getRecommendedTravels = (user_id, travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/recommend/${user_id}/${travel_id}/`)
+      .then((res) => {
+        dispatch(getRecommendedTravels_(res.data));
+      });
+  };
+};
+
 export const quitCollaborator_ = (user_id, travel_id) => {
   return { type: actionTypes.QUIT_COLLABORATOR, user_id: user_id, travel_id: travel_id };
 };
