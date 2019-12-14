@@ -126,10 +126,6 @@ class CreateTravel extends Component {
   componentDidMount() {
     if (this.props.mode === 'edit') {
       this.props.getTravel(this.props.match.params.id, true);
-      // console.log(this.props);
-      // this.setHeader(this.props.header);
-      // this.setTags(this.props.tags);
-      // this.setItems(this.props.items);
     }
   }
 
@@ -146,18 +142,10 @@ class CreateTravel extends Component {
   }
 
   handleClickCreate = (e) => {
-
     const form_data = new FormData();
     if (this.state.travelPhoto) {
       form_data.append('photo', this.state.travelPhoto, this.state.travelPhoto.name);
     }
-    this.props.createTravel(
-      {
-        header: this.state.header,
-        items: this.state.items,
-      },
-      form_data,
-    );
 
     if (this.props.mode === 'edit') {
       this.props.editTravel(this.props.id, {
@@ -170,7 +158,7 @@ class CreateTravel extends Component {
         header: this.state.header,
         items: this.state.items,
         tags: this.state.tags,
-      });
+      }, form_data);
     }
   }
 
@@ -398,9 +386,6 @@ class CreateTravel extends Component {
         </Button>
       );
 
-    console.log("items", this.state.items);
-
-
     return (
 
       <Grid container alignItems="center" direction="column" justify="space-around">
@@ -548,7 +533,7 @@ class CreateTravel extends Component {
               </>
             )}
           </Droppable>
-          <TagBlock tags={this.state.tags} setTags={this.setTags} />
+          <TagBlock tags={JSON.stringify(this.state.tags)} setTags={this.setTags} />
           <Grid style={getPaddingStyle()} />
           <Button
             id="create-travel-button"
@@ -748,7 +733,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createTravel: (travel, form_data) => dispatch(actionCreators.createTravel(travel, form_data)),
-    createTravel: (travel) => dispatch(actionCreators.createTravel(travel)),
+    // createTravel: (travel) => dispatch(actionCreators.createTravel(travel)),
     editTravel: (id, travel) => dispatch(actionCreators.editTravel(id, travel)),
     getTravel: (id, isEdit) => dispatch(actionCreators.getTravel(id, isEdit)),
   };

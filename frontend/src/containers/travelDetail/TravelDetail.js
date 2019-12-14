@@ -15,28 +15,31 @@ class TravelDetail extends Component {
 
   render() {
     const items = (this.props.items || []).map((item, index) => {
-      return (
-        <Grid
-          key={index}
-          container
-          alignItems="center"
-          direction="column"
-          justify="space-around"
-        >
-          { item.block_type.startsWith('DAY')
-            && (
-            <TravelDayBlockView
-              item={this.props.items[index]}
-            />
-            )}
-          { !item.block_type.startsWith('DAY')
-            && (
-            <TravelActivityBlockView
-              item={this.props.items[index]}
-            />
-            )}
-        </Grid>
-      );
+      if (!item.info) {
+        return (
+          <Grid
+            key={index}
+            container
+            alignItems="center"
+            direction="column"
+            justify="space-around"
+          >
+            { item.block_type.startsWith('DAY')
+              && (
+              <TravelDayBlockView
+                item={this.props.items[index]}
+              />
+              )}
+            { !item.block_type.startsWith('DAY')
+              && (
+              <TravelActivityBlockView
+                item={this.props.items[index]}
+              />
+              )}
+          </Grid>
+        );
+      }
+      return <div key={index} />;
     });
     return (
       <Grid container alignItems="center" direction="column" justify="space-around">

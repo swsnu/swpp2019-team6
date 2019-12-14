@@ -180,37 +180,36 @@ const convertItemToPushFormat = (travel) => {
   return newTravel;
 };
 
-export const createTravel = (travel, form_data) => {  
-  return (dispatch) => {  
-    const newTravel = convertItemToPushFormat(travel);  
-    console.log(newTravel); 
-    return axios.post('/api/travel/', newTravel, {  
-      headers: {  
-        'Content-Type': 'application/json', 
-      },  
-    })  
-      .then(  
-        (res) => {  
-          dispatch(_createTravel(res.data));  
-          if (form_data) {  
-            axios.put(`/api/travel/travelCommit/${res.data.head.id}/photo/`, form_data, { 
-              headers: {  
-                'content-type': 'multipart/form-data',  
-              },  
-            }).then((res2) => { 
-              console.log(res2.data); 
-            }).catch((err2) => {  
-              console.log(err2);  
-            }); 
-          } 
-          dispatch(push(`/travel/${res.data.id}/`));  
-        },  
-      ).catch(  
-        (err) => {  
-          dispatch(push('/error')); 
-        },  
-      );  
-  };  
+export const createTravel = (travel, form_data) => {
+  return (dispatch) => {
+    const newTravel = convertItemToPushFormat(travel);
+    return axios.post('/api/travel/', newTravel, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(
+        (res) => {
+          dispatch(_createTravel(res.data));
+          if (form_data) {
+            axios.put(`/api/travel/travelCommit/${res.data.head.id}/photo/`, form_data, {
+              headers: {
+                'content-type': 'multipart/form-data',
+              },
+            }).then((res2) => {
+              console.log(res2.data);
+            }).catch((err2) => {
+              console.log(err2);
+            });
+          }
+          dispatch(push(`/travel/${res.data.id}/`));
+        },
+      ).catch(
+        (err) => {
+          dispatch(push('/error'));
+        },
+      );
+  };
 };
 
 export const editTravel = (id, travel) => {
@@ -277,7 +276,7 @@ export const getOneRawTravel = (travel_id) => {
     return axios.get(`/api/travel/${travel_id}/`)
       .then((res) => {
         axios.put(`/api/travel/view/${travel_id}/`)
-          .then((res2) => {          
+          .then((res2) => {
           });
         dispatch(getOneRawTravel_(res.data));
       })

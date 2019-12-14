@@ -75,14 +75,12 @@ export default function TagBlock(props) {
         multiple
         id="tags-standard"
         options={options}
-        searchText={props.tags}
         renderTags={(value, getTagProps) => {
-          // props.setTags(value);
+          props.setTags(value);
           return (
-            props.tags.map((option, index) => (
-              <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} />
-            ))
-          );
+            value.map((option, index) => {
+              return <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} />;
+            }));
         }}
         renderInput={(params) => {
           params.inputProps.value = input;
