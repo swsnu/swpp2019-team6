@@ -232,19 +232,6 @@ export const editTravel = (id, travel) => {
       );
   };
 };
-
-export const getRecommendedTravels_ = (travels) => {
-  return { type: actionTypes.GET_RECOMMENDED_TRAVELS, travels: travels };
-};
-export const getRecommendedTravels = (user_id, travel_id) => {
-  return (dispatch) => {
-    return axios.get(`/api/travel/recommend/${user_id}/${travel_id}/`)
-      .then((res) => {
-        dispatch(getRecommendedTravels_(res.data));
-      });
-  };
-};
-
 export const getPopularTravels_ = (travels) => {
   return { type: actionTypes.GET_POPULAR_TRAVELS, travels: travels };
 };
