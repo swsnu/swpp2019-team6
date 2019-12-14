@@ -2,6 +2,9 @@ from rest_framework import serializers
 
 from .models import *
 from user.serializers import UserSerializer
+from .travelembed import TravelEmbed
+
+travelembed = TravelEmbed()
 
 
 class TravelBlockSerializer(serializers.ModelSerializer):
@@ -41,10 +44,14 @@ class TravelDaySerializer(serializers.ModelSerializer):
 class TravelCommitSerializer(serializers.ModelSerializer):
 
     days = TravelDaySerializer(many=True)
-
+    block_dist = serializers.ListField(
+    child=serializers.IntegerField())
+    travel_embed_vector = serializers.ListField(
+    child=serializers.IntegerField())
     class Meta:
         model = TravelCommit
         exclude = ['register_time']
+        write_only_fields = ('block_dist','travel_embed_vector',)
 
     def validate(self, data):
 
@@ -62,10 +69,8 @@ class TravelCommitSerializer(serializers.ModelSerializer):
 
         days_data = validated_data.pop('days')
         tags = validated_data.pop('tags')
-        print(tags)
         travelCommit = TravelCommit.objects.create(**validated_data)
         travelCommit.tags.add(*tags)
-        print(travelCommit)
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
             if travelDaySerializer.is_valid():
@@ -96,7 +101,7 @@ class TravelSerializer(serializers.ModelSerializer):
         return ret
 
     def create(self, validated_data):
-
+        global travelembed
         head_data = validated_data.pop('head')
         travelCommit_author=head_data.pop('author')
         travelCommit_tags = head_data.pop('tags')
@@ -106,7 +111,10 @@ class TravelSerializer(serializers.ModelSerializer):
         print(head_data['tags'])
 
         head_data['author']=travelCommit_author.id
-
+        a=travelembed.travel_text_embed_vector(head_data['title'])
+        head_data['travel_embed_vector']=a
+        #head_data['travel_embed_vector']=[1 for i in range(512)]
+        
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
             print('TRAVELCOMMIT_SERIALIZER VALID')
