@@ -200,7 +200,13 @@ export const getOneRawTravel_ = (travel) => {
 export const getOneRawTravel = (travel_id) => {
   return (dispatch) => {
     return axios.get(`/api/travel/${travel_id}/`)
-      .then((res) => dispatch(getOneRawTravel_(res.data)))
+      .then((res) => {
+        axios.put(`/api/travel/view/${travel_id}/`)
+          .then((res) => {
+            
+          })
+        dispatch(getOneRawTravel_(res.data))
+      })
       .catch((res) => dispatch(push('/error')));
   };
 };
