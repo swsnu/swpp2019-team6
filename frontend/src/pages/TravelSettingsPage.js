@@ -10,14 +10,21 @@ class TravelSettingsPage extends Component {
     return (
       <div className="TravelSettingsPage">
         <HeaderContainer />
-        <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
-            Travel Settings
-        </Typography>
-        <OneTravelOverview travelId={this.props.match.params.id} />
-        <CollaboratorSettingContainer
-          travelId={this.props.match.params.id}
-        />
-        <TravelSettingContainer travelId={this.props.match.params.id} />
+        <div
+          style={{
+            marginLeft: 24,
+            marginRight: 24,
+          }}
+        >
+          <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
+              Travel Settings
+          </Typography>
+          <OneTravelOverview travelId={this.props.match.params.id} />
+          <CollaboratorSettingContainer
+            travelId={this.props.match.params.id}
+          />
+          <TravelSettingContainer travelId={this.props.match.params.id} />
+        </div>
       </div>
     );
   }

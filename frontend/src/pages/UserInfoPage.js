@@ -25,18 +25,25 @@ class UserInfoPage extends Component {
           id={this.props.match.params.id}
           is_mypage={this.state.is_mypage}
         />
-        <UserTravelOverviewList
-          id={this.props.match.params.id}
-          is_mypage={this.state.is_mypage}
-        />
-        {this.state.is_mypage ? (
-          <CollaboratorTravelOverviewList
+        <div
+          style={{
+            marginLeft: 24,
+            marginRight: 24,
+          }}
+        >
+          <UserTravelOverviewList
             id={this.props.match.params.id}
             is_mypage={this.state.is_mypage}
           />
-        ) : (
-          <span />
-        )}
+          {this.state.is_mypage ? (
+            <CollaboratorTravelOverviewList
+              id={this.props.match.params.id}
+              is_mypage={this.state.is_mypage}
+            />
+          ) : (
+            <span />
+          )}
+        </div>
       </div>
     );
   }

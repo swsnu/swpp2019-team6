@@ -85,11 +85,20 @@ class RecommendedTravelOverviewList extends Component {
 
   render() {
     return (
-      <div className="recommendedTravelOverview">
+      <div
+        className="recommendedTravelOverview"
+        style={{
+          margin: 32,
+        }}
+      >
         <Typography variant="h5" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
             Recommended Plans
         </Typography>
-        <TravelOverviewList travelList={this.props.recommendedTravels} is_mypage={false} />
+        <TravelOverviewList
+          travelList={this.props.recommendedTravels}
+          is_mypage={false}
+          forRecommend
+        />
         {/* <TravelOverviewList travelList={tempTravelList} is_mypage={false} /> */}
       </div>
     );

@@ -11,6 +11,7 @@ class InfoTravelDetailContainer extends Component {
 
   onForkButtonClicked = (user_id, travel_id) => {
     console.log(`user ${user_id} wants to fork travel ${travel_id}.`);
+    console.log(this.props.thisTravel);
   }
 
   render() {
