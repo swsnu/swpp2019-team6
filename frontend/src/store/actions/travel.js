@@ -175,7 +175,7 @@ const convertItemToPushFormat = (travel) => {
     }
     newTravel.head.days.push(newDayBlock);
   }
-  if (block_dist.reduce((a, b) => a + b, 0) === 0){
+  if (block_dist.reduce((a, b) => a + b, 0) === 0) {
     block_dist = [1, 1, 1, 1, 1];
   }
   newTravel.head.block_dist = block_dist;
