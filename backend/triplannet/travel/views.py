@@ -6,6 +6,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 from .models import Travel, TravelCommit, TravelDayList, Tag
 from .serializers import *
@@ -195,7 +196,7 @@ class travel_popular(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        travels = Travel.objects.filter(head__isnull=False).order_by('-likes')[:min(Travel.objects.count(),10)]
+        travels = Travel.objects.filter(head__isnull=False).annotate(num_likes=Count('likes')).order_by('-num_likes')[:min(Travel.objects.count(),10)]
         serializer = TravelSerializer(travels,many=True)
         return Response(serializer.data)
 
