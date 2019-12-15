@@ -16,7 +16,7 @@ class CommentsLikeContainer extends Component {
 
   onLikeButtonClicked = (user_id, travel_id) => {
     console.log(`user ${user_id} likes travel ${travel_id}!`);
-    // this.props.likeTravel(user_id, travel_id);
+    this.props.likeTravel(user_id, travel_id);
   }
 
   onCommentFieldChanged = (e) => {

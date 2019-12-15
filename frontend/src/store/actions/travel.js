@@ -162,8 +162,6 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
         block_dist[4] += 1;
       }
-      newTravel.head.block_dist = block_dist;
-      newTravel.head.travel_embed_vector = Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,
@@ -177,6 +175,11 @@ const convertItemToPushFormat = (travel) => {
     }
     newTravel.head.days.push(newDayBlock);
   }
+  if (block_dist.reduce((a, b) => a + b, 0) === 0){
+    block_dist = [1, 1, 1, 1, 1];
+  }
+  newTravel.head.block_dist = block_dist;
+  newTravel.head.travel_embed_vector = Array(512).fill(1);
   return newTravel;
 };
 
