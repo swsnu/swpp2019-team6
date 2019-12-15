@@ -153,6 +153,19 @@ const TravelOverviewBlock = ({
                   ) : (
                     <span />
                   )}
+                  {travelOverviewItem.head.tags ? (
+                    <div>
+                      { travelOverviewItem.head.tags.map((tag, i) => {
+                        return (
+                          <Typography variant="body2" color="primary" key={i} style={{ display: 'inline' }}>
+                            {' #'}{tag}
+                          </Typography>
+                        );
+                      }) }
+                    </div>
+                  ) : (
+                    <span />
+                  )}
                   <Typography paragraph variant="body1">
                     {travelOverviewItem.head.summary}
                   </Typography>
