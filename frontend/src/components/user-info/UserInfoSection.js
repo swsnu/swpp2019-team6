@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(6),
     },
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'rgb(210,230,230)',
   },
   avatar: {
     width: 100,
@@ -65,7 +65,7 @@ const UserInfoSection = ({
               </Grid>
               <Grid item xs>
                 {is_mypage ? (
-                  <Button size="medium" variant="contained" color="secondary" onClick={onEditButtonClicked}>
+                  <Button size="medium" variant="outlined" color="primary" onClick={onEditButtonClicked}>
                   Edit
                   </Button>
                 ) : (<div />)}

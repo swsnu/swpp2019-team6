@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(6),
     },
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'rgb(200,230,210)',
   },
   infoTravelSection2: {
     position: 'relative',
@@ -113,7 +113,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                   </Typography>
                 )}
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   className={classes.button}
                   onClick={() => {
                     onForkButtonClicked(thisUser.id, travel.id);

@@ -88,7 +88,7 @@ class RecommendedTravelOverviewList extends Component {
       <div
         className="recommendedTravelOverview"
         style={{
-          margin: 24,
+          margin: 32,
         }}
       >
         <Typography variant="h5" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
