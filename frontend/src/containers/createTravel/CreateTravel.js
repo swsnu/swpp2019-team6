@@ -306,6 +306,7 @@ class CreateTravel extends Component {
         (item, idx) => ((index === idx)
           ? ((key === 'title') && { ...item, info: { ...item.info, title: value } })
           || ((key === 'description') && { ...item, info: { ...item.info, description: value } })
+          || ((key === 'time') && { ...item, info: { ...item.info, time: value } })
           || ((key === 'expand') && { ...item, info: { ...item.info, expand: value } })
           || ((key === 'startTime') && { ...item, info: { ...item.info, startTime: value } })
           || ((key === 'endTime') && { ...item, info: { ...item.info, endTime: value } })
