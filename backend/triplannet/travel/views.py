@@ -42,15 +42,27 @@ class travel_fork(APIView):
             travel = Travel.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
+        
+        travel_data=TravelSerializer(travel).data
+        travel_data.pop('likes')
+        travel_data.pop('collaborators')
+        travel_data.pop('views')
+        travel_data['fork_parent']=id
+        photo=travel_data['head'].pop('photo')[1:]
+        photo=photo[photo.find('/')+1:]
+        travel_data['author']=request.user.id
+        travel_data['head']['author']=request.user.id
+        travel_data['head'].pop('travel')
 
-        travel.fork_parent__id = id        
-        travel.pk=None  
-        travel=travel.save()
+        serializer= TravelSerializer(data=travel_data)
+        if serializer.is_valid():
+            travel=serializer.save()
+            head=travel.head
+            head.photo=photo
+            head.save()    
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
 
-
-        serializer = TravelSerializer(travel)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)        
-
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class travel_view_update(APIView):
     def put(self, request,id, *args, **kwargs):
