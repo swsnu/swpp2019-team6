@@ -141,7 +141,7 @@ class TravelPhotoSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-
+        fields = '__all__'
     def to_representation(self, obj):
         ret = super().to_representation(obj)
         author= User.objects.get(pk=ret['author'])
