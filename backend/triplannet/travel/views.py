@@ -36,6 +36,22 @@ class travel(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class travel_fork(APIView):
+    def post(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        travel.fork_parent__id = id        
+        travel.pk=None  
+        travel=travel.save()
+
+
+        serializer = TravelSerializer(travel)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)        
+
+
 class travel_view_update(APIView):
     def put(self, request,id, *args, **kwargs):
         try:
