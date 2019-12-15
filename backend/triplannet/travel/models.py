@@ -191,3 +191,4 @@ class Comment(models.Model):
         related_name = 'comments'
     )
     content = models.TextField()
+    register_time =models.DateTimeField(auto_now_add=True)

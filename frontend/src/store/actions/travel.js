@@ -379,3 +379,26 @@ export const deleteTravel = (travel_id) => {
       );
   };
 };
+
+export const getComments_ = (comments) => {
+  return { type: actionTypes.GET_COMMENTS, comments: comments };
+};
+
+export const getComments = (travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/${travel_id}/comment/`)
+      .then((res) => dispatch(getComments_(res.data)))
+      .catch((err) => console.log(err));
+  };
+};
+
+export const postComment_ = (comment) => {
+  return { type: actionTypes.POST_COMMENT, comment: comment };
+};
+export const postComment = (travel_id, comment) => {
+  return (dispatch) => {
+    return axios.post(`/api/travel/${travel_id}/comment/`, comment)
+      .then((res) => dispatch(postComment_(res.data)))
+      .catch((err) => alert('Cannot add comment'));
+  };
+};
