@@ -39,7 +39,7 @@ class PopularTravelOverviewList extends Component {
   render() {
     return (
       <div className="popularTravelOverview">
-        <Typography variant="h4" gutterBottom align="left" color="primary" style={{ marginTop: 8, padding: 16 }}>
+        <Typography variant="h4" align="left" color="primary" style={{ marginTop: 8, padding: 16 }}>
             Popular
         </Typography>
         <TravelOverviewList travelList={this.props.popularTravels} is_mypage={false} />
