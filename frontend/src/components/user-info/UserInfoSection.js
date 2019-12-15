@@ -56,7 +56,7 @@ const UserInfoSection = ({
                   @{user.nickname}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
-                  since {user.register_date}
+                  since {user.register_date.split('T')[0]}
                 </Typography>
                 <Typography variaint="subtitle2" color="primary" gutterBottom>
                   {userTravelsLength} plans
