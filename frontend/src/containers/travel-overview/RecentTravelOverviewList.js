@@ -63,7 +63,7 @@ class RecentTravelOverviewList extends Component {
   render() {
     return (
       <div className="recentTravelOverview">
-        <Typography variant="h4" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
+        <Typography variant="h4" align="left" color="primary" style={{ marginTop: 8, padding: 16 }}>
             Recent
         </Typography>
         <TravelOverviewList travelList={this.props.recentTravels} is_mypage={false} />

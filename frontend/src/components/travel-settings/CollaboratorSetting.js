@@ -46,7 +46,7 @@ const CollaboratorSetting = ({
 
   return (
     <div>
-      <Typography variant="h5" align="left" color="textPrimary" style={{ marginTop: 16, marginLeft: 8 }}>
+      <Typography variant="h5" align="left" color="textPrimary" style={{ marginTop: 24, marginLeft: 8 }}>
           Collaborators
       </Typography>
       <Typography variant="subtitle1" align="left" color="textSecondary" style={{ paddingLeft: 8 }}>
@@ -68,7 +68,7 @@ const CollaboratorSetting = ({
       <Button
         size="medium"
         variant="contained"
-        color="secondary"
+        color="primary"
         className={classes.allMargin}
         onClick={handleClickOpen}
         id="addButton"

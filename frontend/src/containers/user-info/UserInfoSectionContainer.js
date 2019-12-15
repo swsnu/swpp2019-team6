@@ -34,6 +34,7 @@ class UserInfoSectionContainer extends Component {
 
   onEditButtonClicked = () => {
     this.props.history.push(`/user/${this.props.user.id}/edit`);
+    console.log(this.props.userTravels);
   }
 
   render() {
@@ -46,6 +47,7 @@ class UserInfoSectionContainer extends Component {
               user={this.props.user}
               is_mypage={this.props.is_mypage}
               onEditButtonClicked={this.onEditButtonClicked}
+              userTravelsLength={!this.props.userTravels ? 0 : this.props.userTravels.length}
             />
           </div>
         ) : (
@@ -63,6 +65,7 @@ class UserInfoSectionContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
+    userTravels: state.travel.userTravels,
   };
 };
 

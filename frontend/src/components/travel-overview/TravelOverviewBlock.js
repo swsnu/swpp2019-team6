@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     height: 240,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 180,
     },
   },
@@ -150,6 +150,19 @@ const TravelOverviewBlock = ({
                         <span />
                       )}
                     </span>
+                  ) : (
+                    <span />
+                  )}
+                  {travelOverviewItem.head.tags ? (
+                    <div>
+                      { travelOverviewItem.head.tags.map((tag, i) => {
+                        return (
+                          <Typography variant="body2" color="primary" key={i} style={{ display: 'inline' }}>
+                            {' #'}{tag}
+                          </Typography>
+                        );
+                      }) }
+                    </div>
                   ) : (
                     <span />
                   )}

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   settingSection: {
     border: '2px solid grey',
     margin: theme.spacing(1),
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -39,8 +40,8 @@ const TravelSetting = ({
         </Typography>
         <FormControl component="fieldset" className={classes.formControl}>
           <RadioGroup aria-label="Visibility" name="visibility" value={String(isPublic)} onChange={handleVisibilityChange}>
-            <FormControlLabel value="true" control={<Radio id="RadioPublic" />} label="Public" />
-            <FormControlLabel value="false" control={<Radio id="RadioPrivate" />} label="Private" />
+            <FormControlLabel value="true" control={<Radio id="RadioPublic" color="primary" />} label="Public" />
+            <FormControlLabel value="false" control={<Radio id="RadioPrivate" color="primary" />} label="Private" />
           </RadioGroup>
         </FormControl>
 
@@ -50,8 +51,8 @@ const TravelSetting = ({
 
         <FormControl component="fieldset" className={classes.formControl}>
           <RadioGroup aria-label="Comments" name="comments" value={String(allowComments)} onChange={handleAllowCommentsChange}>
-            <FormControlLabel value="true" control={<Radio id="RadioAllow" />} label="Allow" />
-            <FormControlLabel value="false" control={<Radio id="RadioDisallow" />} label="Disallow" />
+            <FormControlLabel value="true" control={<Radio id="RadioAllow" color="primary" />} label="Allow" />
+            <FormControlLabel value="false" control={<Radio id="RadioDisallow" color="primary" />} label="Disallow" />
           </RadioGroup>
         </FormControl>
         <div>
@@ -59,7 +60,7 @@ const TravelSetting = ({
             id="ApplyButton"
             size="medium"
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.allMargin}
             onClick={onApplyButtonClicked}
           >
