@@ -25,8 +25,17 @@ class EditUserInfoPage extends Component {
       <>
         {this.state.currentUser && this.state.is_mypage ? (
           <div className="editUserInfoPage">
+
             <HeaderContainer />
-            <EditUserInfoContainer id={this.props.match.params.id} />
+            <div
+              style={{
+                marginLeft: 24,
+                marginRight: 24,
+              }}
+            >
+              <EditUserInfoContainer id={this.props.match.params.id} />
+            </div>
+
           </div>
         ) : (
           <Redirect to="/error" />
