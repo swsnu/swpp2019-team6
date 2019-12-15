@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 // boolean check: is_mypage
 // function: onEditButtonClicked
 const UserInfoSection = ({
-  user, is_mypage, onEditButtonClicked,
+  user, is_mypage, onEditButtonClicked, userTravelsLength,
 }) => {
   const classes = useStyles();
 
@@ -59,7 +59,8 @@ const UserInfoSection = ({
                   since {user.register_date}
                 </Typography>
                 <Typography variaint="subtitle2" color="primary" gutterBottom>
-                  {user.num_plans} plans, {user.num_likes} likes, forked {user.num_forked} times
+                  {userTravelsLength} plans
+                  {/* {user.num_likes} likes, forked {user.num_forked} times */}
                 </Typography>
               </Grid>
               <Grid item xs>
