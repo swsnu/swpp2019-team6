@@ -58,7 +58,7 @@ describe('<TravelActivityBlockEdit />', () => {
     expect(handleBlockInfo).toHaveBeenCalledTimes(1);
   });
 
-  it('should change end Time', () => {
+  xit('should change end Time', () => {
     const component = shallow(<TravelActivityBlockEdit
       items={items}
       index={index}

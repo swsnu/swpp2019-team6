@@ -436,3 +436,14 @@ export const postComment = (travel_id, comment) => {
       .catch((err) => alert('Cannot add comment'));
   };
 };
+
+export const forkTravel = (travel_id, user_id) => {
+  return (dispatch) => {
+    return axios.post(`/api/travel/${travel_id}/fork/`)
+      .then((res) => {
+        alert('FORKED !');
+        dispatch(push(`/user/${user_id}/`));
+      })
+      .catch((err) => alert('Cannot fork travel'));
+  };
+};

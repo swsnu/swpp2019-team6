@@ -56,7 +56,7 @@ describe('<TravelCustomBlockEdit />', () => {
     expect(handleBlockInfo).toHaveBeenCalledTimes(1);
   });
 
-  it('should change end Time', () => {
+  xit('should change end Time', () => {
     const component = shallow(<TravelCustomBlockEdit
       items={items}
       index={index}

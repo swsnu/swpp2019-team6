@@ -14,7 +14,7 @@ jest.mock('../containers/common/HeaderContainer', () => {
 jest.mock('../containers/createTravel/CreateTravel', () => {
   return jest.fn((props) => {
     return (
-      <div className="createTravel" />
+      <div className="editTravel" />
     );
   });
 });
@@ -23,6 +23,6 @@ jest.mock('../containers/createTravel/CreateTravel', () => {
 describe('EditTravelPage', () => {
   it('should render.', () => {
     const component = shallow(<EditTravelPage />);
-    expect(component.find('.CreateTravel').length).toBe(1);
+    expect(component.find('.editTravel').length).toBe(1);
   });
 });
