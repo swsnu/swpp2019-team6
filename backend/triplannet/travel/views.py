@@ -392,3 +392,21 @@ class comments_id(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class travelCommit_id(APIView):
+
+    def get(self, request, travel_id, travelcommit_id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=travel_id)
+            travelCommit = TravelCommit.objects.get(pk=travelcommit_id)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        if travelCommit.travel.id != travel.id:
+            raise Http404
+
+        travel.head=travelCommit
+        
+        serializer = TravelSerializer(travel)
+        return Response(serializer.data, status=status.HTTP_200_OK)
