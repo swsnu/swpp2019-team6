@@ -175,7 +175,7 @@ const convertItemToPushFormat = (travel) => {
     }
     newTravel.head.days.push(newDayBlock);
   }
-  if (block_dist.reduce((a, b) => a + b, 0) === 0){
+  if (block_dist.reduce((a, b) => a + b, 0) === 0) {
     block_dist = [1, 1, 1, 1, 1];
   }
   newTravel.head.block_dist = block_dist;
@@ -380,5 +380,28 @@ export const deleteTravel = (travel_id) => {
           alert('Cannot remove this travel');
         },
       );
+  };
+};
+
+export const getComments_ = (comments) => {
+  return { type: actionTypes.GET_COMMENTS, comments: comments };
+};
+
+export const getComments = (travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/${travel_id}/comment/`)
+      .then((res) => dispatch(getComments_(res.data)))
+      .catch((err) => console.log(err));
+  };
+};
+
+export const postComment_ = (comment) => {
+  return { type: actionTypes.POST_COMMENT, comment: comment };
+};
+export const postComment = (travel_id, comment) => {
+  return (dispatch) => {
+    return axios.post(`/api/travel/${travel_id}/comment/`, comment)
+      .then((res) => dispatch(postComment_(res.data)))
+      .catch((err) => alert('Cannot add comment'));
   };
 };

@@ -6,6 +6,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 from .models import Travel, TravelCommit, TravelDayList, Tag
 from .serializers import *
@@ -201,7 +202,7 @@ class travel_popular(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        travels = Travel.objects.filter(head__isnull=False).order_by('-likes')[:min(Travel.objects.count(),10)]
+        travels = Travel.objects.filter(head__isnull=False).annotate(num_likes=Count('likes')).order_by('-num_likes')[:min(Travel.objects.count(),10)]
         serializer = TravelSerializer(travels,many=True)
         return Response(serializer.data)
 
@@ -295,5 +296,71 @@ class travelCommitPhoto(APIView):
     
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class comments(APIView):
+    
+    def get(self, request, tid, *args, **kwargs):
 
+        try:
+            travel = Travel.objects.get(pk=tid)
+        except ObjectDoesNotExist:
+            raise Http404
 
+        if not travel.is_public and request.user.id != travel.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        comments = travel.comments.all()
+        serializer = CommentSerializer(comments,many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, tid, *args, **kwargs):
+        
+        try:
+            travel = Travel.objects.get(pk=tid)
+        except ObjectDoesNotExist:
+            raise Http404
+        if not travel.is_public and request.user.id != travel.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class comments_id(APIView):
+
+    def delete(self, request, tid, cid, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        comment.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request, tid, cid, *args, **kwrags):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -8,6 +8,7 @@ const initialState = {
   oneRawTravel: {},
   collaboratorTravels: [],
   recommendedTravels: [],
+  comments: [],
 };
 const initialAction = {
   type: null,
@@ -54,6 +55,10 @@ const travel = (state = initialState, action = initialAction) => {
       };
       return { ...state, oneRawTravel: modified };
     }
+    case actionTypes.GET_COMMENTS:
+      return { ...state, comments: action.comments };
+    case actionTypes.POST_COMMENT:
+      return { ...state, comments: state.comments.concat(action.comment) };
     default:
       break;
   }

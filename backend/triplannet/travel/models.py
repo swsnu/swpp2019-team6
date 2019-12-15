@@ -45,10 +45,6 @@ class Travel(models.Model):
     last_modified_time = models.DateTimeField(auto_now=True)
     is_public = models.BooleanField(default=True)
     allow_comments = models.BooleanField(default=True)
-    # comments = models.ManyToManyField(
-    #     Comment,
-    #     related_name = 'travel_set',
-    # )
     likes = models.ManyToManyField(
         User,
         related_name = 'like_of_Travel',
@@ -183,3 +179,16 @@ class TravelBlockList(models.Model):
         unique_together = ['TravelDay','TravelBlock','index']
 
 
+class Comment(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name = 'comments',
+    )
+    travel = models.ForeignKey(
+        Travel,
+        on_delete=models.CASCADE,
+        related_name = 'comments'
+    )
+    content = models.TextField()
+    register_time =models.DateTimeField(auto_now_add=True)

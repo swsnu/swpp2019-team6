@@ -21,4 +21,6 @@ export {
   deleteTravel,
   getRecommendedTravels,
   likeTravel,
+  getComments,
+  postComment,
 } from './travel';
