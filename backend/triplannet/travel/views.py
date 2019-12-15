@@ -129,19 +129,25 @@ class travel_recommend_byuser(APIView):
 
         travel_embed_vector_view_list=list(travel_embed_vector_view)
         travel_embed_vector=list(map(sum,zip(*travel_embed_vector_view_list)))
-
-        block_sim=cosine_similarity([block_dist],list(block_dist_nonview))
-
-        block_sim=block_sim[0]
-        embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
-        embed_sim=embed_sim[0]
-        tot_sim=block_sim+embed_sim
-        sim_maxinds=tot_sim.argsort()[-3:][::-1]
-        id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
-        id_list=list(id_list)
-        sim_id_list=[id_list[i] for i in sim_maxinds]
-
-        return Response(sim_id_list)
+        if len(list(block_dist_nonview))>0 :
+            block_sim=cosine_similarity([block_dist],list(block_dist_nonview))
+            block_sim=block_sim[0]
+            embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
+            embed_sim=embed_sim[0]
+            tot_sim=block_sim+embed_sim
+            sim_maxinds=tot_sim.argsort()[-3:][::-1]
+            id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
+            id_list=list(id_list)
+            sim_id_list=[id_list[i] for i in sim_maxinds]
+        else :
+            sim_id_list=[]
+        recommend_travel_list=[]
+        for id in sim_id_list:
+            travel = Travel.objects.get(pk=id)
+            serializer = self.serializer_class(travel)
+            recommend_travel_list.append(serializer.data)
+        
+        return Response(recommend_travel_list)
 
 
 class travel_recommend_bytravel(APIView):
