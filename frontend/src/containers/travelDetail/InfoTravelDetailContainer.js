@@ -11,7 +11,7 @@ class InfoTravelDetailContainer extends Component {
 
   onForkButtonClicked = (user_id, travel_id) => {
     console.log(`user ${user_id} wants to fork travel ${travel_id}.`);
-    console.log(this.props.thisTravel);
+    this.props.forkTravel(travel_id, user_id);
   }
 
   render() {
@@ -42,6 +42,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getOneRawTravel: (id) => dispatch(actionCreators.getOneRawTravel(id)),
+    forkTravel: (travel_id, user_id) => dispatch(actionCreators.forkTravel(travel_id, user_id)),
   };
 };
 

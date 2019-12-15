@@ -23,4 +23,5 @@ export {
   likeTravel,
   getComments,
   postComment,
+  forkTravel,
 } from './travel';
