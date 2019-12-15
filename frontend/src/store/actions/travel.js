@@ -183,6 +183,34 @@ const convertItemToPushFormat = (travel) => {
   return newTravel;
 };
 
+const errorMessage = (err) => {
+  let errMsg = '';
+  const { response } = err;
+  if (response.status === 400) {
+    const { head } = response.data;
+    const { title } = head;
+    const { tags } = head;
+    errMsg += title ? '- Fill in the title\n' : '';
+    errMsg += tags ? '- Add at least one tag\n' : '';
+
+    if (head.days) {
+      // eslint-disable-next-line array-callback-return
+      head.days.map((day, i) => {
+        if (day.blocks) {
+          // eslint-disable-next-line array-callback-return
+          day.blocks.map((block, j) => {
+            errMsg += block.title ? `- Fill in the title of Day ${i + 1} Block ${j + 1}\n` : '';
+            errMsg += block.start_location ? `- Fill in the start location of Day ${i + 1} Block ${j + 1}\n` : '';
+          });
+        }
+      });
+    }
+  } else {
+    errMsg = response.data;
+  }
+  return errMsg;
+};
+
 export const createTravel = (travel, form_data) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
@@ -209,11 +237,14 @@ export const createTravel = (travel, form_data) => {
         },
       ).catch(
         (err) => {
-          dispatch(push('/error'));
+          const message = errorMessage(err);
+          console.log(message);
+          alert(message);
         },
       );
   };
 };
+
 
 export const editTravel = (id, travel) => {
   return (dispatch) => {
