@@ -55,10 +55,14 @@ class TagTestCase(TestCase):
         self.assertEqual(len(data), 4)
 
 
+class RecommendTestCase(TestCase):
+
     def test_get_recommend(self):
         client = Client()
         token = self.get_token(client)
-
+        
+        tag='tag1'
+        Tag.objects.create(word=tag)
         temp_embed_vector= [1 for i in range(512)]
         temp_data1 = {
             "fork_parent": "",
@@ -85,6 +89,7 @@ class TagTestCase(TestCase):
             ],
                 "block_dist": [0,1,2,3,4],
                 "travel_embed_vector":temp_embed_vector,
+                "tags" : [tag,],
                 "title": "new york",
                 "summary": "",
                 "description": "",
