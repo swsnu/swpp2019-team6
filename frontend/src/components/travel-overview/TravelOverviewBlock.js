@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     height: 240,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 180,
     },
   },
