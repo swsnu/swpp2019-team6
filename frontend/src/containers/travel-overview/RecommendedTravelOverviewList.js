@@ -89,8 +89,8 @@ class RecommendedTravelOverviewList extends Component {
         <Typography variant="h5" gutterBottom align="left" color="textPrimary" style={{ marginTop: 8, padding: 16 }}>
             Recommended Plans
         </Typography>
-        {/* <TravelOverviewList travelList={this.props.recommendedTravels} is_mypage={false} /> */}
-        <TravelOverviewList travelList={tempTravelList} is_mypage={false} />
+        <TravelOverviewList travelList={this.props.recommendedTravels} is_mypage={false} />
+        {/* <TravelOverviewList travelList={tempTravelList} is_mypage={false} /> */}
       </div>
     );
   }
@@ -98,12 +98,12 @@ class RecommendedTravelOverviewList extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // onGetRecommendedTravels: (user_id, travel_id) => dispatch(
-    //   actionCreators.getRecommendedTravels(user_id, travel_id),
-    // ),
-    onGetRecommendedTravels: (user_id, travel_id) => {
-      console.log(user_id, travel_id);
-    },
+    onGetRecommendedTravels: (user_id, travel_id) => dispatch(
+      actionCreators.getRecommendedTravels(user_id, travel_id),
+    ),
+    // onGetRecommendedTravels: (user_id, travel_id) => {
+    //   console.log(user_id, travel_id);
+    // },
   };
 };
 
