@@ -257,16 +257,21 @@ class user_travel_list(APIView):
 
     def get(self, request, id, *args, **kwargs):
         travels = Travel.objects.filter(author_id=id, head__isnull=False)
-        for travel in travels:
+        isHeadList = [1]*travels.count()
+        for i, travel in enumerate(travels):
             travelcommits = TravelCommit.objects.filter(travel_id=travel.id, author_id=request.user.id)
             if travelcommits:
                 head=travelcommits.order_by('-register_time')[0]
                 if head.register_time > travel.head.register_time:
                     travel.head=head
-                
+                    isHeadList[i]=0
+
         serializer = TravelSerializer(travels, many=True)
-        
-        return Response(serializer.data)
+        data=serializer.data
+        for i, travel in enumerate(data):
+            travel['head']['is_head']=isHeadList[i]
+
+        return Response(data)
 
 class collaborator_travel_list(APIView):
     def get(self, request, id, *args, **kwargs):
@@ -369,8 +374,14 @@ class comments(APIView):
         except ObjectDoesNotExist:
             raise Http404
 
-        if not travel.is_public and request.user.id != travel.author.id:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        # if not travel.is_public:
+        #     accessibleUserIDs = [travel.author.id]
+        #     if travel.collaborators:
+        #         accessibleUserIDs += [user.id for user in travel.collaborators]
+        #     print(accessibleUserIDs)
+        #     if not request.user.id in accessibleUserIDs:
+        #         return Response(status=status.HTTP_404_NOT_FOUND)
+        #         # return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         comments = travel.comments.all()
         serializer = CommentSerializer(comments,many=True)
@@ -382,8 +393,8 @@ class comments(APIView):
             travel = Travel.objects.get(pk=tid)
         except ObjectDoesNotExist:
             raise Http404
-        if not travel.is_public and request.user.id != travel.author.id:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        # if not travel.is_public and request.user.id != travel.author.id:
+        #     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         request.data['author']=request.user.id
         request.data['travel']=travel.id
@@ -446,3 +457,23 @@ class travelCommit_id(APIView):
         
         serializer = TravelSerializer(travel)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class travel_commit_merge(APIView):
+    def put(self, request, id, *args, **kwargs):
+        try:
+            travelCommit=TravelCommit.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        try:
+            travel=travelCommit.travel
+        except KeyError:
+            raise Http404
+
+        if request.user.id != travelCommit.author.id :
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        travel.head=travelCommit
+        travel.save()
+        serializer=TravelSerializer(travel)
+        
+        return Response(serializer.data,status=status.HTTP_200_OK)

@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:id>/travelCommit/', travel_id_travelCommit.as_view()),
     path('<int:travel_id>/travelCommit/<int:travelcommit_id>/', travelCommit_id.as_view()),
     path('travelCommit/<int:id>/photo/', travelCommitPhoto.as_view()),
+    path('travelCommit/<int:id>/merge/',travel_commit_merge.as_view()),
     path('popular/',travel_popular.as_view(), name='travel_popular'),
     path('recent/',travel_recent.as_view(), name='travel_recent'),
     path('user/<int:id>/', user_travel_list.as_view(), name='user_travel_list'),

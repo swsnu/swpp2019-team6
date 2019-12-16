@@ -23,6 +23,10 @@ class UserTravelOverviewList extends Component {
     this.props.history.push('/travel/create/');
   }
 
+  onClickMerge = (travelCommit_id) => {
+    this.props.mergeTravelCommit(travelCommit_id);
+  }
+
   onDeleteClicked = (travel_id) => {
     // console.log('onDeleteClicked!');
     // console.log(travel_id);
@@ -51,6 +55,7 @@ class UserTravelOverviewList extends Component {
               travelList={this.props.userTravels}
               is_mypage={this.props.is_mypage}
               onDeleteClicked={this.onDeleteClicked}
+              onClickMerge={this.onClickMerge}
             />
             <Divider style={{ margin: 8 }} />
           </div>
@@ -69,6 +74,9 @@ const mapDispatchToProps = (dispatch) => {
     onGetUserTravels: (user_id) => dispatch(actionCreators.getUserTravels(user_id)),
     onDeleteTravel: (travel_id) => {
       dispatch(actionCreators.deleteTravel(travel_id));
+    },
+    mergeTravelCommit: (travelCommit_id) => {
+      dispatch(actionCreators.mergeTravelCommit(travelCommit_id))
     },
   };
 };

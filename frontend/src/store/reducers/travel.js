@@ -59,6 +59,15 @@ const travel = (state = initialState, action = initialAction) => {
       return { ...state, comments: action.comments };
     case actionTypes.POST_COMMENT:
       return { ...state, comments: state.comments.concat(action.comment) };
+    case actionTypes.MERGE_TRAVEL_COMMIT: {
+      const mergedTravels = state.userTravels.map((travel_) => {
+        if (travel_.id === action.travel.id) {
+          return action.travel;
+        }
+        return travel_;
+      });
+      return { ...state, userTravels: mergedTravels };
+    }
     default:
       break;
   }
