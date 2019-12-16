@@ -10,6 +10,7 @@ urlpatterns = [
     path('travelCommit/<int:id>/photo/', travelCommitPhoto.as_view()),
     path('popular/',travel_popular.as_view(), name='travel_popular'),
     path('recent/',travel_recent.as_view(), name='travel_recent'),
+    path('search/<query>/', TravelSearch.as_view(), name='travel_search'),
     path('user/<int:id>/', user_travel_list.as_view(), name='user_travel_list'),
     path('tag/<tag>/', TagList.as_view(), name='tag_list'),
     path('recommend/<int:id>/', travel_recommend_bytravel.as_view(), name='travel_recommend_bytravel'),
