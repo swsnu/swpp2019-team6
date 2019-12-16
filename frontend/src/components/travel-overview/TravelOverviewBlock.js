@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       height: 180,
     },
+    border: 'rgb(208,233,245) solid 1.5px',
+    borderRadius: '7px',
   },
   cardDetails: {
     flex: 1,
