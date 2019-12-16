@@ -93,6 +93,7 @@ class travel_like_update(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class travel_id(APIView):
+
     serializer_class = TravelSerializer
 
     def get(self,request,id, *args, **kwargs):
@@ -100,9 +101,19 @@ class travel_id(APIView):
             travel = Travel.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
+        
+        travelCommits = TravelCommit.objects.filter(travel_id=travel.id, author_id=request.user.id)
+        if travelCommits:
+            head=travelCommits.order_by('-register_time')[0]
+            if head.register_time > travel.head.register_time:
+                travel.head=head
+            serializer = self.serializer_class(travel)
+            return Response(serializer.data)
+        else :
+            serializer = self.serializer_class(travel)
+            return Response(serializer.data)
+        
 
-        serializer = self.serializer_class(travel)
-        return Response(serializer.data)
 
     def put(self, request, id, *args, **kwargs):
         try:
@@ -246,7 +257,15 @@ class user_travel_list(APIView):
 
     def get(self, request, id, *args, **kwargs):
         travels = Travel.objects.filter(author_id=id, head__isnull=False)
+        for travel in travels:
+            travelcommits = TravelCommit.objects.filter(travel_id=travel.id, author_id=request.user.id)
+            if travelcommits:
+                head=travelcommits.order_by('-register_time')[0]
+                if head.register_time > travel.head.register_time:
+                    travel.head=head
+                
         serializer = TravelSerializer(travels, many=True)
+        
         return Response(serializer.data)
 
 class collaborator_travel_list(APIView):
