@@ -70,7 +70,7 @@ describe('TravelSearch', () => {
   });
 
   it('should render empty contents.', () => {
-    const component = mount(
+    searchTravelList = (
       <Provider store={getMockStore({}, {}, {})}>
         <ConnectedRouter history={history}>
           <Switch>
@@ -79,6 +79,7 @@ describe('TravelSearch', () => {
         </ConnectedRouter>
       </Provider>
     );
+    const component = mount(searchTravelList);
     expect(component.find('.travelOverviewList').length).toBe(1);
   });
 });
