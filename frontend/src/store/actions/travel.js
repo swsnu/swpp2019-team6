@@ -185,7 +185,6 @@ const convertItemToPushFormat = (travel) => {
 };
 
 const errorMessage = (err, isEdit) => {
-  console.log(err);
   let errMsg = '';
   const { response } = err;
   if (response.status === 400) {
@@ -230,9 +229,7 @@ export const createTravel = (travel, form_data) => {
                 'content-type': 'multipart/form-data',
               },
             }).then((res2) => {
-              console.log(res2.data);
             }).catch((err2) => {
-              console.log(err2);
             });
           }
           dispatch(push(`/travel/${res.data.id}/`));
@@ -240,8 +237,6 @@ export const createTravel = (travel, form_data) => {
       ).catch(
         (err) => {
           const message = errorMessage(err, false);
-          console.log(message);
-          alert(message);
         },
       );
   };
@@ -264,9 +259,7 @@ export const editTravel = (id, travel, form_data) => {
                 'content-type': 'multipart/form-data',
               },
             }).then((res2) => {
-              console.log(res2.data);
             }).catch((err2) => {
-              console.log(err2);
             });
           }
           dispatch(push(`/travel/${id}/`));
@@ -274,7 +267,6 @@ export const editTravel = (id, travel, form_data) => {
       ).catch(
         (err) => {
           const message = errorMessage(err, true);
-          alert(message);
         },
       );
   };
@@ -390,7 +382,6 @@ export const quitCollaborator = (user_id, travel_id) => {
       )
       .catch(
         (res) => {
-          alert('Cannot remove this collaborator');
         },
       );
   };
@@ -410,7 +401,6 @@ export const likeTravel = (user_id, travel_id) => {
       )
       .catch(
         (res) => {
-          alert('Cannot update travel like count');
         },
       );
   };
@@ -433,7 +423,6 @@ export const deleteTravel = (travel_id) => {
       )
       .catch(
         (res) => {
-          alert('Cannot remove this travel');
         },
       );
   };
@@ -446,8 +435,7 @@ export const getComments_ = (comments) => {
 export const getComments = (travel_id) => {
   return (dispatch) => {
     return axios.get(`/api/travel/${travel_id}/comment/`)
-      .then((res) => dispatch(getComments_(res.data)))
-      .catch((err) => console.log(err));
+      .then((res) => dispatch(getComments_(res.data)));
   };
 };
 
@@ -457,8 +445,7 @@ export const postComment_ = (comment) => {
 export const postComment = (travel_id, comment) => {
   return (dispatch) => {
     return axios.post(`/api/travel/${travel_id}/comment/`, comment)
-      .then((res) => dispatch(postComment_(res.data)))
-      .catch((err) => alert('Cannot add comment'));
+      .then((res) => dispatch(postComment_(res.data)));
   };
 };
 
@@ -466,10 +453,8 @@ export const forkTravel = (travel_id, user_id) => {
   return (dispatch) => {
     return axios.post(`/api/travel/${travel_id}/fork/`)
       .then((res) => {
-        alert('FORKED !');
         dispatch(push(`/user/${user_id}/`));
-      })
-      .catch((err) => alert('Cannot fork travel'));
+      });
   };
 };
 
@@ -482,8 +467,6 @@ export const mergeTravelCommit = (travelCommit_id) => {
     return axios.put(`/api/travel/travelCommit/${travelCommit_id}/merge/`)
       .then((res) => {
         mergeTravelCommit_(res.data);
-        alert('MERGE SUCCESS!');
-      })
-      .catch((err) => alert('MERGE FAIL'));
+      });
   };
 };

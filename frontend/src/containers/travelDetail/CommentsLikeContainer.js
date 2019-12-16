@@ -15,7 +15,6 @@ class CommentsLikeContainer extends Component {
   }
 
   onLikeButtonClicked = (user_id, travel_id) => {
-    console.log(`user ${user_id} likes travel ${travel_id}!`);
     this.props.likeTravel(user_id, travel_id);
   }
 
@@ -25,7 +24,6 @@ class CommentsLikeContainer extends Component {
 
   onCommentConfirmClicked = (e) => {
     this.props.postComment(this.props.match.params.id, { content: this.state.commentField });
-    console.log(`Confirmed: ${this.state.commentField}`);
   }
 
   render() {
