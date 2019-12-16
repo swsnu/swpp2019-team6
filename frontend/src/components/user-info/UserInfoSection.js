@@ -25,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-
+  userNicknameSection: {
+    color: 'rgb(1,60,140)',
+  },
 }));
 
 // user: nickname, register_date, status_messaage, num_plans, num_likes, num_forked, user_photo
@@ -52,7 +54,7 @@ const UserInfoSection = ({
           <Grid item xs container direction="column">
             <Grid item container dirction="row" wrap="nowrap">
               <Grid xs={10} item zeroMinWidth>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom className={classes.userNicknameSection}>
                   @{user.nickname}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
