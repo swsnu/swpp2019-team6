@@ -10,6 +10,7 @@ export const _getTravel = (travel, isEdit) => {
     description: travel.head.description,
     startDate: new Date(travel.head.start_date),
     endDate: new Date(travel.head.end_date),
+    photo: travel.head.photo,
   };
   const items = [];
   for (let i = 0; i < travel.head.days.length; i++) {
@@ -162,8 +163,6 @@ const convertItemToPushFormat = (travel) => {
         block_type = 'ACM';
         block_dist[4] += 1;
       }
-      newTravel.head.block_dist = block_dist;
-      newTravel.head.travel_embed_vector = Array(512).fill(1);
       newDayBlock.blocks.push({
         title: travel.items[j].info.title,
         description: travel.items[j].info.description,
@@ -177,7 +176,41 @@ const convertItemToPushFormat = (travel) => {
     }
     newTravel.head.days.push(newDayBlock);
   }
+  if (block_dist.reduce((a, b) => a + b, 0) === 0) {
+    block_dist = [1, 1, 1, 1, 1];
+  }
+  newTravel.head.block_dist = block_dist;
+  newTravel.head.travel_embed_vector = Array(512).fill(1);
   return newTravel;
+};
+
+const errorMessage = (err, isEdit) => {
+  console.log(err);
+  let errMsg = '';
+  const { response } = err;
+  if (response.status === 400) {
+    const head = isEdit ? response.data : response.data.head;
+    const { title } = head;
+    const { tags } = head;
+    errMsg += title ? '- Fill in the title\n' : '';
+    errMsg += tags ? '- Add at least one tag\n' : '';
+
+    if (head.days) {
+      // eslint-disable-next-line array-callback-return
+      head.days.map((day, i) => {
+        if (day.blocks) {
+          // eslint-disable-next-line array-callback-return
+          day.blocks.map((block, j) => {
+            errMsg += block.title ? `- Fill in the title of Day ${i + 1} Block ${j + 1}\n` : '';
+            errMsg += block.start_location ? `- Fill in the start location of Day ${i + 1} Block ${j + 1}\n` : '';
+          });
+        }
+      });
+    }
+  } else {
+    errMsg = response.data;
+  }
+  return errMsg;
 };
 
 export const createTravel = (travel, form_data) => {
@@ -206,27 +239,42 @@ export const createTravel = (travel, form_data) => {
         },
       ).catch(
         (err) => {
-          dispatch(push('/error'));
+          const message = errorMessage(err, false);
+          console.log(message);
+          alert(message);
         },
       );
   };
 };
 
-export const editTravel = (id, travel) => {
+
+export const editTravel = (id, travel, form_data) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
-    return axios.put(`/api/travel/${id}/`, newTravel.head, {
+    return axios.post(`/api/travel/${id}/travelCommit/`, newTravel.head, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(
         (res) => {
+          if (form_data) {
+            axios.put(`/api/travel/travelCommit/${res.data.id}/photo/`, form_data, {
+              headers: {
+                'content-type': 'multipart/form-data',
+              },
+            }).then((res2) => {
+              console.log(res2.data);
+            }).catch((err2) => {
+              console.log(err2);
+            });
+          }
           dispatch(push(`/travel/${id}/`));
         },
       ).catch(
-        (res) => {
-          dispatch(push('/error'));
+        (err) => {
+          const message = errorMessage(err, true);
+          alert(message);
         },
       );
   };
@@ -388,5 +436,54 @@ export const deleteTravel = (travel_id) => {
           alert('Cannot remove this travel');
         },
       );
+  };
+};
+
+export const getComments_ = (comments) => {
+  return { type: actionTypes.GET_COMMENTS, comments: comments };
+};
+
+export const getComments = (travel_id) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/${travel_id}/comment/`)
+      .then((res) => dispatch(getComments_(res.data)))
+      .catch((err) => console.log(err));
+  };
+};
+
+export const postComment_ = (comment) => {
+  return { type: actionTypes.POST_COMMENT, comment: comment };
+};
+export const postComment = (travel_id, comment) => {
+  return (dispatch) => {
+    return axios.post(`/api/travel/${travel_id}/comment/`, comment)
+      .then((res) => dispatch(postComment_(res.data)))
+      .catch((err) => alert('Cannot add comment'));
+  };
+};
+
+export const forkTravel = (travel_id, user_id) => {
+  return (dispatch) => {
+    return axios.post(`/api/travel/${travel_id}/fork/`)
+      .then((res) => {
+        alert('FORKED !');
+        dispatch(push(`/user/${user_id}/`));
+      })
+      .catch((err) => alert('Cannot fork travel'));
+  };
+};
+
+export const mergeTravelCommit_ = (travel) => {
+  return { type: actionTypes.MERGE_TRAVEL_COMMIT, travel: travel };
+};
+
+export const mergeTravelCommit = (travelCommit_id) => {
+  return (dispatch) => {
+    return axios.put(`/api/travel/travelCommit/${travelCommit_id}/merge/`)
+      .then((res) => {
+        mergeTravelCommit_(res.data);
+        alert('MERGE SUCCESS!');
+      })
+      .catch((err) => alert('MERGE FAIL'));
   };
 };

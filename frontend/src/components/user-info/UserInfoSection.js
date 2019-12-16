@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(6),
     },
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'rgb(210,230,230)',
   },
   avatar: {
     width: 100,
@@ -25,14 +25,16 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-
+  userNicknameSection: {
+    color: 'rgb(1,60,140)',
+  },
 }));
 
 // user: nickname, register_date, status_messaage, num_plans, num_likes, num_forked, user_photo
 // boolean check: is_mypage
 // function: onEditButtonClicked
 const UserInfoSection = ({
-  user, is_mypage, onEditButtonClicked,
+  user, is_mypage, onEditButtonClicked, userTravelsLength,
 }) => {
   const classes = useStyles();
 
@@ -52,19 +54,20 @@ const UserInfoSection = ({
           <Grid item xs container direction="column">
             <Grid item container dirction="row" wrap="nowrap">
               <Grid xs={10} item zeroMinWidth>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom className={classes.userNicknameSection}>
                   @{user.nickname}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary">
-                  since {user.register_date}
+                  since {user.register_date.split('T')[0]}
                 </Typography>
                 <Typography variaint="subtitle2" color="primary" gutterBottom>
-                  {user.num_plans} plans, {user.num_likes} likes, forked {user.num_forked} times
+                  {userTravelsLength} plans
+                  {/* {user.num_likes} likes, forked {user.num_forked} times */}
                 </Typography>
               </Grid>
               <Grid item xs>
                 {is_mypage ? (
-                  <Button size="medium" variant="contained" color="secondary" onClick={onEditButtonClicked}>
+                  <Button size="medium" variant="outlined" color="primary" onClick={onEditButtonClicked}>
                   Edit
                   </Button>
                 ) : (<div />)}

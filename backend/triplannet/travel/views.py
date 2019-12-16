@@ -6,6 +6,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 from .models import Travel, TravelCommit, TravelDayList, Tag
 from .serializers import *
@@ -34,6 +35,34 @@ class travel(APIView):
         print('TRAVELSERIALIZER INVALID')
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class travel_fork(APIView):
+    def post(self, request, id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        travel_data=TravelSerializer(travel).data
+        travel_data.pop('likes')
+        travel_data.pop('collaborators')
+        travel_data.pop('views')
+        travel_data['fork_parent']=id
+        photo=travel_data['head'].pop('photo')[1:]
+        photo=photo[photo.find('/')+1:]
+        travel_data['author']=request.user.id
+        travel_data['head']['author']=request.user.id
+        travel_data['head'].pop('travel')
+
+        serializer= TravelSerializer(data=travel_data)
+        if serializer.is_valid():
+            travel=serializer.save()
+            head=travel.head
+            head.photo=photo
+            head.save()    
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class travel_view_update(APIView):
     def put(self, request,id, *args, **kwargs):
@@ -64,6 +93,7 @@ class travel_like_update(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class travel_id(APIView):
+
     serializer_class = TravelSerializer
 
     def get(self,request,id, *args, **kwargs):
@@ -71,9 +101,19 @@ class travel_id(APIView):
             travel = Travel.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
+        
+        travelCommits = TravelCommit.objects.filter(travel_id=travel.id, author_id=request.user.id)
+        if travelCommits:
+            head=travelCommits.order_by('-register_time')[0]
+            if head.register_time > travel.head.register_time:
+                travel.head=head
+            serializer = self.serializer_class(travel)
+            return Response(serializer.data)
+        else :
+            serializer = self.serializer_class(travel)
+            return Response(serializer.data)
+        
 
-        serializer = self.serializer_class(travel)
-        return Response(serializer.data)
 
     def put(self, request, id, *args, **kwargs):
         try:
@@ -116,7 +156,7 @@ class travel_recommend_byuser(APIView):
 
         user_view=user.views_of_Travel
         user_view_idlist=list(user_view.values_list('id', flat=True))
-        user_view_idlist=user_view_idlist+[travel_id]
+        user_view_idlist=[travel_id]
 
         block_dist_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__block_dist', flat=True)
         travel_embed_vector_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__travel_embed_vector', flat=True)
@@ -129,19 +169,25 @@ class travel_recommend_byuser(APIView):
 
         travel_embed_vector_view_list=list(travel_embed_vector_view)
         travel_embed_vector=list(map(sum,zip(*travel_embed_vector_view_list)))
-
-        block_sim=cosine_similarity([block_dist],list(block_dist_nonview))
-
-        block_sim=block_sim[0]
-        embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
-        embed_sim=embed_sim[0]
-        tot_sim=block_sim+embed_sim
-        sim_maxinds=tot_sim.argsort()[-3:][::-1]
-        id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
-        id_list=list(id_list)
-        sim_id_list=[id_list[i] for i in sim_maxinds]
-
-        return Response(sim_id_list)
+        if len(list(block_dist_nonview))>0 :
+            block_sim=cosine_similarity([block_dist],list(block_dist_nonview))
+            block_sim=block_sim[0]
+            embed_sim=cosine_similarity([travel_embed_vector], list(travel_embed_vector_nonview))
+            embed_sim=embed_sim[0]
+            tot_sim=block_sim+embed_sim
+            sim_maxinds=tot_sim.argsort()[-3:][::-1]
+            id_list=Travel.objects.exclude(pk__in=user_view_idlist).values_list('id', flat=True)
+            id_list=list(id_list)
+            sim_id_list=[id_list[i] for i in sim_maxinds]
+        else :
+            sim_id_list=[]
+        recommend_travel_list=[]
+        for id in sim_id_list:
+            travel = Travel.objects.get(pk=id)
+            serializer = self.serializer_class(travel)
+            recommend_travel_list.append(serializer.data)
+        
+        return Response(recommend_travel_list)
 
 
 class travel_recommend_bytravel(APIView):
@@ -195,7 +241,7 @@ class travel_popular(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        travels = Travel.objects.filter(head__isnull=False).order_by('-likes')[:min(Travel.objects.count(),10)]
+        travels = Travel.objects.filter(head__isnull=False).annotate(num_likes=Count('likes')).order_by('-num_likes')[:min(Travel.objects.count(),10)]
         serializer = TravelSerializer(travels,many=True)
         return Response(serializer.data)
 
@@ -211,8 +257,21 @@ class user_travel_list(APIView):
 
     def get(self, request, id, *args, **kwargs):
         travels = Travel.objects.filter(author_id=id, head__isnull=False)
+        isHeadList = [1]*travels.count()
+        for i, travel in enumerate(travels):
+            travelcommits = TravelCommit.objects.filter(travel_id=travel.id, author_id=request.user.id)
+            if travelcommits:
+                head=travelcommits.order_by('-register_time')[0]
+                if head.register_time > travel.head.register_time:
+                    travel.head=head
+                    isHeadList[i]=0
+
         serializer = TravelSerializer(travels, many=True)
-        return Response(serializer.data)
+        data=serializer.data
+        for i, travel in enumerate(data):
+            travel['head']['is_head']=isHeadList[i]
+
+        return Response(data)
 
 class collaborator_travel_list(APIView):
     def get(self, request, id, *args, **kwargs):
@@ -282,12 +341,139 @@ class travelCommitPhoto(APIView):
             travelCommit = TravelCommit.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
-        serializer = self.serializer_class(travelCommit, data=request.data)
+
+        if request.data :
+            serializer = self.serializer_class(travelCommit, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            
+            return Response(serializer.data)
+
+        travel = travelCommit.travel
+        travelCommits=TravelCommit.objects.filter(travel_id=travel.id).order_by('-register_time')
+        
+        if travelCommits.count() == 1:
+            # post for the first time
+            travelCommit.photo= None
+        else :
+            lastestCommit = travelCommits[1]
+            travelCommit.photo = lastestCommit.photo
+        
+        travelCommit.save()
+        return Response(travelCommit.photo, status=status.HTTP_200_OK)
+        
+        
+
+class comments(APIView):
+    
+    def get(self, request, tid, *args, **kwargs):
+
+        try:
+            travel = Travel.objects.get(pk=tid)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        # if not travel.is_public:
+        #     accessibleUserIDs = [travel.author.id]
+        #     if travel.collaborators:
+        #         accessibleUserIDs += [user.id for user in travel.collaborators]
+        #     print(accessibleUserIDs)
+        #     if not request.user.id in accessibleUserIDs:
+        #         return Response(status=status.HTTP_404_NOT_FOUND)
+        #         # return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        comments = travel.comments.all()
+        serializer = CommentSerializer(comments,many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, tid, *args, **kwargs):
+        
+        try:
+            travel = Travel.objects.get(pk=tid)
+        except ObjectDoesNotExist:
+            raise Http404
+        # if not travel.is_public and request.user.id != travel.author.id:
+        #     return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-    
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class comments_id(APIView):
+
+    def delete(self, request, tid, cid, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        comment.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request, tid, cid, *args, **kwrags):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class travelCommit_id(APIView):
 
+    def get(self, request, travel_id, travelcommit_id, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=travel_id)
+            travelCommit = TravelCommit.objects.get(pk=travelcommit_id)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        if travelCommit.travel.id != travel.id:
+            raise Http404
+
+        travel.head=travelCommit
+        
+        serializer = TravelSerializer(travel)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class travel_commit_merge(APIView):
+    def put(self, request, id, *args, **kwargs):
+        try:
+            travelCommit=TravelCommit.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise Http404
+        try:
+            travel=travelCommit.travel
+        except KeyError:
+            raise Http404
+
+        if request.user.id != travelCommit.author.id :
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        travel.head=travelCommit
+        travel.save()
+        serializer=TravelSerializer(travel)
+        
+        return Response(serializer.data,status=status.HTTP_200_OK)

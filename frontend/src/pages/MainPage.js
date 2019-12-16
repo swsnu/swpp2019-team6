@@ -8,8 +8,15 @@ class MainPage extends Component {
     return (
       <div className="mainPage">
         <HeaderContainer />
-        <PopularTravelOverviewList />
-        <RecentTravelOverviewList />
+        <div
+          style={{
+            marginLeft: 24,
+            marginRight: 24,
+          }}
+        >
+          <PopularTravelOverviewList />
+          <RecentTravelOverviewList />
+        </div>
       </div>
     );
   }

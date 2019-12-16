@@ -22,4 +22,8 @@ export {
   deleteTravel,
   getRecommendedTravels,
   likeTravel,
+  getComments,
+  postComment,
+  forkTravel,
+  mergeTravelCommit,
 } from './travel';

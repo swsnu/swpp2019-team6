@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(6),
     },
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'rgb(200,230,210)',
   },
   infoTravelSection2: {
     position: 'relative',
@@ -42,6 +42,13 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
     height: 400,
   },
+  button: {
+    marginTop: theme.spacing(1),
+  },
+  title: {
+    marginBottom: theme.spacing(1),
+    color: 'rgb(45,59,39)',
+  },
 }));
 
 const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
@@ -66,15 +73,15 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                 <span />
               )}
               <Grid item>
-                <Typography variant="h4">
+                <Typography variant="h4" className={classes.title}>
                   {travel.head.title}
                 </Typography>
                 <Typography variant="subtitle2">
                   {travel.head.start_date} ~ {travel.head.end_date}
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" gutterBottom>
                   {travel.head.summary}
-                  summary comes here
+                  {/* summary comes here */}
                 </Typography>
                 <ButtonBase onClick={() => { onAuthorClicked(travel.author.id); }}>
                   <Grid item container direction="row" alignItems="center">
@@ -91,11 +98,24 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                 <Typography variant="h6">
                   Tags
                 </Typography>
-                <Typography>
-                  tags come here
-                </Typography>
+                {travel.head.tags ? (
+                  <div>
+                    { travel.head.tags.map((tag, i) => {
+                      return (
+                        <Typography variant="body1" color="primary" key={i} style={{ display: 'inline' }}>
+                          {' #'}{tag}
+                        </Typography>
+                      );
+                    }) }
+                  </div>
+                ) : (
+                  <Typography variant="body1" color="primary">
+                    No tags found
+                  </Typography>
+                )}
                 <Button
-                  variant="contained"
+                  variant="outlined"
+                  className={classes.button}
                   onClick={() => {
                     onForkButtonClicked(thisUser.id, travel.id);
                   }}

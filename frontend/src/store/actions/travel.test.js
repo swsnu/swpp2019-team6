@@ -156,7 +156,7 @@ describe('Travel Action', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('create travel catch error when response error', (done) => {
+  xit('create travel catch error when response error', (done) => {
     const spy = jest.spyOn(axios, 'post')
       .mockImplementation((url, user_info, headers) => {
         return new Promise((resolve, reject) => {
@@ -172,7 +172,7 @@ describe('Travel Action', () => {
       done();
     });
   });
-  it('create travel should post travel info correctly', (done) => {
+  xit('create travel should post travel info correctly', (done) => {
     const spy = jest.spyOn(axios, 'post')
       .mockImplementation((url, travel, headers) => {
         return new Promise((resolve, reject) => {

@@ -26,9 +26,11 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     height: 240,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 180,
     },
+    border: 'rgb(208,233,245) solid 1.5px',
+    borderRadius: '7px',
   },
   cardDetails: {
     flex: 1,
@@ -52,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 // onQuitClicked: for collaborators
 const TravelOverviewBlock = ({
   travelOverviewItem, is_mypage, history, for_collaborator, onDeleteClicked, onQuitClicked,
+  onClickMerge,
 }) => {
   const classes = useStyles();
 
@@ -153,6 +156,19 @@ const TravelOverviewBlock = ({
                   ) : (
                     <span />
                   )}
+                  {travelOverviewItem.head.tags ? (
+                    <div>
+                      { travelOverviewItem.head.tags.map((tag, i) => {
+                        return (
+                          <Typography variant="body2" color="primary" key={i} style={{ display: 'inline' }}>
+                            {' #'}{tag}
+                          </Typography>
+                        );
+                      }) }
+                    </div>
+                  ) : (
+                    <span />
+                  )}
                   <Typography paragraph variant="body1">
                     {travelOverviewItem.head.summary}
                   </Typography>
@@ -164,38 +180,83 @@ const TravelOverviewBlock = ({
             {/* for author */}
             {(is_mypage && !for_collaborator) ? (
               <div>
-                <Grid container justify="space-between">
-                  <Grid item xs={4}>
-                    <Button
-                      variant="outlined"
-                      color="default"
-                      fullWidth
-                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
-                    >
+                {!travelOverviewItem.head.is_head ? (
+                  <Grid container justify="space-between">
+                    <Grid item xs={3}>
+                      <Button
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                        onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                      >
                   Edit
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      fullWidth
-                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
-                    >
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
+                      >
                   Settings
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      fullWidth
-                      onClick={handleClickDeleteOpen}
-                    >
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={handleClickDeleteOpen}
+                      >
                   Delete
-                    </Button>
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={() => onClickMerge(travelOverviewItem.head.id)}
+                      >
+                  Merge
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
+                ) : (
+                  <Grid container justify="space-between">
+                    <Grid item xs={4}>
+                      <Button
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                        onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                      >
+                  Edit
+                      </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        onClick={() => { history.push(`/travel/${travelOverviewItem.id}/settings`); }}
+                      >
+                  Settings
+                      </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={handleClickDeleteOpen}
+                      >
+                  Delete
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
                 <Dialog
                   open={deleteOpen}
                   onClose={handleDeleteClose}
@@ -224,28 +285,63 @@ const TravelOverviewBlock = ({
             {/* for collaborator */}
             {(is_mypage && for_collaborator) ? (
               <div>
-                <Grid container justify="space-between">
-                  <Grid item xs={6}>
-                    <Button
-                      variant="outlined"
-                      color="default"
-                      fullWidth
-                      onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
-                    >
+                {travelOverviewItem.head.is_head ? (
+                  <Grid container justify="space-between">
+                    <Grid item xs={6}>
+                      <Button
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                        onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                      >
                   Edit
-                    </Button>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      fullWidth
-                      onClick={handleClickQuitOpen}
-                    >
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={handleClickQuitOpen}
+                      >
                   Quit
-                    </Button>
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
+                ) : (
+                  <Grid container justify="space-between">
+                    <Grid item xs={4}>
+                      <Button
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                        onClick={() => { history.push(`/travel/${travelOverviewItem.id}/edit`); }}
+                      >
+                  Edit
+                      </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={handleClickQuitOpen}
+                      >
+                  Quit
+                      </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={() => onClickMerge(travelOverviewItem.head.id)}
+                      >
+                  Merge
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
                 <Dialog
                   open={quitOpen}
                   onClose={handleQuitClose}
