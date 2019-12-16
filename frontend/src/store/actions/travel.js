@@ -253,6 +253,17 @@ export const getRecentTravels = () => {
   };
 };
 
+export const _getSearchTravels = (travels) => {
+  return { type: actionTypes.GET_SEARCH_TRAVELS, travels: travels };
+};
+
+export const getSearchTravel = (query) => {
+  return (dispatch) => {
+    return axios.get(`/api/travel/search/${query}/`)
+      .then((res) => dispatch(_getSearchTravels(res.data)));
+  };
+};
+
 export const getUserTravels_ = (travels) => {
   return { type: actionTypes.GET_USER_TRAVELS, travels: travels };
 };

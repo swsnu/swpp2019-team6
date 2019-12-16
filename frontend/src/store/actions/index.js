@@ -15,6 +15,7 @@ export {
   getPopularTravels,
   getRecentTravels,
   getUserTravels,
+  getSearchTravel,
   getOneRawTravel,
   getCollaboratorTravels,
   quitCollaborator,

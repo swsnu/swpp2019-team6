@@ -27,7 +27,7 @@ function App(props) {
           <Route path="/travel/:id/" exact render={() => <TravelDetail history={props.history} />} />
           <Route path="/travel/:id/edit/" exact render={() => <EditTravel />} />
           <Route path="/travel/:id/settings" exact component={TravelSettingsPage} />
-          <Route path="/search" exact component={SearchPage} />
+          <Route path="/search/:query/" exact render={() => <SearchPage history={props.history} />} />
           <Route path="/user/:id" exact component={UserInfoPage} />
           <Route path="/user/:id/edit" exact component={EditUserInfoPage} />
           <Route render={() => <div id="error"><h1>Not Found</h1></div>} />
