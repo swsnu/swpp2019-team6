@@ -28,6 +28,8 @@ const travel = (state = initialState, action = initialAction) => {
       return { ...state, popularTravels: action.travels };
     case actionTypes.GET_RECENT_TRAVELS:
       return { ...state, recentTravels: action.travels };
+    case actionTypes.GET_SEARCH_TRAVELS:
+      return { ...state, searchTravels: action.travels };
     case actionTypes.GET_USER_TRAVELS:
       return { ...state, userTravels: action.travels };
     case actionTypes.GET_ONE_RAW_TRAVEL:
