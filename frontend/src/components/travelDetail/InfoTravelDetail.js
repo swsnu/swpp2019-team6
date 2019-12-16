@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: theme.spacing(1),
+    color: 'rgb(45,59,39)',
   },
 }));
 
@@ -80,7 +81,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
                   {travel.head.summary}
-                  summary comes here
+                  {/* summary comes here */}
                 </Typography>
                 <ButtonBase onClick={() => { onAuthorClicked(travel.author.id); }}>
                   <Grid item container direction="row" alignItems="center">

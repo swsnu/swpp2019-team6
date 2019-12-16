@@ -24,4 +24,5 @@ export {
   getComments,
   postComment,
   forkTravel,
+  mergeTravelCommit,
 } from './travel';

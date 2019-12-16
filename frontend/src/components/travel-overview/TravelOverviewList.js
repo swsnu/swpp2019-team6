@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TravelOverviewList = ({
-  travelList, is_mypage, for_collaborator, onDeleteClicked, onQuitClicked, forRecommend,
+  travelList, is_mypage, for_collaborator, onDeleteClicked, onQuitClicked, forRecommend, onClickMerge,
 }) => {
   const classes = useStyles();
   return (
@@ -44,6 +44,7 @@ const TravelOverviewList = ({
                       for_collaborator={for_collaborator}
                       onDeleteClicked={onDeleteClicked}
                       onQuitClicked={onQuitClicked}
+                      onClickMerge={onClickMerge}
                     />
                   </Grid>
                 ))}

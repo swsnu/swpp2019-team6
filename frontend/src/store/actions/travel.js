@@ -269,7 +269,6 @@ export const editTravel = (id, travel, form_data) => {
               console.log(err2);
             });
           }
-          alert(res.data.id);
           dispatch(push(`/travel/${id}/`));
         },
       ).catch(
@@ -460,5 +459,20 @@ export const forkTravel = (travel_id, user_id) => {
         dispatch(push(`/user/${user_id}/`));
       })
       .catch((err) => alert('Cannot fork travel'));
+  };
+};
+
+export const mergeTravelCommit_ = (travel) => {
+  return { type: actionTypes.MERGE_TRAVEL_COMMIT, travel: travel };
+};
+
+export const mergeTravelCommit = (travelCommit_id) => {
+  return (dispatch) => {
+    return axios.put(`/api/travel/travelCommit/${travelCommit_id}/merge/`)
+      .then((res) => {
+        mergeTravelCommit_(res.data);
+        alert('MERGE SUCCESS!');
+      })
+      .catch((err) => alert('MERGE FAIL'));
   };
 };
