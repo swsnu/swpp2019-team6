@@ -462,3 +462,18 @@ export const forkTravel = (travel_id, user_id) => {
       .catch((err) => alert('Cannot fork travel'));
   };
 };
+
+export const mergeTravelCommit_ = (travel) => {
+  return { type: actionTypes.MERGE_TRAVEL_COMMIT, travel: travel };
+};
+
+export const mergeTravelCommit = (travelCommit_id) => {
+  return (dispatch) => {
+    return axios.put(`/api/travel/travelCommit/${travelCommit_id}/merge/`)
+      .then((res) => {
+        mergeTravelCommit_(res.data);
+        alert('MERGE SUCCESS!');
+      })
+      .catch((err) => alert('MERGE FAIL'));
+  };
+};

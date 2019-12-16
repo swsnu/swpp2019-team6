@@ -257,16 +257,21 @@ class user_travel_list(APIView):
 
     def get(self, request, id, *args, **kwargs):
         travels = Travel.objects.filter(author_id=id, head__isnull=False)
-        for travel in travels:
+        isHeadList = [1]*travels.count()
+        for i, travel in enumerate(travels):
             travelcommits = TravelCommit.objects.filter(travel_id=travel.id, author_id=request.user.id)
             if travelcommits:
                 head=travelcommits.order_by('-register_time')[0]
                 if head.register_time > travel.head.register_time:
                     travel.head=head
-                
+                    isHeadList[i]=0
+
         serializer = TravelSerializer(travels, many=True)
-        
-        return Response(serializer.data)
+        data=serializer.data
+        for i, travel in enumerate(data):
+            travel['head']['is_head']=isHeadList[i]
+
+        return Response(data)
 
 class collaborator_travel_list(APIView):
     def get(self, request, id, *args, **kwargs):

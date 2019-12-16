@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 // onQuitClicked: for collaborators
 const TravelOverviewBlock = ({
   travelOverviewItem, is_mypage, history, for_collaborator, onDeleteClicked, onQuitClicked,
+  onClickMerge,
 }) => {
   const classes = useStyles();
 
@@ -214,7 +215,7 @@ const TravelOverviewBlock = ({
                         variant="contained"
                         color="primary"
                         fullWidth
-                        onClick={() => alert('merge')}
+                        onClick={() => onClickMerge(travelOverviewItem.head.id)}
                       >
                   Merge
                       </Button>
@@ -332,7 +333,7 @@ const TravelOverviewBlock = ({
                         variant="contained"
                         color="primary"
                         fullWidth
-                        onClick={handleClickQuitOpen}
+                        onClick={() => onClickMerge(travelOverviewItem.head.id)}
                       >
                   Merge
                       </Button>
