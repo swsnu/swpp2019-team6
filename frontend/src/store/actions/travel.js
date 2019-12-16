@@ -10,6 +10,7 @@ export const _getTravel = (travel, isEdit) => {
     description: travel.head.description,
     startDate: new Date(travel.head.start_date),
     endDate: new Date(travel.head.end_date),
+    photo: travel.head.photo,
   };
   const items = [];
   for (let i = 0; i < travel.head.days.length; i++) {
@@ -183,11 +184,12 @@ const convertItemToPushFormat = (travel) => {
   return newTravel;
 };
 
-const errorMessage = (err) => {
+const errorMessage = (err, isEdit) => {
+  console.log(err);
   let errMsg = '';
   const { response } = err;
   if (response.status === 400) {
-    const { head } = response.data;
+    const head = isEdit ? response.data : response.data.head;
     const { title } = head;
     const { tags } = head;
     errMsg += title ? '- Fill in the title\n' : '';
@@ -237,7 +239,7 @@ export const createTravel = (travel, form_data) => {
         },
       ).catch(
         (err) => {
-          const message = errorMessage(err);
+          const message = errorMessage(err, false);
           console.log(message);
           alert(message);
         },
@@ -249,18 +251,20 @@ export const createTravel = (travel, form_data) => {
 export const editTravel = (id, travel) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
-    return axios.put(`/api/travel/${id}/`, newTravel.head, {
+    return axios.post(`/api/travel/${id}/travelCommit/`, newTravel.head, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(
         (res) => {
+          alert(res.data.id)
           dispatch(push(`/travel/${id}/`));
         },
       ).catch(
-        (res) => {
-          dispatch(push('/error'));
+        (err) => {
+          const message = errorMessage(err, true);
+          alert(message);
         },
       );
   };

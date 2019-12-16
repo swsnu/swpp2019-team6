@@ -123,9 +123,15 @@ class CreateTravel extends Component {
     this.setButtonDraggable = this.setButtonDraggable.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.mode === 'edit') {
-      this.props.getTravel(this.props.match.params.id, true);
+      await this.props.getTravel(this.props.match.params.id, true);
+      let photo = null;
+      if (this.props.header) {
+        photo = this.props.header.photo;
+      }
+      console.log(this.props.header)
+      this.setState({ imagePreviewUrl: photo });
     }
   }
 
