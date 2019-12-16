@@ -336,12 +336,28 @@ class travelCommitPhoto(APIView):
             travelCommit = TravelCommit.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
-        serializer = self.serializer_class(travelCommit, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        
+        if request.data['photo'] :
+            serializer = self.serializer_class(travelCommit, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            
             return Response(serializer.data)
-    
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        travel = TravelCommit.travel
+        travelCommits=travel.travelCommits.all().order_by('-register_time')
+        if travelCommits.count() == 1:
+            # post for the first time
+            travelCommit.photo= None    
+        else :
+            lastestCommit = travelCommits[1]
+            travelCommit.photo = lastestCommit.photo
+        
+        travelCommit.save()
+        return Response(travelCommit.photo, status=status.HTTP_200_OK)
+        
+        
 
 class comments(APIView):
     

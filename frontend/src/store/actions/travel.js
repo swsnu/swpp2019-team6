@@ -248,7 +248,7 @@ export const createTravel = (travel, form_data) => {
 };
 
 
-export const editTravel = (id, travel) => {
+export const editTravel = (id, travel, form_data) => {
   return (dispatch) => {
     const newTravel = convertItemToPushFormat(travel);
     return axios.post(`/api/travel/${id}/travelCommit/`, newTravel.head, {
@@ -258,7 +258,18 @@ export const editTravel = (id, travel) => {
     })
       .then(
         (res) => {
-          alert(res.data.id)
+          if (form_data) {
+            axios.put(`/api/travel/travelCommit/${res.data.id}/photo/`, form_data, {
+              headers: {
+                'content-type': 'multipart/form-data',
+              },
+            }).then((res2) => {
+              console.log(res2.data);
+            }).catch((err2) => {
+              console.log(err2);
+            });
+          }
+          alert(res.data.id);
           dispatch(push(`/travel/${id}/`));
         },
       ).catch(

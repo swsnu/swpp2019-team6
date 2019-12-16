@@ -83,7 +83,7 @@ class TravelCommit(models.Model):
     travel = models.ForeignKey(
         Travel,
         on_delete = models.CASCADE,
-        related_name = 'travel_of_TravelCommit',
+        related_name = 'travelCommits',
         null=True
     )
     author = models.ForeignKey(

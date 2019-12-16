@@ -130,7 +130,7 @@ class CreateTravel extends Component {
       if (this.props.header) {
         photo = this.props.header.photo;
       }
-      console.log(this.props.header)
+      console.log(this.props.header);
       this.setState({ imagePreviewUrl: photo });
     }
   }
@@ -158,7 +158,7 @@ class CreateTravel extends Component {
         header: this.state.header,
         items: this.state.items,
         tags: this.state.tags,
-      });
+      }, form_data);
     } else {
       this.props.createTravel({
         header: this.state.header,
@@ -740,8 +740,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createTravel: (travel, form_data) => dispatch(actionCreators.createTravel(travel, form_data)),
-    // createTravel: (travel) => dispatch(actionCreators.createTravel(travel)),
-    editTravel: (id, travel) => dispatch(actionCreators.editTravel(id, travel)),
+    // eslint-disable-next-line max-len
+    editTravel: (id, travel, form_data) => dispatch(actionCreators.editTravel(id, travel, form_data)),
     getTravel: (id, isEdit) => dispatch(actionCreators.getTravel(id, isEdit)),
   };
 };
