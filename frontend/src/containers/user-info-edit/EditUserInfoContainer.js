@@ -6,22 +6,6 @@ import axios from 'axios';
 import * as actionCreators from '../../store/actions/index';
 
 import EditUserInfo from '../../components/user-info-edit/EditUserInfo';
-/*
-const tempUser = {
-  id: 1,
-  nickname: 'iluvswpp',
-  email: 'iluvswpp@snu.ac.kr',
-  register_date: '2019.10.10',
-  status_message: 'Pharetra diam sit amet nisl suscipit adipiscing bibendum est.
-   Imperdiet dui accumsan sit amet nulla facilisi morbi. Sagittis orci a
-   scelerisque purus semper eget.',
-  num_plans: 4,
-  num_likes: 45,
-  num_forked: 3,
-  user_photo: '/images/13.jpeg',
-};
-*/
-
 
 // somehow have to get current user info
 // from this.params.id
@@ -119,7 +103,6 @@ class EditUserInfoContainer extends Component {
       })
       .then(
         (res) => {
-          alert('Successfully changed your password');
           this.setState({
             currentPasswordField: '',
             newPasswordField: '',
@@ -213,10 +196,8 @@ class EditUserInfoContainer extends Component {
         'content-type': 'multipart/form-data',
       },
     }).then((res) => {
-      console.log(res.data);
     })
       .catch((err) => {
-        console.log(err);
       });
   }
 

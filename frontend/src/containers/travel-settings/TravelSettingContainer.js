@@ -49,7 +49,6 @@ class TravelSettingContainer extends Component {
       )
       .catch(
         (res) => {
-          alert('Cannot change travel settings');
         },
       );
   }

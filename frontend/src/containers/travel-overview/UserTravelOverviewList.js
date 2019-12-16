@@ -76,7 +76,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionCreators.deleteTravel(travel_id));
     },
     mergeTravelCommit: (travelCommit_id) => {
-      dispatch(actionCreators.mergeTravelCommit(travelCommit_id))
+      dispatch(actionCreators.mergeTravelCommit(travelCommit_id));
     },
   };
 };

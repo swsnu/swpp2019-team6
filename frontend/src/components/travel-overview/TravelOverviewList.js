@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TravelOverviewList = ({
-  travelList, is_mypage, for_collaborator, onDeleteClicked, onQuitClicked, forRecommend, onClickMerge,
+  travelList, is_mypage, for_collaborator, onDeleteClicked,
+  onQuitClicked, forRecommend, onClickMerge,
 }) => {
   const classes = useStyles();
   return (
