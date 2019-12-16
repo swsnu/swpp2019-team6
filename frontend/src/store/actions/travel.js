@@ -269,7 +269,6 @@ export const editTravel = (id, travel, form_data) => {
               console.log(err2);
             });
           }
-          alert(res.data.id);
           dispatch(push(`/travel/${id}/`));
         },
       ).catch(
