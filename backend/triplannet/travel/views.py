@@ -156,7 +156,7 @@ class travel_recommend_byuser(APIView):
 
         user_view=user.views_of_Travel
         user_view_idlist=list(user_view.values_list('id', flat=True))
-        user_view_idlist=user_view_idlist+[travel_id]
+        user_view_idlist=[travel_id]
 
         block_dist_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__block_dist', flat=True)
         travel_embed_vector_view = Travel.objects.filter(pk__in=user_view_idlist).values_list('head__travel_embed_vector', flat=True)
