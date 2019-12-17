@@ -237,6 +237,7 @@ export const createTravel = (travel, form_data) => {
       ).catch(
         (err) => {
           const message = errorMessage(err, false);
+          alert(message);
         },
       );
   };
@@ -267,6 +268,7 @@ export const editTravel = (id, travel, form_data) => {
       ).catch(
         (err) => {
           const message = errorMessage(err, true);
+          alert(message);
         },
       );
   };
