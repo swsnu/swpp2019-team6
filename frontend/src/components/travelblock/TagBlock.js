@@ -99,7 +99,7 @@ export default function TagBlock(props) {
           return (
             <Grid id="option" container alignItems="center">
               <Grid item xs>
-                <Typography variant="body2" color="textSecondary" onClick={() => postHandler(option)}>
+                <Typography id="text" variant="body2" color="textSecondary" onClick={() => postHandler(option)}>
                   {option}
                 </Typography>
               </Grid>
