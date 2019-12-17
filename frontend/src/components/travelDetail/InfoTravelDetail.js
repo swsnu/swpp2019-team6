@@ -70,7 +70,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                   <img src={travel.head.image} className={classes.img} alt="travel" />
                 </Grid>
               ) : (
-                <span />
+                <span id="NoImage" />
               )}
               <Grid item>
                 <Typography variant="h4" className={classes.title}>
@@ -83,7 +83,7 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                   {travel.head.summary}
                   {/* summary comes here */}
                 </Typography>
-                <ButtonBase onClick={() => { onAuthorClicked(travel.author.id); }}>
+                <ButtonBase id="AuthorButton" onClick={() => { onAuthorClicked(travel.author.id); }}>
                   <Grid item container direction="row" alignItems="center">
                     <Avatar
                       className={classes.avartar}
@@ -109,13 +109,14 @@ const InfoTravelDetail = ({ travel, onForkButtonClicked, history }) => {
                     }) }
                   </div>
                 ) : (
-                  <Typography variant="body1" color="primary">
+                  <Typography variant="body1" color="primary" id="NoTags">
                     No tags found
                   </Typography>
                 )}
                 <Button
                   variant="outlined"
                   className={classes.button}
+                  id="ForkButton"
                   onClick={() => {
                     onForkButtonClicked(thisUser.id, travel.id);
                   }}
