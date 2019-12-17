@@ -115,14 +115,6 @@ describe('TravelOverviewBlock', () => {
     delete window.location;
     window.location = { reload: jest.fn() };
   });
-  // beforeEach(() => {
-  //   travelOverviewBlock = (
-  //     <TravelOverviewBlock
-  //       travelOverviewItem={temptravelOverviewItem}
-  //       is_mypage={false}
-  //     />
-  //   );
-  // });
 
   afterEach(() => {
     jest.clearAllMocks();
