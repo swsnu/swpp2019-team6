@@ -95,8 +95,6 @@ const stubTravel = {
 const stubRequestTravel = {
   header: {
     title: 'TEST',
-    description: 'TEST',
-    summary: 'TEST',
     startDate: new Date(),
     endDate: new Date(),
   },
@@ -109,43 +107,35 @@ const stubRequestTravel = {
       },
     },
     {
-      id: 'custom-0',
+      id: 'restaurant-2',
       info: {
         title: 'TEST',
-        startTime: new Date(),
-        startPoint: 'TEST',
+        time: new Date(),
+        point: 'TEST',
       },
     },
     {
-      id: 'activity-0',
+      id: 'activity-4',
       info: {
         title: 'TEST',
-        startTime: new Date(),
-        startPoint: 'TEST',
+        time: new Date(),
+        point: 'a',
       },
     },
     {
-      id: 'restaurant-0',
+      id: 'transportation-3',
       info: {
         title: 'TEST',
-        startTime: new Date(),
-        startPoint: 'TEST',
+        time: new Date(),
+        point: 'TEST',
       },
     },
     {
-      id: 'hotel-0',
+      id: 'hotel-5',
       info: {
         title: 'TEST',
-        startTime: new Date(),
-        startPoint: 'TEST',
-      },
-    },
-    {
-      id: 'transportation-0',
-      info: {
-        title: 'TEST',
-        startTime: new Date(),
-        startPoint: 'TEST',
+        time: new Date(),
+        point: 'TEST',
       },
     },
   ],
@@ -172,7 +162,7 @@ describe('Travel Action', () => {
       done();
     });
   });
-  xit('create travel should post travel info correctly', (done) => {
+  it('create travel should post travel info correctly', (done) => {
     const spy = jest.spyOn(axios, 'post')
       .mockImplementation((url, travel, headers) => {
         return new Promise((resolve, reject) => {
