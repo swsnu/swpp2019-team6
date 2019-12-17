@@ -141,6 +141,32 @@ const stubRequestTravel = {
   ],
 };
 
+const stubWrongRequestTravel = {
+  header: {
+    title: 'TEST',
+    startDate: new Date(),
+    endDate: new Date(),
+  },
+  items: [
+    {
+      id: 'day-0',
+      info: {
+        title: 'TEST',
+        datetime: new Date(),
+      },
+    },
+    {
+      id: 'restaurant-2',
+      info: {
+        title: 'TEST',
+        time: new Date(),
+        point: '',
+      },
+    },
+  ],
+};
+
+
 
 describe('Travel Action', () => {
   afterEach(() => {
@@ -157,7 +183,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.createTravel(stubRequestTravel)).then(() => {
+    store.dispatch(actionCreators.createTravel(stubWrongRequestTravel)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -250,4 +276,185 @@ describe('Travel Action', () => {
       done();
     });
   });
+
+  it('should get user travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, userid) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getUserTravels(1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get search travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, userid) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getSearchTravel('hawaii')).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get one raw travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, userid) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getOneRawTravel(1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get collaborator travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, userid) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getCollaboratorTravels(1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get recommend travel info', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, userid, travel_id) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getRecommendedTravels(1,1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should quit collaborator from travel info', (done) => {
+    const spy = jest.spyOn(axios, 'put')
+      .mockImplementation((url, userid, travel_idheaders) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.quitCollaborator(1,1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('like travel should work well', (done) => {
+    const spy = jest.spyOn(axios, 'put')
+      .mockImplementation((url, userid, travel_id, headers) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.likeTravel(1,1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should get comment of travel', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, travel_id) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: 'comment',
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.getComments(1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('should post comment of travel', (done) => {
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, travel_id, comment, headers) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: 'comment',
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.postComment(1,'comment')).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('fork travel should work well', (done) => {
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, travelid, headers) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubTravel,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.forkTravel(1,1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
 });
