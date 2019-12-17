@@ -60,7 +60,6 @@ class HeaderContainer extends Component {
           window.location.reload(); // user page to another user's page -> needs refreshing?
         })
         .catch((res) => {
-          alert('No user found!');
         });
     } else {
       this.props.history.push(`/search/${this.state.searchText}/`);

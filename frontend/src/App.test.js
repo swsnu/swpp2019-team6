@@ -109,7 +109,7 @@ describe('App', () => {
   });
 
   it('should render search', () => {
-    history.push('/search');
+    history.push('/search/TEST/');
     const component = mount(app);
     expect(component.find('.searchPage').length).toBe(1);
   });

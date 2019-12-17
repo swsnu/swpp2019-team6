@@ -8,8 +8,7 @@ import os
 
 class TravelEmbed:
     def __init__(self):
-        #self.module_path = "https://tfhub.dev/google/universal-sentence-encoder/4"
-        self.module_path = "/home/soon/soon/swpp2019-team6/backend/triplannet/model"
+        self.module_path = "https://tfhub.dev/google/universal-sentence-encoder/4"
         self.embed=hub.load(self.module_path)
 
     def travel_text_embed_vector(self, text):

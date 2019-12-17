@@ -12,8 +12,6 @@ class CollaboratorTravelOverviewList extends Component {
   }
 
   onQuitClicked = (travel_id) => {
-    console.log('onQuitClicked!');
-    console.log(travel_id);
     this.props.onQuitCollaborator(this.props.id, travel_id);
   }
 

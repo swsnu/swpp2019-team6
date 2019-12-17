@@ -44,7 +44,6 @@ class CollaboratorSettingContainer extends Component {
 
   onAddButtonClicked = (e) => {
     if (this.state.currentUser.nickname === this.state.collaborator_field) {
-      alert('You cannot add yourself as a collaborator!');
       return;
     }
     const data = {
@@ -65,10 +64,8 @@ class CollaboratorSettingContainer extends Component {
       )
       .catch(
         (res) => {
-          alert('No user found');
         },
       );
-    // console.log(this.state.collaborator_field);
   }
 
   onCollaboratorFieldChanged = (e) => {

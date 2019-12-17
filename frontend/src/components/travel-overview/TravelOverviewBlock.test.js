@@ -115,7 +115,7 @@ describe('TravelOverviewBlock', () => {
 
     );
     const component = mount(travelOverviewBlock);
-    expect(component.find('button').length).toBe(4);
+    expect(component.find('button').length).toBe(5);
   });
 
 
@@ -134,7 +134,7 @@ describe('TravelOverviewBlock', () => {
       </Provider>
     );
     const component = mount(travelOverviewBlock);
-    expect(component.find('button').length).toBe(3);
+    expect(component.find('button').length).toBe(4);
   });
 
   it('should render empty content.', () => {

@@ -130,7 +130,6 @@ class CreateTravel extends Component {
       if (this.props.header) {
         photo = this.props.header.photo;
       }
-      console.log(this.props.header);
       this.setState({ imagePreviewUrl: photo });
     }
   }
