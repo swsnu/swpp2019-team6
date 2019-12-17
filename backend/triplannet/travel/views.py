@@ -378,6 +378,40 @@ class comments(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class comments_id(APIView):
+
+    def delete(self, request, tid, cid, *args, **kwargs):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        comment.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request, tid, cid, *args, **kwrags):
+        try:
+            travel = Travel.objects.get(pk=tid)
+            comment = Comment.objects.get(pk=cid)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if request.user.id != comment.author.id:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        request.data['author']=request.user.id
+        request.data['travel']=travel.id
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TravelSearch(APIView):
 
