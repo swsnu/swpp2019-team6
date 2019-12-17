@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router';
 
 import TravelOverviewBlock from './TravelOverviewBlock';
 import { getMockStore } from '../../test-utils/mocks';
@@ -57,6 +58,32 @@ const temptravelOverviewItem2 = {
   },
 };
 
+const temptravelOverviewItem3 = {
+  id: 1,
+  title: 'Ultricies lacus sed turpis tincidunt',
+  author: {
+    id: 1,
+    email: 'test@test.io',
+    nickname: 'test',
+    status_message: 'status',
+    profile_photo: '/media/user/1/profile.png',
+    photo: 'test',
+  },
+  likes: [2, 3, 4],
+  is_public: true,
+  allow_comments: true,
+  fork_parent: true,
+  collaborators: [2],
+  head: {
+    summary: 'Pharetra magna ac placerat vestibulum lectus. Pretium viverra suspendisse potenti nullam ac..',
+    start_date: '2019.03.04',
+    end_date: '2019.03.08',
+    photo: 'test',
+    tags: ['test'],
+    is_head: true,
+  },
+};
+
 const emptytravelOverviewItem = {
   title: null,
   author: null,
@@ -83,6 +110,11 @@ history.push = jest.fn();
 describe('TravelOverviewBlock', () => {
   let travelOverviewBlock;
 
+  beforeAll(() => {
+    const { location } = window;
+    delete window.location;
+    window.location = { reload: jest.fn() };
+  });
   // beforeEach(() => {
   //   travelOverviewBlock = (
   //     <TravelOverviewBlock
@@ -132,6 +164,24 @@ describe('TravelOverviewBlock', () => {
     expect(component.find('button').length).toBe(4);
   });
 
+  it('should render - is_mypage: true / for_collaborator: false / 1 collaborator', () => {
+    travelOverviewBlock = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <TravelOverviewBlock
+            travelOverviewItem={temptravelOverviewItem3}
+            is_mypage
+            onDeleteClicked={mockOnDeleteClicked}
+            onQuitClicked={mockOnQuitClicked}
+            onClickMerge={mockOnClickMerge}
+          />
+        </ConnectedRouter>
+      </Provider>
+
+    );
+    const component = mount(travelOverviewBlock);
+    expect(component.find('button').length).toBe(4);
+  });
 
   it('should render - is_mypage: true. / for_collaborator: true', () => {
     travelOverviewBlock = (
@@ -327,27 +377,56 @@ describe('TravelOverviewBlock', () => {
     expect(history.push).toHaveBeenCalled();
     const button2 = component.find('#CollaboratorQuitButton2').find('button');
     button2.simulate('click');
+    const cancelButton = component.find('#collaboratorQuitCancelButton2').find('button');
+    cancelButton.simulate('click');
+    button2.simulate('click');
+    const confirmButton = component.find('#collaboratorQuitConfirmButton2').find('button');
+    confirmButton.simulate('click');
+    expect(mockOnQuitClicked).toHaveBeenCalled();
     const button3 = component.find('#CollaboratorMergeButton2').find('button');
     button3.simulate('click');
     expect(mockOnClickMerge).toHaveBeenCalled();
   });
 
-  it('should render card click', () => {
+  it('should handle card click 1', () => {
     travelOverviewBlock = (
       <Provider store={mockStore}>
-        <ConnectedRouter history={history}>
+        <MemoryRouter initialEntries={['/travel/1']}>
           <TravelOverviewBlock
             travelOverviewItem={temptravelOverviewItem}
-            is_mypage
-            for_collaborator
             onDeleteClicked={mockOnDeleteClicked}
             onQuitClicked={mockOnQuitClicked}
             onClickMerge={mockOnClickMerge}
           />
-        </ConnectedRouter>
+        </MemoryRouter>
       </Provider>
     );
+
     const component = mount(travelOverviewBlock);
-    expect(component.find('button').length).toBe(3);
+    const cardButton = component.find('button');
+    expect(component.find('button').length).toBe(1);
+    cardButton.simulate('click');
+    expect(window.location.reload).toHaveBeenCalled();
+  });
+
+  it('should handle card click 2', () => {
+    travelOverviewBlock = (
+      <Provider store={mockStore}>
+        <MemoryRouter initialEntries={['/main']}>
+          <TravelOverviewBlock
+            travelOverviewItem={temptravelOverviewItem}
+            onDeleteClicked={mockOnDeleteClicked}
+            onQuitClicked={mockOnQuitClicked}
+            onClickMerge={mockOnClickMerge}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const component = mount(travelOverviewBlock);
+    const cardButton = component.find('button');
+    expect(component.find('button').length).toBe(1);
+    cardButton.simulate('click');
+    expect(window.location.reload).not.toHaveBeenCalled();
   });
 });

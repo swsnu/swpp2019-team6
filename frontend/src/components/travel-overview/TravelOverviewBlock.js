@@ -367,10 +367,10 @@ const TravelOverviewBlock = ({
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleQuitClose} color="primary">
+                    <Button onClick={handleQuitClose} color="primary" id="collaboratorQuitCancelButton2">
                       Cancel
                     </Button>
-                    <Button onClick={() => { handleQuitClose(); onQuitClicked(travelOverviewItem.id); }} color="primary" autoFocus>
+                    <Button id="collaboratorQuitConfirmButton2" onClick={() => { handleQuitClose(); onQuitClicked(travelOverviewItem.id); }} color="primary" autoFocus>
                       Confirm
                     </Button>
                   </DialogActions>
