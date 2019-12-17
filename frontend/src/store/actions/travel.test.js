@@ -166,8 +166,6 @@ const stubWrongRequestTravel = {
   ],
 };
 
-
-
 describe('Travel Action', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -361,7 +359,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.getRecommendedTravels(1,1)).then(() => {
+    store.dispatch(actionCreators.getRecommendedTravels(1, 1)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -379,7 +377,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.quitCollaborator(1,1)).then(() => {
+    store.dispatch(actionCreators.quitCollaborator(1, 1)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -397,7 +395,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.likeTravel(1,1)).then(() => {
+    store.dispatch(actionCreators.likeTravel(1, 1)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -433,7 +431,7 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.postComment(1,'comment')).then(() => {
+    store.dispatch(actionCreators.postComment(1, 'comment')).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -451,10 +449,9 @@ describe('Travel Action', () => {
         });
       });
 
-    store.dispatch(actionCreators.forkTravel(1,1)).then(() => {
+    store.dispatch(actionCreators.forkTravel(1, 1)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
   });
-
 });
