@@ -34,7 +34,6 @@ class CommentsLikeContainer extends Component {
             <CommentsLike
               travel={this.props.thisTravel}
               comments={this.props.comments}
-              // comments={tempComments}
               onLikeButtonClicked={this.onLikeButtonClicked}
               commentField={this.state.commentField}
               onCommentFieldChanged={this.onCommentFieldChanged}
