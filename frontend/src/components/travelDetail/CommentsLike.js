@@ -50,7 +50,7 @@ const CommentsLike = ({
             <Typography variant="h6">
               {travel.likes.length} likes
             </Typography>
-            <Button variant="contained" color="primary" onClick={() => { onLikeButtonClicked(thisUser.id, travel.id); }}>
+            <Button variant="contained" color="primary" id="likeButton" onClick={() => { onLikeButtonClicked(thisUser.id, travel.id); }}>
               Like
             </Button>
           </div>
@@ -75,13 +75,14 @@ const CommentsLike = ({
             <TextField
               autoFocus
               fullWidth
+              id="CommentField"
               label="Your Comment"
               value={commentField}
               onChange={onCommentFieldChanged}
             />
           </Grid>
           <Grid item xs={1}>
-            <Button variant="contained" color="primary" onClick={onCommentConfirmClicked}>
+            <Button variant="contained" color="primary" id="ConfirmButton" onClick={onCommentConfirmClicked}>
               Confirm
             </Button>
           </Grid>
