@@ -92,7 +92,7 @@ const TravelOverviewBlock = ({
     <div>
       {travelOverviewItem ? (
         <div>
-          <CardActionArea component="button" onClick={onCardClicked}>
+          <CardActionArea component="button" onClick={onCardClicked} id="CardActionAreaButton">
             <Card className={classes.card}>
               {/* For image */}
               {travelOverviewItem.head.photo ? (
@@ -184,6 +184,7 @@ const TravelOverviewBlock = ({
                   <Grid container justify="space-between">
                     <Grid item xs={3}>
                       <Button
+                        id="AuthorEditButton"
                         variant="outlined"
                         color="default"
                         fullWidth
@@ -194,6 +195,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={3}>
                       <Button
+                        id="AuthorSettingsButton"
                         variant="outlined"
                         color="primary"
                         fullWidth
@@ -204,6 +206,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={3}>
                       <Button
+                        id="AuthorDeleteButton"
                         variant="outlined"
                         color="secondary"
                         fullWidth
@@ -214,6 +217,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={3}>
                       <Button
+                        id="AuthorMergeButton"
                         variant="contained"
                         color="primary"
                         fullWidth
@@ -227,6 +231,7 @@ const TravelOverviewBlock = ({
                   <Grid container justify="space-between">
                     <Grid item xs={4}>
                       <Button
+                        id="AuthorEditButton2"
                         variant="outlined"
                         color="default"
                         fullWidth
@@ -237,6 +242,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={4}>
                       <Button
+                        id="AuthorSettingsButton2"
                         variant="outlined"
                         color="primary"
                         fullWidth
@@ -247,6 +253,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={4}>
                       <Button
+                        id="AuthorDeleteButton2"
                         variant="outlined"
                         color="secondary"
                         fullWidth
@@ -270,10 +277,10 @@ const TravelOverviewBlock = ({
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleDeleteClose} color="primary">
+                    <Button id="DeleteCancelButton" onClick={handleDeleteClose} color="primary">
                       Cancel
                     </Button>
-                    <Button onClick={() => { handleDeleteClose(); onDeleteClicked(travelOverviewItem.id); }} color="primary" autoFocus>
+                    <Button id="DeleteConfirmButton" onClick={() => { handleDeleteClose(); onDeleteClicked(travelOverviewItem.id); }} color="primary" autoFocus>
                       Confirm
                     </Button>
                   </DialogActions>
@@ -289,6 +296,7 @@ const TravelOverviewBlock = ({
                   <Grid container justify="space-between">
                     <Grid item xs={6}>
                       <Button
+                        id="CollaboratorEditButton"
                         variant="outlined"
                         color="default"
                         fullWidth
@@ -299,6 +307,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={6}>
                       <Button
+                        id="CollaboratorQuitButton"
                         variant="outlined"
                         color="secondary"
                         fullWidth
@@ -312,6 +321,7 @@ const TravelOverviewBlock = ({
                   <Grid container justify="space-between">
                     <Grid item xs={4}>
                       <Button
+                        id="CollaboratorEditButton2"
                         variant="outlined"
                         color="default"
                         fullWidth
@@ -322,6 +332,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={4}>
                       <Button
+                        id="CollaboratorQuitButton2"
                         variant="outlined"
                         color="secondary"
                         fullWidth
@@ -332,6 +343,7 @@ const TravelOverviewBlock = ({
                     </Grid>
                     <Grid item xs={4}>
                       <Button
+                        id="CollaboratorMergeButton2"
                         variant="contained"
                         color="primary"
                         fullWidth
