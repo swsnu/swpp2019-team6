@@ -124,6 +124,7 @@ class UserProfilePhoto(APIView):
             user = User.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
+
         serializer = self.serializer_class(user, data=request.data)
         if serializer.is_valid():
             serializer.save()

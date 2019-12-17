@@ -30,7 +30,6 @@ class TravelDaySerializer(serializers.ModelSerializer):
         for i,block_ in enumerate(blocks_data):
             travelBlockSerializer=TravelBlockSerializer(data=block_)
             if travelBlockSerializer.is_valid():
-                print('TRAVELBLOCKSERIALIZER VALID')
                 block_obj=travelBlockSerializer.save()
                 TravelBlockList(TravelDay=travelDay,
                             TravelBlock = block_obj,
@@ -77,7 +76,6 @@ class TravelCommitSerializer(serializers.ModelSerializer):
         for i,day_ in enumerate(days_data):
             travelDaySerializer = TravelDaySerializer(data=day_)
             if travelDaySerializer.is_valid():
-                print('TRAVELDAYSERIALIZER VALID')
                 day_obj =travelDaySerializer.save()
                 TravelDayList(TravelCommit=travelCommit,
                             TravelDay=day_obj,
@@ -121,14 +119,12 @@ class TravelSerializer(serializers.ModelSerializer):
 
         travelCommitSerializer = TravelCommitSerializer(data=head_data)
         if travelCommitSerializer.is_valid():
-            print('TRAVELCOMMIT_SERIALIZER VALID')
             head = travelCommitSerializer.save()
             travel = Travel.objects.create(head=head,**validated_data)
             head.travel=travel
             head.save()
             return travel   
         else:
-            print('TRAVELCOMMIT_SERIALIZER INVALID')
             print(travelCommitSerializer.errors)
 
 

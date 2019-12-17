@@ -27,13 +27,9 @@ class travel(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            print('TRAVELSERIALIZER VALID')
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)
-        print('TRAVELSERIALIZER INVALID')
-        print(serializer.errors)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class travel_fork(APIView):
@@ -48,8 +44,9 @@ class travel_fork(APIView):
         travel_data.pop('collaborators')
         travel_data.pop('views')
         travel_data['fork_parent']=id
-        photo=travel_data['head'].pop('photo')[1:]
-        photo=photo[photo.find('/')+1:]
+        photo=travel_data['head'].pop('photo')
+        if photo:
+            photo=photo[photo[1:].find('/')+1:]
         travel_data['author']=request.user.id
         travel_data['head']['author']=request.user.id
         travel_data['head'].pop('travel')
@@ -70,10 +67,7 @@ class travel_view_update(APIView):
             travel = Travel.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
-        try:
-            user = User.objects.get(pk=request.user.id)
-        except  ObjectDoesNotExist:
-            raise Http404
+        user = User.objects.get(pk=request.user.id)
         travel.views.add(user)
         travel.save()
         return Response(status=status.HTTP_200_OK)
@@ -84,10 +78,7 @@ class travel_like_update(APIView):
             travel = Travel.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
-        try:
-            user = User.objects.get(pk=request.user.id)
-        except  ObjectDoesNotExist:
-            raise Http404
+        user = User.objects.get(pk=request.user.id)
         travel.likes.add(user)
         travel.save()
         return Response(status=status.HTTP_200_OK)
@@ -115,22 +106,22 @@ class travel_id(APIView):
 
 
 
-    def put(self, request, id, *args, **kwargs):
-        try:
-            travel = Travel.objects.get(pk=id)
-        except ObjectDoesNotExist:
-            raise Http404
+    # def put(self, request, id, *args, **kwargs):
+    #     try:
+    #         travel = Travel.objects.get(pk=id)
+    #     except ObjectDoesNotExist:
+    #         raise Http404
 
-        request.data['author']=request.user.id
-        request.data['travel']=travel.id
-        serializer = TravelCommitSerializer(data=request.data)
-        if serializer.is_valid():
-            travel.head = serializer.save()
-            travel.save()
-            return Response(status=status.HTTP_200_OK)
-        else:
-            print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     request.data['author']=request.user.id
+    #     request.data['travel']=travel.id
+    #     serializer = TravelCommitSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         travel.head = serializer.save()
+    #         travel.save()
+    #         return Response(status=status.HTTP_200_OK)
+    #     else:
+    #         print(serializer.errors)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, *args, **kwargs):
         try:
@@ -229,11 +220,9 @@ class travel_id_travelCommit(APIView):
         request.data['travel']=travel.id
         serializer = TravelCommitSerializer(data=request.data)
         if serializer.is_valid():
-            print('TRAVELCOMMITSERIALIZER VALID')
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
 
-        print('TRAVELCOMMITSERIALIZER INVALID')
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -341,15 +330,17 @@ class travelCommitPhoto(APIView):
             travelCommit = TravelCommit.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
+        
 
         if request.data :
             serializer = self.serializer_class(travelCommit, data=request.data)
             if serializer.is_valid():
+           
                 serializer.save()
                 return Response(serializer.data)
 
-            return Response(serializer.data)
-
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
         travel = travelCommit.travel
         travelCommits=TravelCommit.objects.filter(travel_id=travel.id).order_by('-register_time')
 
@@ -361,7 +352,8 @@ class travelCommitPhoto(APIView):
             travelCommit.photo = lastestCommit.photo
 
         travelCommit.save()
-        return Response(travelCommit.photo, status=status.HTTP_200_OK)
+        serializer=self.serializer_class(travelCommit)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
@@ -441,22 +433,22 @@ class comments_id(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class travelCommit_id(APIView):
+# class travelCommit_id(APIView):
 
-    def get(self, request, travel_id, travelcommit_id, *args, **kwargs):
-        try:
-            travel = Travel.objects.get(pk=travel_id)
-            travelCommit = TravelCommit.objects.get(pk=travelcommit_id)
-        except ObjectDoesNotExist:
-            raise Http404
+#     def get(self, request, travel_id, travelcommit_id, *args, **kwargs):
+#         try:
+#             travel = Travel.objects.get(pk=travel_id)
+#             travelCommit = TravelCommit.objects.get(pk=travelcommit_id)
+#         except ObjectDoesNotExist:
+#             raise Http404
 
-        if travelCommit.travel.id != travel.id:
-            raise Http404
+#         if travelCommit.travel.id != travel.id:
+#             raise Http404
 
-        travel.head=travelCommit
+#         travel.head=travelCommit
 
-        serializer = TravelSerializer(travel)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#         serializer = TravelSerializer(travel)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TravelSearch(APIView):
@@ -474,9 +466,10 @@ class travel_commit_merge(APIView):
             travelCommit=TravelCommit.objects.get(pk=id)
         except ObjectDoesNotExist:
             raise Http404
-        try:
-            travel=travelCommit.travel
-        except KeyError:
+        
+        travel=travelCommit.travel
+        
+        if not travel:
             raise Http404
 
         if request.user.id != travelCommit.author.id :

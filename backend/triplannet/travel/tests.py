@@ -3,7 +3,11 @@ from django.test import TestCase, Client
 from rest_framework import status
 import json
 
-from .models import Travel,Tag
+from .models import Travel,TravelCommit, Tag
+
+from django.test.client import MULTIPART_CONTENT
+from io import BytesIO
+from PIL import Image
 
 
 class TagTestCase(TestCase):
@@ -31,6 +35,15 @@ class TagTestCase(TestCase):
         response = client.post('/api/travel/tag/TEST/',
                                HTTP_AUTHORIZATION="JWT {}".format(token))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        long_tag = 'a'*100
+        response = client.post('/api/travel/tag/{}/'.format(long_tag),
+                               HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        response = client.post('/api/travel/tag/TEST/',
+                               HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_tags(self):
         client = Client()
@@ -53,6 +66,11 @@ class TagTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = json.loads(response.content)
         self.assertEqual(len(data), 4)
+
+        long_tag = 'a'*100
+        response = client.get('/api/travel/tag/{}/'.format(long_tag),
+                               HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class RecommendTestCase(TestCase):
@@ -135,6 +153,14 @@ class RecommendTestCase(TestCase):
                                HTTP_AUTHORIZATION="JWT {}".format(token))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        response = client.get('/api/travel/recommend/2/3/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
+        response = client.get('/api/travel/recommend/10/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
         response = client.get('/api/travel/recommend/1/',
                               HTTP_AUTHORIZATION="JWT {}".format(token))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -351,3 +377,379 @@ class CommentTestCase(TestCase):
         response = client2.delete('/api/travel/1/comment/1/',
                                 HTTP_AUTHORIZATION="JWT {}".format(token2))
         self.assertEqual(response.status_code,status.HTTP_401_UNAUTHORIZED)
+
+class TravelTestCase(TestCase):
+
+    def setUp(self):
+        client = Client()
+        token = self.signup_and_login('test0@test.io', 'test', 'test0')
+        Tag.objects.create(word='tag1')
+        travel_data = {
+                        "head": {
+	                            "days": [
+	                                        {
+		                                        "id": 4,
+       		                                    "blocks": [],
+	                            	            "title": "",
+		                                        "day": "2019-12-14",
+		                                        "modified": True,
+		                                        "parent_day": None
+	                                        }
+	                            ],
+	                            "block_dist": [],
+	                            "travel_embed_vector": [],
+                            	"title": "title1",
+	                            "summary": "",
+	                            "description": "",
+	                            "start_date": "2019-12-14",
+	                            "end_date": "2019-12-14",
+                                "tags": ["tag1"],
+                        },
+                        "fork_parent": None,
+                        "is_public" : False,
+        }
+        response = client.post('/api/travel/',
+                                travel_data,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_201_CREATED)
+
+    def signup_and_login(self, email, password, nickname, login_only=False):
+        client = Client()
+        if not login_only:
+            response = client.post('/api/user/signup/', data = {
+                "email": email,
+                "password": password,
+                "nickname": nickname
+            })
+            self.assertEqual(response.status_code,status.HTTP_201_CREATED)
+
+        response = client.post('/api/user/auth/', data = {
+            "email": email,
+            "password": password
+        })
+        token_json = json.loads(response.content)
+        token = token_json["token"]
+        return token
+
+
+
+    def test_fork(self):
+        client = Client()
+        token = self.signup_and_login('test@test.io','test','test')
+        
+        response = client.post('/api/travel/2/fork/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.post('/api/travel/1/fork/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_201_CREATED)
+
+        TravelCommit.objects.filter(id=1).update(start_date="2019-12-14",end_date="2019-12-13")
+        response = client.post('/api/travel/1/fork/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+
+    def test_view_like_update(self):
+        client = Client()
+        token = self.signup_and_login('test@test.io','test','test')
+        response = client.put('/api/travel/view/2/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.put('/api/travel/view/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+        response = client.put('/api/travel/like/2/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.put('/api/travel/like/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+    def test_travel_settings(self):
+        client = Client()
+        token = self.signup_and_login('test0@test.io','test','test0', True)
+        
+
+        token1=self.signup_and_login('test@test.io','test','test')
+        
+        response = client.put('/api/travel/settings/1/',
+                                { 'added_collaborator' : 'test1'},
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.put('/api/travel/settings/1/',
+                                { 'added_collaborator' : 'test'},
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+                
+        response = client.get('/api/travel/collaborator/2/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token1))
+        
+
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        
+        response = client.put('/api/travel/settings/1/',
+                                { 'deleted_collaborator' : 3 },
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token1))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        
+        response = client.put('/api/travel/settings/1/',
+                                { 'deleted_collaborator' : 2 },
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token1))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+
+    def test_post_travelCommit(self):
+        client = Client()
+        token = self.signup_and_login('test0@test.io','test','test0',True)
+        
+        data = {
+	            "days": [
+	                        {
+		                        "id": 4,
+       		                    "blocks": [],
+	                            "title": "",
+		                        "day": "2019-12-14",
+		                        "modified": True,
+		                        "parent_day": None
+	                        }
+	            ],
+	            "block_dist": [],
+	            "travel_embed_vector": [],
+                "title": "title1",
+	            "summary": "",
+	            "description": "",
+	            "start_date": "2019-12-14",
+	            "end_date": "2019-12-14",
+                "tags": ["tag1"]
+        }
+
+        
+        response = client.post('/api/travel/2/travelCommit/', data,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.post('/api/travel/1/travelCommit/', data,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_201_CREATED)
+        
+        response = client.get('/api/travel/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        
+        response = client.get('/api/travel/user/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        
+    def test_photo(self):
+        client = Client()
+
+        token = self.signup_and_login('test0@test.io','test','test0',True)
+        def get_temp_image_file():
+            file = BytesIO()
+            image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+            image.save(file, 'png')
+            file.name = 'test.png'
+            file.seek(0)
+            return file 
+
+        img = get_temp_image_file()
+        data = {'photo' : img}
+        response=client.put('/api/travel/travelCommit/2/photo/',
+                                content_type=MULTIPART_CONTENT,
+                                HTTP_AUTHORIZATION="JWT {}".format(token),
+                                data=data)
+
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response=client.put('/api/travel/travelCommit/1/photo/',
+                                content_type=MULTIPART_CONTENT,
+                                HTTP_AUTHORIZATION="JWT {}".format(token),
+                                data=data)
+
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+
+    def test_merge(self):
+        client = Client()
+
+        token = self.signup_and_login('test0@test.io','test','test0',True)
+        token1= self.signup_and_login('test@test.io','test','test')
+
+        response=client.put('/api/travel/travelCommit/2/merge/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response=client.put('/api/travel/travelCommit/1/merge/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token1))
+        self.assertEqual(response.status_code,status.HTTP_401_UNAUTHORIZED)
+
+        response=client.put('/api/travel/travelCommit/1/merge/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        
+        travelCommit_data = {
+                                "days": [
+	                                        {
+		                                        "id": 4,
+       		                                    "blocks": [],
+	                            	            "title": "",
+		                                        "day": "2019-12-14",
+		                                        "modified": True,
+		                                        "parent_day": None
+	                                        }
+	                            ],
+                                "block_dist": [],
+                                "travel_embed_vector": [],
+                                "title": "title",
+                                "summary": "",
+                                "description": "",
+                                "start_date": "2019-12-14",
+                                "end_date": "2019-12-14",
+                                "tags": ["tag1"],
+                            }
+        response=client.post('/api/travel/1/travelCommit/', travelCommit_data,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_201_CREATED)
+        TravelCommit.objects.filter(id=2).update(travel_id=None)
+        response=client.put('/api/travel/travelCommit/2/merge/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+    def test_search(self):
+        client = Client()
+        token= self.signup_and_login('test@test.io','test','test')
+
+        response=client.get('/api/travel/search/tag1/',
+                            HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+    def test_post_travel_error(self):
+        client = Client()
+        token = self.signup_and_login('test@test.io', 'test', 'test')
+        travel_data_no_head = {
+                        "fork_parent": None,
+                        "is_public" : False,
+        }
+        response = client.post('/api/travel/',
+                                travel_data_no_head,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+
+        travel_data_no_title = {
+                        "head": {
+	                            "days": [
+	                                        {
+		                                        "id": 4,
+       		                                    "blocks": [],
+	                            	            "title": "",
+		                                        "day": "2019-12-14",
+		                                        "modified": True,
+		                                        "parent_day": None
+	                                        }
+	                            ],
+	                            "block_dist": [],
+	                            "travel_embed_vector": [],
+	                            "summary": "",
+	                            "description": "",
+	                            "start_date": "2019-12-14",
+	                            "end_date": "2019-12-14",
+                                "tags": ["tag1"],
+                        },
+                        "fork_parent": None,
+                        "is_public" : False,
+        }
+
+        response = client.post('/api/travel/',
+                                travel_data_no_title,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+    
+        travelCommit_data_no_title = {
+	                            "days": [
+	                                        {
+		                                        "id": 4,
+       		                                    "blocks": [],
+	                            	            "title": "",
+		                                        "day": "2019-12-14",
+		                                        "modified": True,
+		                                        "parent_day": None
+	                                        }
+	                            ],
+	                            "block_dist": [],
+	                            "travel_embed_vector": [],
+	                            "summary": "",
+	                            "description": "",
+	                            "start_date": "2019-12-14",
+	                            "end_date": "2019-12-14",
+                                "tags": ["tag1"],
+                        }
+        
+        response = client.post('/api/travel/1/travelCommit/',
+                                travelCommit_data_no_title,
+                                content_type='application/json',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+                  
+        
+
+    def test_travel_id(self):
+        client = Client()
+        token = self.signup_and_login('test@test.io', 'test', 'test')
+        
+        response = client.get('/api/travel/2/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.get('/api/travel/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+        response = client.delete('/api/travel/2/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+
+        response = client.delete('/api/travel/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+    def test_travel_recent_n_popular(self):
+        client = Client()
+        token = self.signup_and_login('test@test.io', 'test', 'test')
+        response = client.get('/api/travel/recent/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+        response = client.get('/api/travel/popular/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+    
+    def test_user_travel_list(self):
+        client = Client()
+        token = self.signup_and_login('test@test.io', 'test', 'test')
+        response = client.get('/api/travel/user/1/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+        response = client.get('/api/travel/user/2/',
+                                HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
