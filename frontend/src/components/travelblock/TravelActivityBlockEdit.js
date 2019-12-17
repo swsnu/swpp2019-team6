@@ -54,13 +54,13 @@ export default function TravelActivityBlockEdit(props) {
     handleBlockInfo(index, 'time', date);
   };
 
-  const handleStartTime = (date) => {
-    handleBlockInfo(index, 'startTime', date);
-  };
+  // const handleStartTime = (date) => {
+  //   handleBlockInfo(index, 'startTime', date);
+  // };
 
-  const handleEndTime = (date) => {
-    handleBlockInfo(index, 'endTime', date);
-  };
+  // const handleEndTime = (date) => {
+  //   handleBlockInfo(index, 'endTime', date);
+  // };
 
   const removeHandler = () => {
     handleRemove(index);

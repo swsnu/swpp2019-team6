@@ -10,10 +10,10 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import IconButton from '@material-ui/core/IconButton';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
 
 import TravelBlockExpandButton from '../common/TravelBlockExpandButton';
@@ -58,13 +58,13 @@ export default function TravelCustomBlockEdit(props) {
     handleBlockInfo(index, 'time', date);
   };
 
-  const handleStartTime = (date) => {
-    handleBlockInfo(index, 'startTime', date);
-  };
+  // const handleStartTime = (date) => {
+  //   handleBlockInfo(index, 'startTime', date);
+  // };
 
-  const handleEndTime = (date) => {
-    handleBlockInfo(index, 'endTime', date);
-  };
+  // const handleEndTime = (date) => {
+  //   handleBlockInfo(index, 'endTime', date);
+  // };
 
   const handleTitle = (e) => {
     handleBlockInfo(index, 'title', e.target.value);

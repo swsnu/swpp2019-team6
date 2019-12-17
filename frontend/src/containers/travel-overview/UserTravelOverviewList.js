@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { withRouter } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import { push } from 'connected-react-router';
 import TravelOverviewList from '../../components/travel-overview/TravelOverviewList';
 import CreateTravelButton from '../../components/user-info/CreateTravelButton';
 

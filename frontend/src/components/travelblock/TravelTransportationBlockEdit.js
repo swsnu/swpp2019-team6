@@ -59,9 +59,9 @@ export default function TravelUnitBlockEdit(props) {
     handleBlockInfo(index, 'startPoint', point);
   };
 
-  const handleEndPoint = (point) => {
-    handleBlockInfo(index, 'endPoint', point);
-  };
+  // const handleEndPoint = (point) => {
+  //   handleBlockInfo(index, 'endPoint', point);
+  // };
 
   const handleStartTime = (date) => {
     handleBlockInfo(index, 'startTime', date);
