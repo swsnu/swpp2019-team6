@@ -150,18 +150,43 @@ class UserTestCase(TestCase):
         self.register(client, "test@test.io", "tester", "password")
         token = self.login(client, "test@test.io", "password")
         
-        def get_temp_image_file():
+        def get_temp_image_file(color):
             file = BytesIO()
-            image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+            image = Image.new('RGBA', size=(100, 100), color=(color, 0, 0))
             image.save(file, 'png')
-            file.name = 'test.png'
+            file.name = 'test'+'color'+'.png'
             file.seek(0)
             return file 
 
-        img = get_temp_image_file()
+        img = get_temp_image_file(100)
         data = {'profile_photo' : img}
         response=client.put('/api/user/1/profile_photo/',
                                 content_type=MULTIPART_CONTENT,
                                 HTTP_AUTHORIZATION="JWT {}".format(token),
                                 data=data)
         self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+        img2 = get_temp_image_file(150)
+        data2 = {'profile_photo' : img2}
+        response=client.put('/api/user/1/profile_photo/',
+                                content_type=MULTIPART_CONTENT,
+                                HTTP_AUTHORIZATION="JWT {}".format(token),
+                                data=data2)
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+    def test_search_by_nickname(self):
+        client = Client()
+        self.register(client, "test@test.aa", "tester1", "test")
+        self.register(client, "test@test.bb", "tester2", "test")
+        self.register(client, "test@test.cc", "tester3", "test")
+        self.register(client, "test@test.dd", "tester4", "test")
+        self.register(client, "tast@test.ee", "tester5", "test")
+        token = self.login(client, "test@test.aa", "test")
+        response = client.get('/api/user/search_by_nickname/t/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        response = client.get('/api/user/search_by_nickname/tester1/',
+                              HTTP_AUTHORIZATION="JWT {}".format(token))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        result = json.loads(response.content)
+        self.assertEqual(len(result), 6)
