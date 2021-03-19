@@ -6,7 +6,7 @@ chardet==3.0.4
 coverage==4.5.4
 Django==2.2.8
 django-mysql==3.3.0
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 djangorestframework-jwt==1.11.0
 gast==0.2.2
 google-auth==1.8.1
