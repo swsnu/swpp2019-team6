@@ -24,7 +24,7 @@
     "history": "^4.10.1",
     "immer": "^4.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "query-string": "^6.8.3",
     "react": "^16.10.2",
